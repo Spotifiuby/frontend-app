@@ -1,4 +1,4 @@
-name: Jest CI
+name: Spotifiuby CI
 
 on: [ push ]
 jobs:
@@ -6,18 +6,25 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: borales/actions-yarn@v2.3.0
-        with:
-          cmd: preci
-      - uses: borales/actions-yarn@v2.3.0
+      - name: Installing dependencies
+        uses: borales/actions-yarn@v2.3.0
         with:
           cmd: ci
-      - uses: borales/actions-yarn@v2.3.0
+      - name: Run lint checker
+        uses: borales/actions-yarn@v2.3.0
         with:
           cmd: lint
-      - uses: borales/actions-yarn@v2.3.0
+      - name: Run test
+        uses: borales/actions-yarn@v2.3.0
         with:
           cmd: test
-      - uses: borales/actions-yarn@v2.3.0
+      - name: Generate coverage report
+        uses: borales/actions-yarn@v2.3.0
         with:
           cmd: test:coverage
+      - name: Upload coverage report
+        uses: codecov/codecov-action@v2
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          directory: ./coverage
+          flags: unittests,uitests
