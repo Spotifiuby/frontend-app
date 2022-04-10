@@ -10,7 +10,10 @@
     "web": "expo start --web",
     "eject": "expo eject",
     "test": "jest",
-    "lint": "eslint . --ext js,jsx,ts,tsx"
+    "test:coverage": "jest --collectCoverage",
+    "lint": "eslint . --ext js,jsx,ts,tsx",
+    "preci": "rm -fr node_modules",
+    "ci": "yarn install --frozen-lockfile"
   },
   "dependencies": {
     "expo": "^44.0.6",
