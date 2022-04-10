@@ -1,0 +1,20 @@
+extends: 
+  - airbnb
+  - plugin:react/recommended
+  - plugin:react-native/all
+parser: "@babel/eslint-parser"
+env:
+  jest: true
+  react-native/react-native: true
+plugins: 
+  - react
+  - react-native
+rules: 
+  react/react-in-jsx-scope: off
+  react/style-prop-object: off
+  react/jsx-filename-extension: 
+    - 'error'
+    - extensions: 
+      - .js
+      - .jsx
+  no-use-before-define: off
