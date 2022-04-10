@@ -1,25 +1,23 @@
 name: Jest Continous Integration
 
-on:
-  push:
-    branckes: [ master ]
-
-jobs: 
-  runs-on: ubuntu-latest
-  steps:
-    - uses: actions/checkout@v2
-    - uses: borales/actions-yarn@v2.3.0
+on: [ push ]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: borales/actions-yarn@v2.3.0
         with:
           cmd: preci
-    - uses: borales/actions-yarn@v2.3.0
+      - uses: borales/actions-yarn@v2.3.0
         with:
           cmd: ci
-    - uses: borales/actions-yarn@v2.3.0
+      - uses: borales/actions-yarn@v2.3.0
         with:
           cmd: lint
-    - uses: borales/actions-yarn@v2.3.0
+      - uses: borales/actions-yarn@v2.3.0
         with:
           cmd: test
-    - uses: borales/actions-yarn@v2.3.0
+      - uses: borales/actions-yarn@v2.3.0
         with:
           cmd: test:coverage
