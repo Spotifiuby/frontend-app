@@ -20,7 +20,7 @@
     "expo-status-bar": "~1.2.0",
     "react": "^17.0.0",
     "react-dom": "^17.0.0",
-    "react-native": "^0.68.0",
+    "react-native": "^0.68.1",
     "react-native-web": "0.17.1"
   },
   "devDependencies": {
@@ -39,6 +39,7 @@
     "eslint-plugin-react": "^7.29.4",
     "eslint-plugin-react-hooks": "^4.4.0",
     "eslint-plugin-react-native": "^4.0.0",
+    "expo-cli": "^5.3.1",
     "husky": "^7.0.4",
     "jest": "^27.5.1",
     "react-test-renderer": "^17.0.0"
@@ -46,8 +47,8 @@
   "private": true,
   "husky": {
     "hooks": {
-      "pre-commit": "npm run lint",
-      "pre-push": "npm test"
+      "pre-commit": "yarn lint",
+      "pre-push": "yarn test"
     }
   }
 }
