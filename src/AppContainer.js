@@ -25,7 +25,7 @@ const AppContainer = () => {
         onPress={() => changeLanguage(i18n.language === 'en' ? 'es' : 'en')}
         title="Change language"
         color="#841584"
-        accessibilityLabel="Change applicacation language"
+        accessibilityLabel={t('Change applicacation language')}
       />
       <StatusBar style="auto" />
     </View>
