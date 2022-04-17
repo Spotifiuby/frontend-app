@@ -1,0 +1,6 @@
+{
+  "spotifiuby": {
+    "Open up `App.js` to start working on your app!": "Edita `App.js` para empezar a trabajar en la app!",
+    "currentLanguageDisplayer": "El lenguaje actual es `{{ lang }}`"
+  }
+}

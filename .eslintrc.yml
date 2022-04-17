@@ -18,3 +18,10 @@ rules:
       - .js
       - .jsx
   no-use-before-define: off
+  react/function-component-definition:
+    - 1
+    - namedComponents: arrow-function
+  react-native/no-raw-text:
+    - 'error'
+    - skip:
+      - 'Trans'
