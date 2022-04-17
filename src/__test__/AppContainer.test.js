@@ -23,34 +23,34 @@ describe('AppContainer', () => {
   setUpWebPlatform();
   it('is created succesfully (web)', () => {
     setUpWebPlatform();
-    const { getByTestId } = render(
+    const { getByText } = render(
       <I18nextProvider i18n={i18n}>
         <AppContainer />
       </I18nextProvider>,
     );
-    const mainText = getByTestId('main-message');
+    const mainText = getByText(/Open up/);
     expect(mainText).toHaveTextContent(/Open up/);
   });
 
   it('is created succesfully (ios)', () => {
     setUpIOSPlatform();
-    const { getByTestId } = render(
+    const { getByText } = render(
       <I18nextProvider i18n={i18n}>
         <AppContainer />
       </I18nextProvider>,
     );
-    const mainText = getByTestId('main-message');
+    const mainText = getByText(/Open up/);
     expect(mainText).toHaveTextContent(/Open up/);
   });
 
   it('is created succesfully (android)', () => {
     setUpAndroidPlatform();
-    const { getByTestId } = render(
+    const { getByText } = render(
       <I18nextProvider i18n={i18n}>
         <AppContainer />
       </I18nextProvider>,
     );
-    const mainText = getByTestId('main-message');
+    const mainText = getByText(/Open up/);
     expect(mainText).toHaveTextContent(/Open up/);
   });
 });
