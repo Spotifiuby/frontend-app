@@ -6,11 +6,11 @@ import {
   leftAligned, textColor,
 } from '../theme';
 
-const FormField = ({ label, ...props }) => {
+const FormField = ({ label, children }) => {
   return (
     <View styles={{ ...leftAligned }}>
       <Text style={fieldStyles.label}>{label}</Text>
-      {props.children}
+      {children}
     </View>
   );
 };
@@ -21,7 +21,7 @@ FormField.defaultProps = {
 
 FormField.propTypes = {
   label: PropTypes.string,
-  children: PropTypes.elementType.isRequired,
+  children: PropTypes.node.isRequired,
 };
 
 const fieldStyles = StyleSheet.create({

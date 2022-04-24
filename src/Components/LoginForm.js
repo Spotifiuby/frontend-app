@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import {
-  View, TextInput, Text, StyleSheet,
+  View, TextInput,
 } from 'react-native';
 import { useState } from 'react';
 import PropTypes from 'prop-types';
@@ -8,9 +8,10 @@ import PasswordInput from './PasswordInput';
 import CTAButton from './CTAButton';
 import login from '../Model/login';
 import {
-  crossCentered, errorContainer, formContentWidth, paddedContainer, tenMarginTop, textField,
+  crossCentered, formContentWidth, tenMarginTop, textField,
 } from '../theme';
 import FormField from './FormField';
+import ErrorCard from './ErrorCard';
 
 function loginUIAction({ username, password }, setToken, setErrorMessage) {
   login({ username, password })
@@ -62,26 +63,6 @@ const LoginForm = ({ setToken }) => {
 
 LoginForm.propTypes = {
   setToken: PropTypes.func.isRequired,
-};
-
-const ErrorCard = ({ errorMessage }) => {
-  return (
-    errorMessage
-    && <Text style={errorStyles.card}>{errorMessage}</Text>
-  );
-};
-
-const errorStyles = StyleSheet.create({
-  card: {
-    ...errorContainer,
-    ...paddedContainer,
-    ...tenMarginTop,
-    borderRadius: 3,
-  },
-});
-
-ErrorCard.propTypes = {
-  errorMessage: PropTypes.string.isRequired,
 };
 
 export default LoginForm;
