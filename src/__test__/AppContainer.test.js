@@ -28,8 +28,8 @@ describe('AppContainer', () => {
         <AppContainer />
       </I18nextProvider>,
     );
-    const mainText = getByText(/Open up/);
-    expect(mainText).toHaveTextContent(/Open up/);
+    const mainText = getByText(/Username/);
+    expect(mainText).toHaveTextContent(/Username/);
   });
 
   it('is created succesfully (ios)', () => {
@@ -39,8 +39,8 @@ describe('AppContainer', () => {
         <AppContainer />
       </I18nextProvider>,
     );
-    const mainText = getByText(/Open up/);
-    expect(mainText).toHaveTextContent(/Open up/);
+    const mainText = getByText(/Username/);
+    expect(mainText).toHaveTextContent(/Username/);
   });
 
   it('is created succesfully (android)', () => {
@@ -50,7 +50,7 @@ describe('AppContainer', () => {
         <AppContainer />
       </I18nextProvider>,
     );
-    const mainText = getByText(/Open up/);
-    expect(mainText).toHaveTextContent(/Open up/);
+    const mainText = getByText(/Username/);
+    expect(mainText).toHaveTextContent(/Username/);
   });
 });
