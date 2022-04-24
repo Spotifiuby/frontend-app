@@ -2,6 +2,12 @@
   "spotifiuby": {
     "Open up `App.js` to start working on your app!": "Edita `App.js` para empezar a trabajar en la app!",
     "currentLanguageDisplayer": "El idioma actual es `{{ lang }}`",
-    "Change applicacation language": "Cambiar el idioma de la aplicación"
+    "Change applicacation language": "Cambiar el idioma de la aplicación",
+    "Login button": "Botón para ingresar",
+    "Username": "Nombre de usuario",
+    "Username input": "Entrada para nombre de usuario",
+    "Password": "Contraseña",
+    "Password input": "Entrada para contraseña",
+    "Login": "Ingresar"
   }
 }

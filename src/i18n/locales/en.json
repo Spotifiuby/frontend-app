@@ -2,6 +2,13 @@
   "spotifiuby": {
     "Open up `App.js` to start working on your app!": "Open up `App.js` to start working on your app!",
     "currentLanguageDisplayer": "Current language is `{{ lang }}`",
-    "Change applicacation language": "Change applicacation language"
+    "Change applicacation language": "Change applicacation language",
+    "Login button": "Login button",
+    "Spotifiuby logo image": "Spotifiuby logo image",
+    "Username": "Username",
+    "Username input": "Username input",
+    "Password": "Password",
+    "Password input": "Password input",
+    "Login": "Login"
   }
 }

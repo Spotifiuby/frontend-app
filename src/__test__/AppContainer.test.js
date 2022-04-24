@@ -1,7 +1,7 @@
 import { render } from '@testing-library/react-native';
 import { I18nextProvider } from 'react-i18next';
 import { Platform, NativeModules } from 'react-native';
-import AppContainer from '../AppContainer';
+import AppContainer from '../Components/AppContainer';
 import i18n from '../i18n/i18n';
 
 const setUpWebPlatform = (lang = 'en') => {
