@@ -1,7 +1,7 @@
 import { render } from '@testing-library/react-native';
 import { I18nextProvider } from 'react-i18next';
 import { Platform, NativeModules } from 'react-native';
-import AppContainer from '../Components/AppContainer';
+import Login from '../Components/Login';
 import i18n from '../i18n/i18n';
 
 const setUpWebPlatform = (lang = 'en') => {
@@ -19,13 +19,13 @@ const setUpAndroidPlatform = (lang = 'en') => {
   NativeModules.I18nManager = { localeIdentifier: lang };
 };
 
-describe('AppContainer', () => {
+describe('Login', () => {
   setUpWebPlatform();
   it('is created succesfully (web)', () => {
     setUpWebPlatform();
     const { getByText } = render(
       <I18nextProvider i18n={i18n}>
-        <AppContainer />
+        <Login setToken={() => ''} />
       </I18nextProvider>,
     );
     const mainText = getByText(/Username/);
@@ -36,7 +36,7 @@ describe('AppContainer', () => {
     setUpIOSPlatform();
     const { getByText } = render(
       <I18nextProvider i18n={i18n}>
-        <AppContainer />
+        <Login setToken={() => ''} />
       </I18nextProvider>,
     );
     const mainText = getByText(/Username/);
@@ -47,7 +47,7 @@ describe('AppContainer', () => {
     setUpAndroidPlatform();
     const { getByText } = render(
       <I18nextProvider i18n={i18n}>
-        <AppContainer />
+        <Login setToken={() => ''} />
       </I18nextProvider>,
     );
     const mainText = getByText(/Username/);
