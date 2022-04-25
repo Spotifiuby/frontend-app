@@ -56,7 +56,7 @@ const LoginForm = ({ setToken }) => {
           disabled={!username || !password}
         />
       </View>
-      <ErrorCard errorMessage={errorMessage} />
+      <ErrorCard errorMessage={t(errorMessage)} />
     </View>
   );
 };

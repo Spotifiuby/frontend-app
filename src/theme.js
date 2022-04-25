@@ -1,8 +1,10 @@
 const theme = {
   color: {
-    background: '#191414',
+    background: '#120f0f',
     foreground: '#eee',
     primary: '#1db954',
+    overlay: 'rgba(0,0,0,0.8)',
+    overlayTextColor: '#eee',
   },
   fontWeight: {
     primary: 'bold',
@@ -23,7 +25,7 @@ export const formContentWidth = { width: '80%' };
 export const tenMarginTop = { marginTop: 10 };
 export const errorContainer = { backgroundColor: '#CF6679' };
 export const paddedContainer = { paddingVertical: 8, paddingHorizontal: 12 };
-
+export const secondaryText = { color: '#aaa', fontSize: 12 };
 export const textField = {
   ...textColor,
   ...paddedContainer,
