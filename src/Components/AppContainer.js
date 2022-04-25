@@ -8,7 +8,7 @@ import Login from './Login';
 import Home from './Home';
 
 const AppContainer = () => {
-  const [token, setToken] = useState('2');
+  const [token, setToken] = useState('');
 
   return (
     <View style={styles.container}>
