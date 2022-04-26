@@ -26,6 +26,7 @@ export const tenMarginTop = { marginTop: 10 };
 export const errorContainer = { backgroundColor: '#CF6679' };
 export const paddedContainer = { paddingVertical: 8, paddingHorizontal: 12 };
 export const secondaryText = { color: '#aaa', fontSize: 12 };
+export const fullWidth = { width: '100%' };
 export const textField = {
   ...textColor,
   ...paddedContainer,

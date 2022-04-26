@@ -1,4 +1,4 @@
-import getFromSettings, { BASE_URL } from './settings';
+import getFromSettings, { BASE_URL, LOCAL_BASE_URL } from './settings';
 
 export function fetchFrom(url, method, options = {}) {
   return fetch(url, {
@@ -28,5 +28,10 @@ export function getFrom(url, headers = {}) {
 }
 
 export const buildEndpointFor = (...resource) => {
-  return `${getFromSettings(BASE_URL)}/${resource.join('/')}`;
+  // TODO: Artilugio temporario hasta que esté el gateway
+  let baseUrl = getFromSettings(BASE_URL);
+  if (resource.at(1) === 'login' || resource.at(-1) === 'cover') {
+    baseUrl = getFromSettings(LOCAL_BASE_URL);
+  }
+  return `${baseUrl}/${resource.join('/')}`;
 };

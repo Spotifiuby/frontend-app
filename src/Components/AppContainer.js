@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, View, SafeAreaView } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { useState } from 'react';
 import {
   backgroundColor, crossCentered, oneUnitFlex, textColor,
@@ -15,7 +15,7 @@ const AppContainer = () => {
       {
         (!token)
           ? <Login setToken={setToken} />
-          : <SafeAreaView><Home /></SafeAreaView>
+          : <Home />
       }
       <StatusBar style="auto" />
     </View>

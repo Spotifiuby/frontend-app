@@ -1,22 +1,39 @@
 import {
   FlatList, Text, View, Image, StyleSheet, Pressable,
 } from 'react-native';
-import { useState } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Audio } from 'expo-av';
+import { DarkTheme, NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import Ionicons from '@expo/vector-icons/Ionicons';
 import { buildEndpointFor, fetchJsonFrom, getFrom } from '../fetch-helpers';
-import theme, { crossCentered, textColor, secondaryText } from '../theme';
+import theme, {
+  crossCentered, textColor, secondaryText, oneUnitFlex, fullWidth,
+} from '../theme';
 
 const soundObject = new Audio.Sound();
 
-const Home = () => {
+const SongList = () => {
   const { t } = useTranslation();
   const [songs, setSongs] = useState([]);
   const [currentlyPlayingID, setCurrentlyPlayingID] = useState('');
-  fetchJsonFrom(getFrom(buildEndpointFor('songs'))).then(setSongs);
+  useEffect(() => {
+    fetchJsonFrom(getFrom(buildEndpointFor('songs'))).then(setSongs);
+  }, []);
+
+  useEffect(async () => {
+    await soundObject.unloadAsync();
+    if (!currentlyPlayingID) return;
+    await soundObject.loadAsync({
+      uri: buildEndpointFor('songs', currentlyPlayingID, 'content'),
+    });
+    soundObject.playAsync();
+  }, [currentlyPlayingID]);
   // TODO: Refactorizar esto
+
   return (
-    <>
+    <View style={playlistStyle.container}>
       <Text style={playlistStyle.playlistTitle}>{t('My favorite songs')}</Text>
       <FlatList
         data={songs}
@@ -25,15 +42,8 @@ const Home = () => {
             <Pressable
               style={playlistStyle.songInfoContainer}
               onPress={
-                async () => {
-                  await soundObject.unloadAsync();
-                  if (currentlyPlayingID === item.id) {
-                    setCurrentlyPlayingID('');
-                    return;
-                  }
-                  await soundObject.loadAsync({ uri: buildEndpointFor('songs', item.id, 'content') });
-                  soundObject.playAsync();
-                  setCurrentlyPlayingID(item.id);
+                () => {
+                  setCurrentlyPlayingID(currentlyPlayingID !== item.id ? item.id : '');
                 }
               }
             >
@@ -56,17 +66,21 @@ const Home = () => {
         }}
         keyExtractor={(item) => item.id}
       />
-    </>
+    </View>
   );
 };
 
 const playlistStyle = StyleSheet.create({
+  container: {
+    ...oneUnitFlex,
+    paddingHorizontal: 15,
+  },
   playlistTitle: {
     ...textColor,
     fontSize: 25,
     fontWeight: 'bold',
     marginBottom: 20,
-    marginTop: 10,
+    marginTop: 30,
     textAlign: 'left',
   },
   songArtist: secondaryText,
@@ -100,5 +114,50 @@ const playlistStyle = StyleSheet.create({
     fontWeight: 'bold',
   },
 });
+
+const SettingsScreen = () => <Text style={playlistStyle.playlistTitle}>Settings</Text>;
+
+const Tab = createBottomTabNavigator();
+const Home = () => {
+  const { t } = useTranslation();
+  const HomeIcon = useCallback(({ color, size }) => <Ionicons name="home" color={color} size={size} />, []);
+  const SettingsIcon = useCallback(({ color, size }) => <Ionicons name="settings" color={color} size={size} />, []);
+  return (
+    <View style={homeStyle.container}>
+      <NavigationContainer theme={navigationTheme}>
+        <Tab.Navigator screenOptions={{ headerShown: false }}>
+          <Tab.Screen
+            name={t('Home')}
+            component={SongList}
+            options={{ tabBarIcon: HomeIcon }}
+          />
+          <Tab.Screen
+            name={t('Settings')}
+            component={SettingsScreen}
+            options={{ tabBarIcon: SettingsIcon }}
+          />
+        </Tab.Navigator>
+      </NavigationContainer>
+
+    </View>
+  );
+};
+
+const homeStyle = StyleSheet.create({
+  container: {
+    ...oneUnitFlex,
+    ...fullWidth,
+  },
+});
+
+const navigationTheme = {
+  ...DarkTheme,
+  dark: true,
+  colors: {
+    background: theme.color.background,
+    primary: theme.color.primary,
+    text: theme.color.foreground,
+  },
+};
 
 export default Home;
