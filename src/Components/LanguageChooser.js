@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { Button } from 'react-native-web';
+import CTAButton from './CTAButton';
 
 const LanguageChooser = () => {
   const { t, i18n } = useTranslation();
@@ -8,10 +8,9 @@ const LanguageChooser = () => {
     i18n.changeLanguage(language);
   };
   return (
-    <Button
+    <CTAButton
+      title={t('Change language')}
       onPress={() => changeLanguage(i18n.language === 'en' ? 'es' : 'en')}
-      title="Change language"
-      color="#841584"
       accessibilityLabel={t('Change applicacation language')}
     />
   );

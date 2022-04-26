@@ -2,7 +2,7 @@ import {
   FlatList, Text, View, Image, StyleSheet, Pressable,
 } from 'react-native';
 import { useState, useEffect, useCallback } from 'react';
-import { useTranslation } from 'react-i18next';
+import { useTranslation, Trans } from 'react-i18next';
 import { Audio } from 'expo-av';
 import { DarkTheme, NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -11,6 +11,7 @@ import { buildEndpointFor, fetchJsonFrom, getFrom } from '../fetch-helpers';
 import theme, {
   crossCentered, textColor, secondaryText, oneUnitFlex, fullWidth,
 } from '../theme';
+import LanguageChooser from './LanguageChooser';
 
 const soundObject = new Audio.Sound();
 
@@ -115,7 +116,16 @@ const playlistStyle = StyleSheet.create({
   },
 });
 
-const SettingsScreen = () => <Text style={playlistStyle.playlistTitle}>Settings</Text>;
+const SettingsScreen = () => {
+  return (
+    <View style={playlistStyle.container}>
+      <Text style={playlistStyle.playlistTitle}>
+        <Trans>Settings</Trans>
+      </Text>
+      <LanguageChooser />
+    </View>
+  );
+};
 
 const Tab = createBottomTabNavigator();
 const Home = () => {
