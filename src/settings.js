@@ -5,8 +5,6 @@ export const settings = {
   [LOCAL_BASE_URL]: process.env.LOCAL_BASE_URL,
 };
 
-console.log(settings);
-
 const getFromSettings = (aProperty) => settings[aProperty];
 
 export default getFromSettings;
