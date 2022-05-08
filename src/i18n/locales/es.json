@@ -9,10 +9,16 @@
     "Password": "Contraseña",
     "Password input": "Entrada para contraseña",
     "Login": "Ingresar",
+    "Email": "Correo electrónico",
+    "Email input": "Entrada para correo electrónico",
     "My favorite songs": "Mis canciones favoritas",
     "Playing": "Reproduciendo",
     "Change language": "Cambiar idioma",
     "Settings": "Configuración",
-    "Home": "Inicio"
+    "Home": "Inicio",
+    "auth/invalid-email": "Correo electrónico inválido",
+    "auth/user-not-found": "Correo electrónico no registrado",
+    "auth/wrong-password": "Combinación incorrecta de correo electrónico con contraseña",
+    "": ""
   }
 }

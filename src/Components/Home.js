@@ -7,7 +7,7 @@ import { Audio } from 'expo-av';
 import { DarkTheme, NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { buildEndpointFor, fetchJsonFrom, getFrom } from '../fetch-helpers';
+import { buildEndpointFor, jsonFrom, getFrom } from '../fetch-helpers';
 import theme, {
   crossCentered, textColor, secondaryText, oneUnitFlex, fullWidth,
 } from '../theme';
@@ -20,16 +20,19 @@ const SongList = () => {
   const [songs, setSongs] = useState([]);
   const [currentlyPlayingID, setCurrentlyPlayingID] = useState('');
   useEffect(() => {
-    fetchJsonFrom(getFrom(buildEndpointFor('songs'))).then(setSongs);
+    jsonFrom(getFrom(buildEndpointFor('songs'))).then(setSongs);
   }, []);
 
-  useEffect(async () => {
-    await soundObject.unloadAsync();
-    if (!currentlyPlayingID) return;
-    await soundObject.loadAsync({
-      uri: buildEndpointFor('songs', currentlyPlayingID, 'content'),
-    });
-    soundObject.playAsync();
+  useEffect(() => {
+    (async () => {
+      await soundObject.unloadAsync();
+      if (!currentlyPlayingID) return;
+
+      await soundObject.loadAsync({
+        uri: buildEndpointFor('songs', currentlyPlayingID, 'content'),
+      });
+      soundObject.playAsync();
+    })();
   }, [currentlyPlayingID]);
   // TODO: Refactorizar esto
 
@@ -59,8 +62,8 @@ const SongList = () => {
                 {currentlyPlayingID === item.id ? <Text style={playlistStyle.songPlayingOverlay}>{t('Playing')}</Text> : null}
               </View>
               <View style={playlistStyle.songInfoTextContainer}>
-                <Text style={playlistStyle.songTitle}>{item.name}</Text>
-                <Text style={playlistStyle.songArtist}>{item.artist}</Text>
+                <Text style={playlistStyle.songTitle} numberOfLines={1} ellipsizeMode={'head'}>{item.name}</Text>
+                <Text style={playlistStyle.songArtist}>{item.artists.join(', ')}</Text>
               </View>
             </Pressable>
           );
@@ -112,6 +115,7 @@ const playlistStyle = StyleSheet.create({
   },
   songTitle: {
     ...textColor,
+    ...oneUnitFlex,
     fontWeight: 'bold',
   },
 });

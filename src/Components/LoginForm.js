@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import {
-  View, TextInput,
+  View, TextInput, StyleSheet,
 } from 'react-native';
 import { useState } from 'react';
 import PropTypes from 'prop-types';
@@ -13,13 +13,10 @@ import {
 import FormField from './FormField';
 import ErrorCard from './ErrorCard';
 
-function loginUIAction({ username, password }, setToken, setErrorMessage) {
-  login({ username, password })
-    .then((response) => {
-      if (response.token) setToken(response.token);
-      if (response.error) setErrorMessage(response.error);
-    })
-    .catch((error) => setErrorMessage(error.message));
+function loginUIAction({ email, password }, setToken, setErrorMessage) {
+  login({ email, password })
+    .then(({ token }) => setToken(token))
+    .catch(({ message }) => setErrorMessage(message));
 }
 
 const clearErrorsWith = (errors, setErrors, changeField) => ((value) => {
@@ -29,31 +26,35 @@ const clearErrorsWith = (errors, setErrors, changeField) => ((value) => {
 
 const LoginForm = ({ setToken }) => {
   const { t } = useTranslation();
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
 
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
-  const clearErrorWrapping = (setField) => clearErrorsWith(errorMessage, setErrorMessage, setField);
+  const clearErrorAfter = (setField) => clearErrorsWith(errorMessage, setErrorMessage, setField);
+
   return (
-    <View style={formContentWidth}>
-      <FormField label={t('Username')}>
+    <View style={styles.loginForm}>
+      <FormField label={t('Email')}>
         <TextInput
-          style={textField}
-          value={username}
-          onChangeText={clearErrorWrapping(setUsername)}
-          placeholder={t('Username')}
-          accessibilityLabel={t('Username input')}
+          style={styles.textField}
+          value={email}
+          onChangeText={clearErrorAfter(setEmail)}
+          placeholder={t('Email')}
+          accessibilityLabel={t('Email input')}
         />
       </FormField>
       <FormField label={t('Password')}>
-        <PasswordInput password={password} setPassword={clearErrorWrapping(setPassword)} />
+        <PasswordInput
+          password={password}
+          setPassword={clearErrorAfter(setPassword)}
+        />
       </FormField>
-      <View style={{ ...crossCentered, ...tenMarginTop }}>
+      <View style={styles.loginButton}>
         <CTAButton
-          onPress={() => loginUIAction({ username, password }, setToken, setErrorMessage)}
+          onPress={() => loginUIAction({ email, password }, setToken, setErrorMessage)}
           title={t('Login')}
           accessibilityLabel={t('Login button')}
-          disabled={!username || !password}
+          disabled={!email || !password}
         />
       </View>
       <ErrorCard errorMessage={t(errorMessage)} />
@@ -64,5 +65,13 @@ const LoginForm = ({ setToken }) => {
 LoginForm.propTypes = {
   setToken: PropTypes.func.isRequired,
 };
+const styles = StyleSheet.create({
+  loginButton: {
+    ...crossCentered,
+    ...tenMarginTop,
+  },
+  loginForm: formContentWidth,
+  textField,
+});
 
 export default LoginForm;

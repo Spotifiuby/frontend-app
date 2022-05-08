@@ -8,12 +8,18 @@
     "Username": "Username",
     "Username input": "Username input",
     "Password": "Password",
+    "Email": "Email",
+    "Email input": "Email input",
     "Password input": "Password input",
     "Login": "Login",
     "My favorite songs": "My favorite songs",
     "Playing": "Playing",
     "Change language": "Change Language",
     "Settings": "Settings",
-    "Home": "Home"
+    "Home": "Home",
+    "auth/invalid-email": "Invalid email",
+    "auth/user-not-found": "Email is not registered",
+    "auth/wrong-password": "Bad email/password combination",
+    "": ""
   }
 }

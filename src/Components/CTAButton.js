@@ -6,11 +6,11 @@ import {
 } from '../theme';
 
 const CTAButton = ({
-  title, style, onPress, disabled, ...props
+  title, style, onPress, disabled, upperCased, ...props
 }) => {
   const flattenStyle = StyleSheet.flatten([
-    style,
     CTAStyles.button,
+    style,
     disabled ? CTAStyles.disabled : CTAStyles.enabled,
   ]);
   return (
@@ -19,7 +19,7 @@ const CTAButton = ({
       onPress={() => !disabled && onPress()}
       {...props}
     >
-      <Text style={CTAStyles.title}>{title.toUpperCase()}</Text>
+      <Text style={CTAStyles.title}>{upperCased ? title.toUpperCase() : title}</Text>
     </Pressable>
   );
 };
@@ -42,6 +42,7 @@ const CTAStyles = StyleSheet.create({
 CTAButton.defaultProps = {
   disabled: false,
   style: undefined,
+  upperCased: true,
 };
 
 CTAButton.propTypes = {
@@ -49,6 +50,7 @@ CTAButton.propTypes = {
   disabled: PropTypes.bool,
   title: PropTypes.string.isRequired,
   onPress: PropTypes.func.isRequired,
+  upperCased: PropTypes.bool,
 };
 
 export default CTAButton;

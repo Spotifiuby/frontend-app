@@ -14,7 +14,7 @@ export function fetchObject(url, method, object, headers) {
   });
 }
 
-export function fetchJsonFrom(fetchedObject) {
+export function jsonFrom(fetchedObject) {
   return fetchedObject.then((response) => response.json());
 }
 
@@ -30,7 +30,7 @@ export function getFrom(url, headers = {}) {
 export const buildEndpointFor = (...resource) => {
   // TODO: Artilugio temporario hasta que esté el gateway
   let baseUrl = getFromSettings(BASE_URL);
-  if (resource.at(1) === 'login' || resource.at(-1) === 'cover') {
+  if (resource[0] === 'login' || resource[resource.length - 1] === 'cover') {
     baseUrl = getFromSettings(LOCAL_BASE_URL);
   }
   return `${baseUrl}/${resource.join('/')}`;
