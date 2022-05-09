@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import {
   backgroundColor, crossCentered, oneUnitFlex, textColor,
 } from '../theme';
-import Authentication from './Authentication';
+import Authentication from './Authentication/Authentication';
 import Home from './Home';
 
 const AppContainer = () => {
@@ -50,6 +50,7 @@ const styles = StyleSheet.create({
     ...crossCentered,
     ...textColor,
     ...backgroundColor,
+    paddingTop: 10,
   },
 });
 

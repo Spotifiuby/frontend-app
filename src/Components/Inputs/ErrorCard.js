@@ -1,6 +1,6 @@
-import PropTypes from 'prop-types';
+import propTypes from 'prop-types';
 import { Text, StyleSheet } from 'react-native';
-import { errorContainer, paddedContainer, tenMarginTop } from '../theme';
+import { errorContainer, paddedContainer, tenMarginTop } from '../../theme';
 
 const ErrorCard = ({ errorMessage }) => {
   return (
@@ -19,7 +19,7 @@ const errorStyles = StyleSheet.create({
 });
 
 ErrorCard.propTypes = {
-  errorMessage: PropTypes.string.isRequired,
+  errorMessage: propTypes.string.isRequired,
 };
 
 export default ErrorCard;

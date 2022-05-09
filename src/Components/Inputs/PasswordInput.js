@@ -1,7 +1,7 @@
-import PropTypes from 'prop-types';
+import propTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import { TextInput } from 'react-native';
-import { textField } from '../theme';
+import { textField } from '../../theme';
 
 const PasswordInput = ({ password, setPassword }) => {
   const { t } = useTranslation();
@@ -20,8 +20,8 @@ const PasswordInput = ({ password, setPassword }) => {
 };
 
 PasswordInput.propTypes = {
-  password: PropTypes.string.isRequired,
-  setPassword: PropTypes.func.isRequired,
+  password: propTypes.string.isRequired,
+  setPassword: propTypes.func.isRequired,
 };
 
 export default PasswordInput;

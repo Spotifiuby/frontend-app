@@ -1,10 +1,10 @@
-import PropTypes from 'prop-types';
+import propTypes from 'prop-types';
 import {
   View, Text, StyleSheet,
 } from 'react-native';
 import {
   leftAligned, textColor,
-} from '../theme';
+} from '../../theme';
 
 const FormField = ({ label, children }) => {
   return (
@@ -20,12 +20,17 @@ FormField.defaultProps = {
 };
 
 FormField.propTypes = {
-  label: PropTypes.string,
-  children: PropTypes.node.isRequired,
+  label: propTypes.string,
+  children: propTypes.node.isRequired,
 };
 
 const fieldStyles = StyleSheet.create({
   label: textColor,
+});
+
+export const clearErrorsWith = (errors, setErrors, changeField) => ((value) => {
+  if (errors) setErrors('');
+  changeField(value);
 });
 
 export default FormField;

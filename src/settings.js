@@ -7,6 +7,7 @@ export const settings = {
 };
 
 console.log(settings);
+
 const getFromSettings = (aProperty) => settings[aProperty];
 
 export default getFromSettings;

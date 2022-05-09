@@ -1,9 +1,9 @@
 import { Text, StyleSheet, Pressable } from 'react-native';
 import StylePropType from 'react-style-proptype';
-import PropTypes from 'prop-types';
+import propTypes from 'prop-types';
 import {
   bold, crossCentered, disabledOpacity, primary, roundedButtonBorder, textColor,
-} from '../theme';
+} from '../../theme';
 
 const CTAButton = ({
   title, style, onPress, disabled, upperCased, ...props
@@ -28,8 +28,8 @@ const CTAStyles = StyleSheet.create({
   button: {
     ...roundedButtonBorder,
     ...crossCentered,
-    paddingHorizontal: 15,
-    paddingVertical: 10,
+    paddingHorizontal: 20,
+    paddingVertical: 13,
   },
   disabled: { ...primary, ...disabledOpacity },
   enabled: primary,
@@ -47,10 +47,10 @@ CTAButton.defaultProps = {
 
 CTAButton.propTypes = {
   style: StylePropType,
-  disabled: PropTypes.bool,
-  title: PropTypes.string.isRequired,
-  onPress: PropTypes.func.isRequired,
-  upperCased: PropTypes.bool,
+  disabled: propTypes.bool,
+  title: propTypes.string.isRequired,
+  onPress: propTypes.func.isRequired,
+  upperCased: propTypes.bool,
 };
 
 export default CTAButton;

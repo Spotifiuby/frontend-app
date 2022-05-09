@@ -5,7 +5,7 @@ const theme = {
     primary: '#1db954',
     overlay: 'rgba(0,0,0,0.8)',
     overlayTextColor: '#eee',
-    secondaryText:  '#aaa',
+    secondaryText: '#aaa',
   },
   fontWeight: {
     primary: 'bold',
@@ -34,6 +34,15 @@ export const textField = {
   backgroundColor: '#333',
   marginTop: 10,
   marginBottom: 20,
+};
+
+export const headerTitle = {
+  ...textColor,
+  fontSize: 25,
+  fontWeight: 'bold',
+  marginBottom: 20,
+  marginTop: 30,
+  textAlign: 'left',
 };
 
 export default theme;

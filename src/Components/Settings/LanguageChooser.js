@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import CTAButton from './CTAButton';
+import CTAButton from '../Buttons/CTAButton';
 
 const LanguageChooser = () => {
   const { t, i18n } = useTranslation();

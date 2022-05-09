@@ -1,8 +1,9 @@
 import { Text, StyleSheet, Pressable } from 'react-native';
-import PropTypes from 'prop-types';
+import propTypes from 'prop-types';
 import {
+  bold,
   crossCentered, secondaryText,
-} from '../theme';
+} from '../../theme';
 
 const SecondaryButton = ({
   title, onPress, ...props
@@ -26,14 +27,15 @@ const styles = StyleSheet.create({
   },
   title: {
     ...secondaryText,
+    ...bold,
     fontSize: 15,
-    marginTop: 15,
+    marginTop: 20,
   },
 });
 
 SecondaryButton.propTypes = {
-  title: PropTypes.string.isRequired,
-  onPress: PropTypes.func.isRequired,
+  title: propTypes.string.isRequired,
+  onPress: propTypes.func.isRequired,
 };
 
 export default SecondaryButton;

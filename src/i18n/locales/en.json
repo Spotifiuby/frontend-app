@@ -7,10 +7,15 @@
     "Spotifiuby logo image": "Spotifiuby logo image",
     "Username": "Username",
     "Username input": "Username input",
-    "Password": "Password",
     "Email": "Email",
     "Email input": "Email input",
+    "Password": "Password",
     "Password input": "Password input",
+    "Repeat password": "Repeat password",
+    "Repeat password input": "Repeat password input",
+    "Passwords don't match": "Passwords don't match",
+    "Register": "Register",
+    "Register button": "Register button",
     "Login": "Login",
     "My favorite songs": "My favorite songs",
     "Playing": "Playing",
@@ -20,6 +25,7 @@
     "auth/invalid-email": "Invalid email",
     "auth/user-not-found": "Email is not registered",
     "auth/wrong-password": "Bad email/password combination",
+    "auth/email-already-in-use": "Email is already registrated",
     "": ""
   }
 }
