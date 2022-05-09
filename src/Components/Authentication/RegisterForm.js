@@ -15,7 +15,9 @@ import ErrorCard from '../Inputs/ErrorCard';
 
 function registerFromUIAction({ email, password }, afterRegistrationSuccess, setErrorMessage) {
   register({ email, password })
-    .then(afterRegistrationSuccess)
+    .then(() => {
+      afterRegistrationSuccess();
+    })
     .catch(({ message }) => setErrorMessage(message));
 }
 

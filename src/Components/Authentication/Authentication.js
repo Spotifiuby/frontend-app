@@ -1,38 +1,12 @@
-import { StyleSheet, Image, View } from 'react-native';
+import { StyleSheet, Image } from 'react-native';
 import { useState } from 'react';
 import propTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import logo from '../../../assets/logo.png';
 import LoginForm from './LoginForm';
-import CTAButton from '../Buttons/CTAButton';
-import SecondaryButton from '../Buttons/SecondaryButton';
 import RegisterForm from './RegisterForm';
-
-const INIT_AUTH_FORM = 'INIT_AUTH_FORM';
-const LOGIN_FORM = 'LOGIN_FORM';
-const REGISTER_FORM = 'REGISTER_FORM';
-
-const AuthenticationOptions = ({ setCurrentForm }) => {
-  const { t } = useTranslation();
-  return (
-    <View style={styles.buttonsContainer}>
-      <CTAButton
-        style={styles.newUserButton}
-        title={t('New Account')}
-        onPress={() => setCurrentForm(REGISTER_FORM)}
-        upperCased={false}
-      />
-      <SecondaryButton
-        title={t('Login')}
-        onPress={() => setCurrentForm(LOGIN_FORM)}
-      />
-    </View>
-  );
-};
-
-AuthenticationOptions.propTypes = {
-  setCurrentForm: propTypes.func.isRequired,
-};
+import AuthenticationOptions from './AuthenticationOptions';
+import { INIT_AUTH_FORM, LOGIN_FORM, REGISTER_FORM } from './AuthenticationFormTypes';
 
 const Authentication = ({ setToken }) => {
   const { t } = useTranslation();
@@ -65,11 +39,6 @@ Authentication.propTypes = {
 };
 
 const styles = StyleSheet.create({
-  buttonsContainer: {
-    bottom: 0,
-    marginBottom: 100,
-    position: 'absolute',
-  },
   logo: {
     height: 200,
     marginTop: '25%',
