@@ -1,6 +1,11 @@
 import getFromSettings, { BASE_URL, LOCAL_BASE_URL } from './settings';
 
 export function fetchFrom(url, method, options = {}) {
+  console.log({
+    ...options,
+    method,
+  });
+
   return fetch(url, {
     ...options,
     method,
@@ -24,13 +29,12 @@ export function postJsonObject(url, object, headers = {}) {
 }
 
 export function getFrom(url, headers = {}) {
-  return fetchFrom(url, 'GET', headers);
+  return fetchFrom(url, 'GET', { headers });
 }
 
 export const buildEndpointFor = (...resource) => {
-  // TODO: Artilugio temporario hasta que esté el gateway
   let baseUrl = getFromSettings(BASE_URL);
-  if (resource[0] === 'login' || resource[resource.length - 1] === 'cover') {
+  if (resource[resource.length - 1] === 'cover') {
     baseUrl = getFromSettings(LOCAL_BASE_URL);
   }
   return `${baseUrl}/${resource.join('/')}`;

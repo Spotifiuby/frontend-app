@@ -1,20 +1,28 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, View } from 'react-native';
-import { useState } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import {
-  backgroundColor, crossCentered, oneUnitFlex, textColor,
+  backgroundColor, oneUnitFlex,
 } from '../theme';
-import Authentication from './Authentication/Authentication';
+import BaseAuthentication from './Authentication/BaseAuthentication';
 import Home from './Home';
+import TranslationSystemInterface from './SpotifiubySystem/TranslationSystem/TranslationSystemInterface';
+import SystemContext from './SpotifiubySystem/DefaultSystemContext';
+import AuthSystemInterface from './SpotifiubySystem/AuthSystem/AuthSystemInterface';
 
 const AppContainer = () => {
-  const [token, setToken] = useState('');
+  const system = useContext(SystemContext);
+  const [authInformation, setAuthInformation] = useState({});
+  system.systemImplementing(TranslationSystemInterface).use();
+  useEffect(() => {
+    system.systemImplementing(AuthSystemInterface).getAuthInfo().then(setAuthInformation);
+  }, []);
   return (
     <View style={styles.container}>
       {
-        (!token)
-          ? <Authentication setToken={setToken} />
-          : <Home />
+        !authInformation.token
+          ? <BaseAuthentication setAuthInformation={setAuthInformation} />
+          : <Home authInformation={authInformation} />
       }
       <StatusBar style="auto" />
     </View>
@@ -24,8 +32,6 @@ const AppContainer = () => {
 const styles = StyleSheet.create({
   container: {
     ...oneUnitFlex,
-    ...crossCentered,
-    ...textColor,
     ...backgroundColor,
     paddingTop: 10,
   },

@@ -1,15 +1,18 @@
 import {
   Text, View, Image, StyleSheet, Pressable, Dimensions,
 } from 'react-native';
-import { useTranslation } from 'react-i18next';
+import { useContext } from 'react';
 import propTypes from 'prop-types';
-import { buildEndpointFor } from '../../fetch-helpers';
+import { buildEndpointFor } from '../SpotifiubySystem/fetch-helpers';
 import theme, {
   crossCentered, textColor, secondaryText, oneUnitFlex,
 } from '../../theme';
+import SystemContext from '../SpotifiubySystem/DefaultSystemContext';
+import TranslationSystemInterface from '../SpotifiubySystem/TranslationSystem/TranslationSystemInterface';
 
 const SongInList = ({ song, isPlaying, setCurrentlyPlayingID }) => {
-  const { t } = useTranslation();
+  const system = useContext(SystemContext);
+  const { t } = system.systemImplementing(TranslationSystemInterface).stringTranslator();
   const { id, name, artists } = song;
   return (
     <Pressable

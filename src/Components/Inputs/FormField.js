@@ -17,11 +17,12 @@ const FormField = ({ label, children }) => {
 
 FormField.defaultProps = {
   label: '',
+  children: null,
 };
 
 FormField.propTypes = {
   label: propTypes.string,
-  children: propTypes.node.isRequired,
+  children: propTypes.node,
 };
 
 const fieldStyles = StyleSheet.create({

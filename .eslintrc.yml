@@ -31,3 +31,4 @@ rules:
     - exceptions:
       - Button
       - Pressable
+  class-methods-use-this: off

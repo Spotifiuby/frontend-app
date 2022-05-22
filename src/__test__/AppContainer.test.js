@@ -25,7 +25,7 @@ describe('Login', () => {
     setUpWebPlatform();
     const { getByText } = render(
       <I18nextProvider i18n={i18n}>
-        <LoginForm setToken={() => ''} />
+        <LoginForm setAuthInformation={() => ''} />
       </I18nextProvider>,
     );
     const mainText = getByText(/Email/);
@@ -36,7 +36,7 @@ describe('Login', () => {
     setUpIOSPlatform();
     const { getByText } = render(
       <I18nextProvider i18n={i18n}>
-        <LoginForm setToken={() => ''} />
+        <LoginForm setAuthInformation={() => ''} />
       </I18nextProvider>,
     );
     const mainText = getByText(/Email/);
@@ -47,7 +47,7 @@ describe('Login', () => {
     setUpAndroidPlatform();
     const { getByText } = render(
       <I18nextProvider i18n={i18n}>
-        <LoginForm setToken={() => ''} />
+        <LoginForm setAuthInformation={() => ''} />
       </I18nextProvider>,
     );
     const mainText = getByText(/Email/);

@@ -1,28 +1,33 @@
-import { useTranslation } from 'react-i18next';
+/* eslint-disable react/prop-types */
 import {
   View, TextInput, StyleSheet,
 } from 'react-native';
-import { useState } from 'react';
-import propTypes from 'prop-types';
+import { useState, useContext } from 'react';
 import PasswordInput from '../Inputs/PasswordInput';
 import CTAButton from '../Buttons/CTAButton';
-import { register } from '../../Model/authentication';
 import {
-  crossCentered, formContentWidth, tenMarginTop, textField,
+  crossCentered, fullWidth, tenMarginTop, textField,
 } from '../../theme';
 import FormField, { clearErrorsWith } from '../Inputs/FormField';
 import ErrorCard from '../Inputs/ErrorCard';
+import SystemContext from '../SpotifiubySystem/DefaultSystemContext';
+import TranslationSystemInterface from '../SpotifiubySystem/TranslationSystem/TranslationSystemInterface';
+import FormLogo from './FormLogo';
+import AuthSystemInterface from '../SpotifiubySystem/AuthSystem/AuthSystemInterface';
 
-function registerFromUIAction({ email, password }, afterRegistrationSuccess, setErrorMessage) {
-  register({ email, password })
+function registerFromUIAction(authSystem, credentials, afterRegistrationSuccess, setErrorMessage) {
+  authSystem.register(credentials)
     .then(() => {
       afterRegistrationSuccess();
     })
     .catch(({ message }) => setErrorMessage(message));
 }
 
-const RegisterForm = ({ afterRegistrationSuccess }) => {
-  const { t } = useTranslation();
+const RegisterForm = ({ route }) => {
+  const { afterRegistrationSuccess } = route.params;
+  const system = useContext(SystemContext);
+  const authSystem = system.systemImplementing(AuthSystemInterface);
+  const { t } = system.systemImplementing(TranslationSystemInterface).stringTranslator();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [repeatedPassword, setRepeatedPassword] = useState('');
@@ -30,54 +35,62 @@ const RegisterForm = ({ afterRegistrationSuccess }) => {
   const clearErrorAfter = (setField) => clearErrorsWith(errorMessage, setErrorMessage, setField);
 
   return (
-    <View style={styles.loginForm}>
-      <FormField label={t('Email')}>
-        <TextInput
-          style={styles.textField}
-          value={email}
-          onChangeText={clearErrorAfter(setEmail)}
-          placeholder={t('Email')}
-          accessibilityLabel={t('Email input')}
-        />
-      </FormField>
-      <FormField label={t('Password')}>
-        <PasswordInput
-          password={password}
-          setPassword={clearErrorAfter(setPassword)}
-        />
-      </FormField>
-      <FormField label={t('Repeat password')}>
-        <PasswordInput
-          password={repeatedPassword}
-          setPassword={clearErrorAfter(setRepeatedPassword)}
-        />
-        {password !== repeatedPassword && <ErrorCard errorMessage={t("Passwords don't match")} />}
-      </FormField>
-      <View style={styles.loginButton}>
-        <CTAButton
-          onPress={() => {
-            registerFromUIAction({ email, password }, afterRegistrationSuccess, setErrorMessage);
-          }}
-          title={t('Register')}
-          accessibilityLabel={t('Register button')}
-          disabled={!email || !password || password !== repeatedPassword}
-        />
+    <View style={styles.container}>
+      <FormLogo />
+      <View style={styles.loginForm}>
+        <FormField label={t('Email')}>
+          <TextInput
+            style={styles.textField}
+            value={email}
+            onChangeText={clearErrorAfter(setEmail)}
+            placeholder={t('Email')}
+            accessibilityLabel={t('Email input')}
+          />
+        </FormField>
+        <FormField label={t('Password')}>
+          <PasswordInput
+            password={password}
+            setPassword={clearErrorAfter(setPassword)}
+          />
+        </FormField>
+        <FormField label={t('Repeat password')}>
+          <PasswordInput
+            password={repeatedPassword}
+            setPassword={clearErrorAfter(setRepeatedPassword)}
+          />
+          {password !== repeatedPassword && <ErrorCard errorMessage={t("Passwords don't match")} />}
+        </FormField>
+        <View style={styles.loginButton}>
+          <CTAButton
+            onPress={() => {
+              registerFromUIAction(
+                authSystem,
+                { email, password },
+                afterRegistrationSuccess,
+                setErrorMessage,
+              );
+            }}
+            title={t('Register')}
+            accessibilityLabel={t('Register button')}
+            disabled={!email || !password || password !== repeatedPassword}
+          />
+        </View>
+        <ErrorCard errorMessage={t(errorMessage)} />
       </View>
-      <ErrorCard errorMessage={t(errorMessage)} />
     </View>
   );
 };
 
-RegisterForm.propTypes = {
-  afterRegistrationSuccess: propTypes.func.isRequired,
-};
-
 const styles = StyleSheet.create({
+  container: crossCentered,
   loginButton: {
     ...crossCentered,
     ...tenMarginTop,
   },
-  loginForm: formContentWidth,
+  loginForm: {
+    ...fullWidth,
+    paddingHorizontal: 30,
+  },
   textField,
 });
 
