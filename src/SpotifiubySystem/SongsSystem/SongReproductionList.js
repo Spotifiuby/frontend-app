@@ -8,8 +8,6 @@ export default class SongReproductionList {
   isOnGoing() { return true; }
 
   songIdentifiedBy(aSongID) {
-    console.log(aSongID)
-    console.log(this.#indexOf(aSongID))
     return this.songs[this.#indexOf(aSongID)];
   }
 
