@@ -1,11 +1,6 @@
-import getFromSettings, { BASE_URL, LOCAL_BASE_URL } from './settings';
+import getFromSettings, { BASE_URL, LOCAL_BASE_URL } from '../settings';
 
 export function fetchFrom(url, method, options = {}) {
-  console.log({
-    ...options,
-    method,
-  });
-
   return fetch(url, {
     ...options,
     method,

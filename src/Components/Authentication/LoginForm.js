@@ -10,9 +10,9 @@ import {
 } from '../../theme';
 import FormField, { clearErrorsWith } from '../Inputs/FormField';
 import ErrorCard from '../Inputs/ErrorCard';
-import SystemContext from '../SpotifiubySystem/DefaultSystemContext';
-import TranslationSystemInterface from '../SpotifiubySystem/TranslationSystem/TranslationSystemInterface';
-import AuthSystemInterface from '../SpotifiubySystem/AuthSystem/AuthSystemInterface';
+import SystemContext from '../../SpotifiubySystem/DefaultSystemContext';
+import TranslationSystemInterface from '../../SpotifiubySystem/TranslationSystem/TranslationSystemInterface';
+import AuthSystemInterface from '../../SpotifiubySystem/AuthSystem/AuthSystemInterface';
 import FormLogo from './FormLogo';
 
 function loginUIAction(authSystem, email, password, setAuthInformation, setErrorMessage) {

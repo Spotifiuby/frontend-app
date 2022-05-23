@@ -16,7 +16,7 @@ export default class TransientPersistationSystem extends GenericSystem {
   }
 
   async readFrom(aKey) {
-    if (this.data[aKey] === undefined) {throw new Error('Key not found')}
+    if (this.data[aKey] === undefined) throw new Error('Key not found');
     return this.data[aKey];
   }
 

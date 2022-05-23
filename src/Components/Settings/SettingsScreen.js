@@ -4,8 +4,8 @@ import {
 import { useContext } from 'react';
 import { headerTitle, oneUnitFlex } from '../../theme';
 import LanguageChooser from './LanguageChooser';
-import SystemContext from '../SpotifiubySystem/DefaultSystemContext';
-import TranslationSystemInterface from '../SpotifiubySystem/TranslationSystem/TranslationSystemInterface';
+import SystemContext from '../../SpotifiubySystem/DefaultSystemContext';
+import TranslationSystemInterface from '../../SpotifiubySystem/TranslationSystem/TranslationSystemInterface';
 
 const SettingsScreen = () => {
   const system = useContext(SystemContext);

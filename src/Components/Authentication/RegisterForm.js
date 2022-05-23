@@ -10,10 +10,10 @@ import {
 } from '../../theme';
 import FormField, { clearErrorsWith } from '../Inputs/FormField';
 import ErrorCard from '../Inputs/ErrorCard';
-import SystemContext from '../SpotifiubySystem/DefaultSystemContext';
-import TranslationSystemInterface from '../SpotifiubySystem/TranslationSystem/TranslationSystemInterface';
+import SystemContext from '../../SpotifiubySystem/DefaultSystemContext';
+import TranslationSystemInterface from '../../SpotifiubySystem/TranslationSystem/TranslationSystemInterface';
 import FormLogo from './FormLogo';
-import AuthSystemInterface from '../SpotifiubySystem/AuthSystem/AuthSystemInterface';
+import AuthSystemInterface from '../../SpotifiubySystem/AuthSystem/AuthSystemInterface';
 
 function registerFromUIAction(authSystem, credentials, afterRegistrationSuccess, setErrorMessage) {
   authSystem.register(credentials)

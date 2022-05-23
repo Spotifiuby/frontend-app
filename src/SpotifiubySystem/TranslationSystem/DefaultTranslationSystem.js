@@ -9,7 +9,7 @@ export default class DefaultTranslationSystem extends GenericSystem {
     return TranslationSystemInterface;
   }
 
-  use() {
+  initialize() {
     i18next.use(RNLanguageDetector);
   }
 

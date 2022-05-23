@@ -4,13 +4,12 @@ export const AUTHENTICATION_METHOD = 'AUTHENTICATION_METHOD';
 export const FIREBASE_AUTH_METHOD = 'firebase';
 
 export const settings = {
-  [BASE_URL]: process.env.BASE_URL,
   [LOCAL_BASE_URL]: process.env.LOCAL_BASE_URL,
+  [BASE_URL]: process.env.BASE_URL,
   [AUTHENTICATION_METHOD]: process.env.AUTHENTICATION_METHOD,
 };
-
-console.log(settings);
 
 const getFromSettings = (aProperty) => settings[aProperty];
 
 export default getFromSettings;
+console.log(settings);

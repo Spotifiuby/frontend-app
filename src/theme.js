@@ -25,6 +25,7 @@ export const leftAligned = { alignItems: 'left' };
 export const formContentWidth = { width: '80%' };
 export const tenMarginTop = { marginTop: 10 };
 export const errorContainer = { backgroundColor: '#CF6679' };
+export const dimContainer = { backgroundColor: '#222' };
 export const paddedContainer = { paddingVertical: 8, paddingHorizontal: 12 };
 export const secondaryText = { color: theme.color.secondaryText, fontSize: 12 };
 export const fullWidth = { width: '100%' };

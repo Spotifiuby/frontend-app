@@ -4,9 +4,9 @@ import {
   oneUnitFlex, fullWidth,
 } from '../theme';
 import MainNavigation from './MainNavigation';
-import SystemContext from './SpotifiubySystem/DefaultSystemContext';
-import UserSystemInterface from './SpotifiubySystem/UserSystem/UserSystemInterface';
-import { UNDEFINED_USER } from './SpotifiubySystem/UserSystem/UserSystem';
+import SystemContext from '../SpotifiubySystem/DefaultSystemContext';
+import UserSystemInterface from '../SpotifiubySystem/UserSystem/UserSystemInterface';
+import { UNDEFINED_USER } from '../SpotifiubySystem/UserSystem/UserSystem';
 import SecondStepRegistration from './Authentication/SecondStepRegistration';
 
 const Home = () => {
@@ -19,8 +19,8 @@ const Home = () => {
   return (
     <View style={homeStyle.container}>
       {(userType === UNDEFINED_USER)
-        ? <SecondStepRegistration />
-        : <MainNavigation />}
+        ? <SecondStepRegistration setUserType={setUserType} />
+        : <MainNavigation userType={userType} />}
     </View>
   );
 };

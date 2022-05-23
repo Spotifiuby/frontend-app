@@ -1,6 +1,6 @@
 import { SafeAreaView, StyleSheet } from 'react-native';
 import AppContainer from './src/Components/AppContainer';
-import { WithSystem } from './src/Components/SpotifiubySystem/DefaultSystemContext';
+import { WithSystem } from './src/SpotifiubySystem/DefaultSystemContext';
 import { oneUnitFlex } from './src/theme';
 
 const App = () => {

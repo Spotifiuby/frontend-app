@@ -10,6 +10,12 @@ export default class FirebaseAuthSystem extends AuthSystemBehavior {
     this.auth = getAuth(firebaseApp);
   }
 
+  // async getAuthInfo() {
+  //   const { email } = await super.getAuthInfo();
+  //   const token = this.auth.currentUser ? await this.auth.currentUser.getIdToken(true) : '';
+  //   return { token, email };
+  // }
+
   login({ email, password }) {
     return signInWithEmailAndPassword(this.auth, email, password)
       .then(async (userCredential) => {
@@ -23,5 +29,10 @@ export default class FirebaseAuthSystem extends AuthSystemBehavior {
   register({ email, password }) {
     return createUserWithEmailAndPassword(this.auth, email, password)
       .catch((error) => { throw new Error(error.code); });
+  }
+
+  logOut() {
+    super.logOut();
+    this.auth.signOut();
   }
 }
