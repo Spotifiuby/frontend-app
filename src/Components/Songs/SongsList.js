@@ -1,7 +1,10 @@
 import {
   FlatList, Text, View, StyleSheet,
 } from 'react-native';
-import { useState, useEffect, useContext } from 'react';
+import {
+  useState, useEffect, useContext, useCallback
+} from 'react';
+import { useFocusEffect } from '@react-navigation/native';
 import SongInList from './SongInList';
 import {
   oneUnitFlex, headerTitle,
@@ -20,15 +23,19 @@ const SongsList = () => {
   const [currentlyPlayingID, setCurrentlyPlayingID] = useState('');
   useEffect(() => {
     songsSystem.initialize();
-    songsSystem.getSongs().then((songs) => setSongsList(new SongReproductionList(songs)));
   }, []);
 
+  useFocusEffect(
+    useCallback(() => {
+      songsSystem.getSongs().then((songs) => setSongsList(new SongReproductionList(songs)));
+    }, []),
+  );
   useEffect(() => {
     (async () => {
       try {
         await songsSystem.play(currentlyPlayingID);
       } catch (e) {
-        console.log(e);
+        console.log(JSON.stringify(e));
       }
     })();
   }, [currentlyPlayingID]);

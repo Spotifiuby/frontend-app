@@ -1,5 +1,5 @@
 import AuthSystemInterface from '../AuthSystem/AuthSystemInterface';
-import { buildEndpointFor, getFrom, postJsonObject } from './fetch-helpers';
+import { buildEndpointFor, getFrom, post, postJsonObject } from './fetch-helpers';
 import GenericSystem from '../GenericSystem';
 import ConnectionSystemInterface from './ConnectionSystemInterface';
 
@@ -31,8 +31,12 @@ export default class ConnectionSystem extends GenericSystem {
     return getFrom(buildEndpointFor(...resource), await this.#buildHeaders());
   }
 
-  async post(resource, data) {
+  async postJson(resource, data) {
     return postJsonObject(buildEndpointFor(...resource), data, await this.#buildHeaders());
+  }
+
+  async post(resource, data, headers = {}) {
+    return post(buildEndpointFor(...resource), data, { ...headers, ...await this.#buildHeaders() });
   }
 
   async withHeaders(request) {

@@ -6,6 +6,7 @@ import UserSystemInterface from './UserSystemInterface';
 const ROOT = 'users-api';
 const RESOURCE = 'users';
 export const UNDEFINED_USER = 'UNDEFINED_USER';
+export const INVALID_USER = 'INVALID_USER';
 export const UPLOADER_USER = 'uploader';
 export const ADMIN_USER = 'admin'; // En un principio, no usaría la app
 export const LISTENER_USER = 'listener';
@@ -40,14 +41,18 @@ export default class UserSystem extends GenericSystem {
         if (REGISTERED_USERS.includes(userType)) {
           return userType;
         }
+        if (userType === undefined) {
+          return INVALID_USER;
+        }
+
         return UNDEFINED_USER;
       })
-      .catch(() => UNDEFINED_USER);
+      .catch(() => INVALID_USER);
   }
 
   async completeUserRegistrationWith({ firstName, lastName, isUploader }) {
     const { email } = await this.#authSystem().getAuthInfo();
-    this.#connectionSystem().post([ROOT, RESOURCE], {
+    this.#connectionSystem().postJson([ROOT, RESOURCE], {
       email,
       first_name: firstName,
       last_name: lastName,

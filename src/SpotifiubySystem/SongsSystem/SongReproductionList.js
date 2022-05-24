@@ -2,7 +2,8 @@ import Song from './Song';
 
 export default class SongReproductionList {
   constructor(songs) {
-    this.songs = songs.map((songInfo) => new Song(songInfo));
+    this.songs = songs.map((songInfo) => new Song(songInfo))
+      .filter((song) => song.isUploaded());
   }
 
   isOnGoing() { return true; }

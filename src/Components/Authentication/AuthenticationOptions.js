@@ -23,7 +23,7 @@ const AuthenticationOptions = ({ route, navigation }) => {
           onPress={() => {
             navigation.navigate(REGISTER_FORM, {
               afterRegistrationSuccess: () => {
-                navigation.navigate(LOGIN_FORM);
+                navigation.navigate(LOGIN_FORM, { setAuthInformation });
               },
             });
           }}

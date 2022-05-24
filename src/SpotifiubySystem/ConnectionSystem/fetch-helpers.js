@@ -9,7 +9,7 @@ export function fetchFrom(url, method, options = {}) {
 
 export function fetchObject(url, method, object, headers) {
   return fetchFrom(url, method, {
-    body: JSON.stringify(object),
+    body: object,
     headers,
   });
 }
@@ -18,9 +18,13 @@ export function jsonFrom(fetchedObject) {
   return fetchedObject.then((response) => response.json());
 }
 
+export function post(url, object, headers = {}) {
+  return fetchObject(url, 'POST', object, headers);
+}
+
 export function postJsonObject(url, object, headers = {}) {
   const newHeader = { ...headers, 'Content-Type': 'application/json' };
-  return fetchObject(url, 'POST', object, newHeader);
+  return fetchObject(url, 'POST', JSON.stringify(object), newHeader);
 }
 
 export function getFrom(url, headers = {}) {

@@ -6,9 +6,12 @@ import { headerTitle, oneUnitFlex } from '../../theme';
 import LanguageChooser from './LanguageChooser';
 import SystemContext from '../../SpotifiubySystem/DefaultSystemContext';
 import TranslationSystemInterface from '../../SpotifiubySystem/TranslationSystem/TranslationSystemInterface';
+import SecondaryButton from '../Buttons/SecondaryButton';
+import AuthSystemInterface from '../../SpotifiubySystem/AuthSystem/AuthSystemInterface';
 
 const SettingsScreen = () => {
   const system = useContext(SystemContext);
+  const authSystem = system.systemImplementing(AuthSystemInterface);
   const { t } = system.systemImplementing(TranslationSystemInterface).stringTranslator();
   return (
     <View style={styles.container}>
@@ -16,6 +19,7 @@ const SettingsScreen = () => {
         {t('Settings')}
       </Text>
       <LanguageChooser />
+      <SecondaryButton title={t('Log out')} onPress={() => authSystem.logOut()} />
     </View>
   );
 };
