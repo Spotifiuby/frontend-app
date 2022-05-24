@@ -1,5 +1,7 @@
 import AuthSystemInterface from '../AuthSystem/AuthSystemInterface';
-import { buildEndpointFor, getFrom, post, postJsonObject } from './fetch-helpers';
+import {
+  buildEndpointFor, getFrom, post, postJsonObject,
+} from './fetch-helpers';
 import GenericSystem from '../GenericSystem';
 import ConnectionSystemInterface from './ConnectionSystemInterface';
 
