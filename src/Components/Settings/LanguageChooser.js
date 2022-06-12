@@ -1,7 +1,7 @@
 import { useContext } from 'react';
-import CTAButton from '../Buttons/CTAButton';
 import SystemContext from '../../SpotifiubySystem/DefaultSystemContext';
 import TranslationSystemInterface from '../../SpotifiubySystem/TranslationSystem/TranslationSystemInterface';
+import SecondaryButton from '../Buttons/SecondaryButton';
 
 const LanguageChooser = () => {
   const system = useContext(SystemContext);
@@ -11,7 +11,7 @@ const LanguageChooser = () => {
     i18n.changeLanguage(language);
   };
   return (
-    <CTAButton
+    <SecondaryButton
       title={t('Change language')}
       onPress={() => changeLanguage(i18n.language === 'en' ? 'es' : 'en')}
       accessibilityLabel={t('Change applicacation language')}

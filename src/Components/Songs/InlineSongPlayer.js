@@ -3,13 +3,16 @@ import {
   Text, View, StyleSheet, Dimensions, Pressable,
 } from 'react-native';
 import { MaterialCommunityIcons, Feather } from '@expo/vector-icons';
+import { useContext } from 'react';
 import theme, {
   oneUnitFlex, secondaryText, textColor, crossCentered, dimContainer,
 } from '../../theme';
 import CoverPicture from './CoverPicture';
+import SongPlayerContext from './SongPlayerContext';
 
-const InlineSongPlayer = ({ songsList, currentlyPlayingID, setCurrentlyPlayingID }) => {
+const InlineSongPlayer = ({ songsList, currentlyPlayingID }) => {
   if (!songsList.isOnGoing()) return null;
+  const { setCurrentlyPlayingID } = useContext(SongPlayerContext);
   const song = songsList.songIdentifiedBy(currentlyPlayingID);
   return (
     <View style={styles.playerContainer}>

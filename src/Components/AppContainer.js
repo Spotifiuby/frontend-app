@@ -1,41 +1,35 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, View } from 'react-native';
-import { useState, useContext, useEffect } from 'react';
+import { useState, useContext } from 'react';
 import {
   backgroundColor, oneUnitFlex,
 } from '../theme';
 import BaseAuthentication from './Authentication/BaseAuthentication';
-import Home from './Home';
+import AuthenticationBridge from './Authentication/AuthenticationBridge';
 import TranslationSystemInterface from '../SpotifiubySystem/TranslationSystem/TranslationSystemInterface';
 import SystemContext from '../SpotifiubySystem/DefaultSystemContext';
 import AuthSystemInterface from '../SpotifiubySystem/AuthSystem/AuthSystemInterface';
-import UserSystemInterface from '../SpotifiubySystem/UserSystem/UserSystemInterface';
-import { INVALID_USER } from '../SpotifiubySystem/UserSystem/UserSystem';
+import AuthorizedAppContent from './AuthorizedAppContent';
 
 const AppContainer = () => {
   const system = useContext(SystemContext);
   const authSystem = system.systemImplementing(AuthSystemInterface);
-  const userSystem = system.systemImplementing(UserSystemInterface);
-  const [authInformation, setAuthInformation] = useState({});
   system.systemImplementing(TranslationSystemInterface).initialize();
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [userType, setUserType] = useState('');
 
-  useEffect(() => {
-    authSystem.getAuthInfo().then(setAuthInformation);
-  }, []);
+  authSystem.useAuthentication(setIsAuthenticated);
 
-  useEffect(() => {
-    (async () => {
-      if (await userSystem.userType() === INVALID_USER) {
-        system.systemImplementing(AuthSystemInterface).logOut();
-      }
-    })();
-  }, []);
   return (
     <View style={styles.container}>
       {
-        !authInformation.token
-          ? <BaseAuthentication setAuthInformation={setAuthInformation} />
-          : <Home />
+        !isAuthenticated
+          ? <BaseAuthentication />
+          : (
+            <AuthenticationBridge userType={userType} setUserType={setUserType}>
+              <AuthorizedAppContent userType={userType} />
+            </AuthenticationBridge>
+          )
       }
       <StatusBar style="auto" />
     </View>

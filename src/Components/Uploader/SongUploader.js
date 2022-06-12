@@ -5,14 +5,14 @@ import { useContext, useState } from 'react';
 import { getDocumentAsync } from 'expo-document-picker';
 import { Octicons } from '@expo/vector-icons';
 import theme, {
-  crossCentered,
-  formContentWidth, headerTitle, oneUnitFlex, secondaryText, textField,
+  crossCentered, formContentWidth, oneUnitFlex, secondaryText, textField,
 } from '../../theme';
 import SystemContext from '../../SpotifiubySystem/DefaultSystemContext';
 import TranslationSystemInterface from '../../SpotifiubySystem/TranslationSystem/TranslationSystemInterface';
 import SongsSystemInterface from '../../SpotifiubySystem/SongsSystem/SongsSystemInterface';
 import FormField from '../Inputs/FormField';
 import RoundedButton from '../Buttons/RoundedButton';
+import Title from '../Text/Title';
 
 const chooseFileSong = async (setSongFile) => {
   const result = await getDocumentAsync({ type: '*/*', copyToCacheDirectory: true })
@@ -44,7 +44,7 @@ const SongUploader = () => {
   const [loadingStatus, setLoadingStatus] = useState(false);
   return (
     <View style={style.container}>
-      <Text style={style.title}>{t('Upload a song')}</Text>
+      <Title text="Upload a song" />
       <View style={style.formContainer}>
         <FormField label={t('Song file')}>
           <View style={style.fileInput}>
@@ -56,7 +56,6 @@ const SongUploader = () => {
               <Text style={style.uploadButtonText}>{t('Choose file')}</Text>
             </RoundedButton>
             <Text style={style.text}>{songFile.name || t('No file selected yet')}</Text>
-
           </View>
         </FormField>
         <FormField label={t('Title')}>
@@ -106,8 +105,8 @@ const style = StyleSheet.create({
   },
   container: {
     ...oneUnitFlex,
-    paddingHorizontal: 15,
     ...crossCentered,
+    paddingHorizontal: 15,
   },
   fileInput: {
     ...crossCentered,
@@ -123,7 +122,6 @@ const style = StyleSheet.create({
     marginLeft: 13,
   },
   textField,
-  title: headerTitle,
   uploadButtonContainer: {
     flexDirection: 'row',
     marginBottom: 15,

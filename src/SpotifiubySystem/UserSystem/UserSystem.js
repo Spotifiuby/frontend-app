@@ -26,18 +26,29 @@ export default class UserSystem extends GenericSystem {
     return this.parent.systemImplementing(AuthSystemInterface);
   }
 
+  isValid(userType) {
+    return userType && userType !== INVALID_USER && userType !== UNDEFINED_USER;
+  }
+
+  getUserInfoFrom(anEmail) {
+    return this.#connectionSystem().getJson([ROOT, RESOURCE, anEmail]);
+  }
+
   async userType() {
     const { email } = await this.#authSystem().getAuthInfo();
 
     return this.#connectionSystem().get([ROOT, RESOURCE, email])
       .then((response) => {
         if (response.status === 404) {
-          return UNDEFINED_USER;
+          return { user_type: UNDEFINED_USER };
         }
         return response.json();
       })
       .then((json) => {
         const userType = json.user_type;
+        if (!json.is_active) {
+          return INVALID_USER;
+        }
         if (REGISTERED_USERS.includes(userType)) {
           return userType;
         }
@@ -52,11 +63,18 @@ export default class UserSystem extends GenericSystem {
 
   async completeUserRegistrationWith({ firstName, lastName, isUploader }) {
     const { email } = await this.#authSystem().getAuthInfo();
-    this.#connectionSystem().postJson([ROOT, RESOURCE], {
+    await this.#connectionSystem().postJson([ROOT, RESOURCE], {
       email,
       first_name: firstName,
       last_name: lastName,
       user_type: (isUploader ? UPLOADER_USER : LISTENER_USER),
+    });
+  }
+
+  update(originalUserInfo, newUserInfo) {
+    return this.#connectionSystem().putJson([ROOT, RESOURCE, originalUserInfo.email], {
+      first_name: newUserInfo.firstName,
+      last_name: newUserInfo.lastName,
     });
   }
 }

@@ -22,13 +22,26 @@ export function post(url, object, headers = {}) {
   return fetchObject(url, 'POST', object, headers);
 }
 
+export function put(url, object, headers = {}) {
+  return fetchObject(url, 'PUT', object, headers);
+}
+
+export function putJsonObject(url, object, headers = {}) {
+  const newHeader = { ...headers, 'Content-Type': 'application/json' };
+  return put(url, JSON.stringify(object), newHeader);
+}
+
 export function postJsonObject(url, object, headers = {}) {
   const newHeader = { ...headers, 'Content-Type': 'application/json' };
   return fetchObject(url, 'POST', JSON.stringify(object), newHeader);
 }
 
-export function getFrom(url, headers = {}) {
-  return fetchFrom(url, 'GET', { headers });
+export function getFrom(url, headers = {}, params = undefined) {
+  let fullUrl = url;
+  if (params !== undefined) {
+    fullUrl = `${url}?${new URLSearchParams(params)}`;
+  }
+  return fetchFrom(fullUrl, 'GET', { headers });
 }
 
 export const buildEndpointFor = (...resource) => {

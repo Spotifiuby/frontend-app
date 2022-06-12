@@ -10,7 +10,7 @@ import {
 import FormField from '../Inputs/FormField';
 import SystemContext from '../../SpotifiubySystem/DefaultSystemContext';
 import TranslationSystemInterface from '../../SpotifiubySystem/TranslationSystem/TranslationSystemInterface';
-import FormLogo from './FormLogo';
+import FormLogo from '../Authentication/FormLogo';
 import UserSystemInterface from '../../SpotifiubySystem/UserSystem/UserSystemInterface';
 
 const completeUserInformation = (userSystem, userInformation) => {
@@ -18,7 +18,7 @@ const completeUserInformation = (userSystem, userInformation) => {
     .then(() => userSystem.userType());
 };
 
-const SecondStepRegistration = ({ setUserType }) => {
+const EditProfileForm = ({ actionText, setUserType }) => {
   const system = useContext(SystemContext);
   const userSystem = system.systemImplementing(UserSystemInterface);
   const { t } = system.systemImplementing(TranslationSystemInterface).stringTranslator();
@@ -63,8 +63,8 @@ const SecondStepRegistration = ({ setUserType }) => {
                 { firstName, lastName, isUploader },
               ).then(setUserType);
             }}
-            title={t('Finish registration')}
-            accessibilityLabel={t('Finish registration')}
+            title={t(actionText)}
+            accessibilityLabel={t(actionText)}
             disabled={!firstName || !lastName}
           />
         </View>
@@ -73,8 +73,13 @@ const SecondStepRegistration = ({ setUserType }) => {
   );
 };
 
-SecondStepRegistration.propTypes = {
-  setUserType: propTypes.func.isRequired,
+EditProfileForm.defaultProps = {
+  setUserType: () => {},
+};
+
+EditProfileForm.propTypes = {
+  actionText: propTypes.string.isRequired,
+  setUserType: propTypes.func,
 };
 
 const styles = StyleSheet.create({
@@ -95,4 +100,4 @@ const styles = StyleSheet.create({
   textField,
 });
 
-export default SecondStepRegistration;
+export default EditProfileForm;

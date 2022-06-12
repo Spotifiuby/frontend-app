@@ -1,12 +1,15 @@
 import { Audio } from 'expo-av';
 import ConnectionSystemInterface from '../ConnectionSystem/ConnectionSystemInterface';
-import { buildEndpointFor, jsonFrom, post } from '../ConnectionSystem/fetch-helpers';
+import { buildEndpointFor, post } from '../ConnectionSystem/fetch-helpers';
 import GenericSystem from '../GenericSystem';
 import getFromSettings, { LOCAL_SONGS_URL } from '../settings';
 import SongsSystemInterface from './SongsSystemInterface';
 
 const ROOT = 'songs-api';
 const SONGS_RESOURCE = 'songs';
+const ALBUMS_RESOURCE = 'albums';
+const ARTISTS_RESOURCE = 'artists';
+const PLAYLISTS_RESOURCE = 'playlists';
 const CONTENT = 'content';
 const soundObject = new Audio.Sound();
 
@@ -29,8 +32,24 @@ export default class SongsSystem extends GenericSystem {
     return this.parent.systemImplementing(ConnectionSystemInterface);
   }
 
-  async getSongs() {
-    return jsonFrom(this.#connectionSystem().get([ROOT, SONGS_RESOURCE]));
+  getSongs() {
+    return this.#connectionSystem().getJson([ROOT, SONGS_RESOURCE]);
+  }
+
+  songsFilteredBy(aQuery) {
+    return this.#connectionSystem().getJson([ROOT, SONGS_RESOURCE], { q: aQuery });
+  }
+
+  artistsFilteredBy(aQuery) {
+    return this.#connectionSystem().getJson([ROOT, ARTISTS_RESOURCE], { q: aQuery });
+  }
+
+  albumsFilteredBy(aQuery) {
+    return this.#connectionSystem().getJson([ROOT, ALBUMS_RESOURCE], { q: aQuery });
+  }
+
+  playlistsFilteredBy(aQuery) {
+    return this.#connectionSystem().getJson([ROOT, PLAYLISTS_RESOURCE], { q: aQuery });
   }
 
   async play(aSongID) {
@@ -77,7 +96,7 @@ export default class SongsSystem extends GenericSystem {
         { name, artists, genre },
       );
     const songResponse = await metadataResponse.json();
-
-    await this.#uploadSongFile(songFile, songResponse.id);
+    console.log(songResponse);
+    // await this.#uploadSongFile(songFile, songResponse.id);
   }
 }

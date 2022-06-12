@@ -1,12 +1,12 @@
 /* eslint-disable react/prop-types */
 import {
-  View, TextInput, StyleSheet,
+  View, StyleSheet,
 } from 'react-native';
 import { useState, useContext } from 'react';
 import PasswordInput from '../Inputs/PasswordInput';
 import CTAButton from '../Buttons/CTAButton';
 import {
-  crossCentered, fullWidth, tenMarginTop, textField,
+  crossCentered, fullWidth, tenMarginTop,
 } from '../../theme';
 import FormField, { clearErrorsWith } from '../Inputs/FormField';
 import ErrorCard from '../Inputs/ErrorCard';
@@ -14,6 +14,7 @@ import SystemContext from '../../SpotifiubySystem/DefaultSystemContext';
 import TranslationSystemInterface from '../../SpotifiubySystem/TranslationSystem/TranslationSystemInterface';
 import FormLogo from './FormLogo';
 import AuthSystemInterface from '../../SpotifiubySystem/AuthSystem/AuthSystemInterface';
+import EmailInput from '../Inputs/EmailInput';
 
 function registerFromUIAction(authSystem, credentials, afterRegistrationSuccess, setErrorMessage) {
   authSystem.register(credentials)
@@ -39,12 +40,9 @@ const RegisterForm = ({ route }) => {
       <FormLogo />
       <View style={styles.loginForm}>
         <FormField label={t('Email')}>
-          <TextInput
-            style={styles.textField}
-            value={email}
-            onChangeText={clearErrorAfter(setEmail)}
-            placeholder={t('Email')}
-            accessibilityLabel={t('Email input')}
+          <EmailInput
+            emaial={email}
+            setEmail={clearErrorAfter(setEmail)}
           />
         </FormField>
         <FormField label={t('Password')}>
@@ -91,7 +89,6 @@ const styles = StyleSheet.create({
     ...fullWidth,
     paddingHorizontal: 30,
   },
-  textField,
 });
 
 export default RegisterForm;

@@ -3,14 +3,13 @@ import PersistentSystemInterface from '../PersistentSystem/PersistentSystemInter
 import AuthSystemInterface from './AuthSystemInterface';
 
 const AUTH_INFORMATION_KEY = '@AUTH_INFORMATION_KEY';
-
 export default class AuthSystemBehavior extends GenericSystem {
   implementing() {
     return AuthSystemInterface;
   }
 
   registerSuccessfullLogin(authInfo) {
-    this.#persistAuthInfo(authInfo);
+    return this.#persistAuthInfo(authInfo);
   }
 
   #persistentSystem() {
@@ -18,7 +17,7 @@ export default class AuthSystemBehavior extends GenericSystem {
   }
 
   #persistAuthInfo(authInfo) {
-    this.#persistentSystem().storeOn(AUTH_INFORMATION_KEY, authInfo);
+    return this.#persistentSystem().storeOn(AUTH_INFORMATION_KEY, authInfo);
   }
 
   async getAuthInfo() {

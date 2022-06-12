@@ -7,8 +7,8 @@ export default class PersistentSystem extends GenericSystem {
     return PersistentSystemInterface;
   }
 
-  async storeOn(aKey, aValue) {
-    await AsyncStorage.setItem(aKey, JSON.stringify(aValue));
+  storeOn(aKey, aValue) {
+    return AsyncStorage.setItem(aKey, JSON.stringify(aValue));
   }
 
   async readFrom(aKey) {

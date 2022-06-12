@@ -1,11 +1,13 @@
 const theme = {
   color: {
     background: '#120f0f',
+    navigationBarColor: '#0d0c0c',
     foreground: '#eee',
     primary: '#1db954',
     overlay: 'rgba(0,0,0,0.8)',
     overlayTextColor: '#eee',
     secondaryText: '#aaa',
+    errorBackground: '#CF6679',
   },
   fontWeight: {
     primary: 'bold',
@@ -24,7 +26,7 @@ export const roundedButtonBorder = { borderRadius: 300 };
 export const leftAligned = { alignItems: 'left' };
 export const formContentWidth = { width: '80%' };
 export const tenMarginTop = { marginTop: 10 };
-export const errorContainer = { backgroundColor: '#CF6679' };
+export const errorContainer = { backgroundColor: theme.color.errorBackground };
 export const dimContainer = { backgroundColor: '#222' };
 export const paddedContainer = { paddingVertical: 8, paddingHorizontal: 12 };
 export const secondaryText = { color: theme.color.secondaryText, fontSize: 12 };

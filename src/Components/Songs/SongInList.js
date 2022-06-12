@@ -10,14 +10,19 @@ import SystemContext from '../../SpotifiubySystem/DefaultSystemContext';
 import TranslationSystemInterface from '../../SpotifiubySystem/TranslationSystem/TranslationSystemInterface';
 import Song from '../../SpotifiubySystem/SongsSystem/Song';
 import CoverPicture from './CoverPicture';
+import SongPlayerContext from './SongPlayerContext';
 
-const SongInList = ({ song, isPlaying, setCurrentlyPlayingID }) => {
+const SongInList = ({ song, isPlaying, playCallback }) => {
   const system = useContext(SystemContext);
   const { t } = system.systemImplementing(TranslationSystemInterface).stringTranslator();
+  const { setCurrentlyPlayingID } = useContext(SongPlayerContext);
   return (
     <Pressable
       style={styles.songInfoContainer}
-      onPress={() => setCurrentlyPlayingID(!isPlaying ? song.id : '')}
+      onPress={() => {
+        setCurrentlyPlayingID(!isPlaying ? song.id : '');
+        playCallback();
+      }}
     >
       <CoverPicture song={song} style={styles.songImage} />
       {isPlaying ? <Text style={styles.songPlayingOverlay}>{t('Playing')}</Text> : null}
@@ -36,9 +41,9 @@ const SongInList = ({ song, isPlaying, setCurrentlyPlayingID }) => {
 };
 
 SongInList.propTypes = {
-  setCurrentlyPlayingID: propTypes.func.isRequired,
   isPlaying: propTypes.bool.isRequired,
   song: propTypes.instanceOf(Song).isRequired,
+  playCallback: propTypes.func.isRequired,
 };
 
 const styles = StyleSheet.create({

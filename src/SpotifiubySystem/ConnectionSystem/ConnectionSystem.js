@@ -1,14 +1,14 @@
 import AuthSystemInterface from '../AuthSystem/AuthSystemInterface';
 import {
-  buildEndpointFor, getFrom, post, postJsonObject,
+  buildEndpointFor, getFrom, jsonFrom, post, postJsonObject, putJsonObject,
 } from './fetch-helpers';
 import GenericSystem from '../GenericSystem';
 import ConnectionSystemInterface from './ConnectionSystemInterface';
 
 export default class ConnectionSystem extends GenericSystem {
-  constructor() {
+  constructor(headers = {}) {
     super();
-    this.headers = {};
+    this.headers = headers;
   }
 
   implementing() {
@@ -20,17 +20,21 @@ export default class ConnectionSystem extends GenericSystem {
   }
 
   async #authorizationHeader() {
-    const { token } = await this.#authSystem().getAuthInfo();
+    const { token, email } = await this.#authSystem().getAuthInfo();
     if (!token) return {};
-    return { authorization: `Bearer ${token}` };
+    return { authorization: `Bearer ${token}`, 'x-user-id': email };
   }
 
   async #buildHeaders() {
     return { ...this.headers, ...await this.#authorizationHeader() };
   }
 
-  async get(resource) {
-    return getFrom(buildEndpointFor(...resource), await this.#buildHeaders());
+  async get(resource, params = undefined) {
+    return getFrom(buildEndpointFor(...resource), await this.#buildHeaders(), params);
+  }
+
+  getJson(resource, params = undefined) {
+    return jsonFrom(this.get(resource, params));
   }
 
   async postJson(resource, data) {
@@ -39,6 +43,14 @@ export default class ConnectionSystem extends GenericSystem {
 
   async post(resource, data, headers = {}) {
     return post(buildEndpointFor(...resource), data, { ...headers, ...await this.#buildHeaders() });
+  }
+
+  async putJson(resource, data, headers = {}) {
+    return putJsonObject(
+      buildEndpointFor(...resource),
+      data,
+      { ...headers, ...await this.#buildHeaders() },
+    );
   }
 
   async withHeaders(request) {

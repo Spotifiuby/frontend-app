@@ -8,6 +8,7 @@ export default class FirebaseAuthSystem extends AuthSystemBehavior {
   constructor() {
     super();
     this.auth = getAuth(firebaseApp);
+    this.authInfo = {};
   }
 
   // async getAuthInfo() {
@@ -16,11 +17,28 @@ export default class FirebaseAuthSystem extends AuthSystemBehavior {
   //   return { token, email };
   // }
 
+  async getAuthInfo() {
+    return this.authInfo;
+  }
+
+  useAuthentication(setIsAuthenticated) {
+    this.auth.onAuthStateChanged(async (user) => {
+      if (user) {
+        const token = await user.getIdToken();
+        const { email } = user;
+        this.authInfo = { token, email };
+        setIsAuthenticated(true);
+      } else {
+        setIsAuthenticated(false);
+      }
+    });
+  }
+
   login({ email, password }) {
     return signInWithEmailAndPassword(this.auth, email, password)
       .then(async (userCredential) => {
         const token = await userCredential.user.getIdToken();
-        this.registerSuccessfullLogin({ token, email });
+        this.authInfo = { email, token };
         return { token };
       })
       .catch((error) => { throw new Error(error.code); });
@@ -32,7 +50,6 @@ export default class FirebaseAuthSystem extends AuthSystemBehavior {
   }
 
   logOut() {
-    super.logOut();
     this.auth.signOut();
   }
 }
