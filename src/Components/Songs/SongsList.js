@@ -1,63 +1,36 @@
+import { FlatList } from 'react-native';
+import propTypes from 'prop-types';
 import {
-  FlatList, Text, View, StyleSheet,
-} from 'react-native';
-import { useState, useEffect } from 'react';
-import { Audio } from 'expo-av';
-import { useTranslation } from 'react-i18next';
-import { buildEndpointFor, jsonFrom, getFrom } from '../../fetch-helpers';
+  useContext,
+} from 'react';
 import SongInList from './SongInList';
-import {
-  oneUnitFlex, headerTitle,
-} from '../../theme';
+import SongReproductionList from '../../SpotifiubySystem/SongsSystem/SongReproductionList';
+import SongPlayerContext from './SongPlayerContext';
 
-const soundObject = new Audio.Sound();
-
-const SongsList = () => {
-  const { t } = useTranslation();
-  const [songs, setSongs] = useState([]);
-  const [currentlyPlayingID, setCurrentlyPlayingID] = useState('');
-  useEffect(() => {
-    jsonFrom(getFrom(buildEndpointFor('songs'))).then(setSongs);
-  }, []);
-
-  useEffect(() => {
-    (async () => {
-      await soundObject.unloadAsync();
-      if (!currentlyPlayingID) return;
-
-      await soundObject.loadAsync({
-        uri: buildEndpointFor('songs', currentlyPlayingID, 'content'),
-      });
-      soundObject.playAsync();
-    })();
-  }, [currentlyPlayingID]);
-
+const SongsList = ({ songsList }) => {
+  const { setSongsList } = useContext(SongPlayerContext);
+  if (songsList.songs.length === 0) return null;
   return (
-    <View style={playlistStyle.container}>
-      <Text style={playlistStyle.playlistTitle}>{t('My favorite songs')}</Text>
-      <FlatList
-        data={songs}
-        renderItem={({ item }) => {
-          return (
-            <SongInList
-              song={item}
-              isPlaying={currentlyPlayingID === item.id}
-              setCurrentlyPlayingID={setCurrentlyPlayingID}
-            />
-          );
-        }}
-        keyExtractor={(item) => item.id}
-      />
-    </View>
+    <FlatList
+      data={songsList.songs}
+      renderItem={({ item }) => {
+        const song = item;
+        return (
+          <SongInList
+            song={song}
+            isPlaying={false}
+            setSongsList={setSongsList}
+            playCallback={() => setSongsList(songsList)}
+          />
+        );
+      }}
+      keyExtractor={(song) => song.id}
+    />
   );
 };
 
-const playlistStyle = StyleSheet.create({
-  container: {
-    ...oneUnitFlex,
-    paddingHorizontal: 15,
-  },
-  playlistTitle: headerTitle,
-});
+SongsList.propTypes = {
+  songsList: propTypes.instanceOf(SongReproductionList).isRequired,
+};
 
 export default SongsList;

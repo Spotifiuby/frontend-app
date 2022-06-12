@@ -12,7 +12,7 @@ i18next
     ns: ['spotifiuby'],
     defaultNS: 'spotifiuby',
 
-    debug: true,
+    debug: false,
 
     resources: {
       en,

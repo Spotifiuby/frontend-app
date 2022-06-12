@@ -1,10 +1,13 @@
 import propTypes from 'prop-types';
-import { useTranslation } from 'react-i18next';
 import { TextInput } from 'react-native';
+import { useContext } from 'react';
 import { textField } from '../../theme';
+import SystemContext from '../../SpotifiubySystem/DefaultSystemContext';
+import TranslationSystemInterface from '../../SpotifiubySystem/TranslationSystem/TranslationSystemInterface';
 
 const PasswordInput = ({ password, setPassword }) => {
-  const { t } = useTranslation();
+  const system = useContext(SystemContext);
+  const { t } = system.systemImplementing(TranslationSystemInterface).stringTranslator();
   return (
     <TextInput
       style={textField}

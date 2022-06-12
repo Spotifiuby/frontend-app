@@ -1,0 +1,3 @@
+export const SETTINGS_MENU = 'SETTINGS_MENU';
+export const MY_PROFILE = 'MY_PROFILE';
+export const EDIT_USER_PROFILE = 'EDIT_USER_PROFILE';

@@ -1,20 +1,35 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, View } from 'react-native';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import {
-  backgroundColor, crossCentered, oneUnitFlex, textColor,
+  backgroundColor, oneUnitFlex,
 } from '../theme';
-import Authentication from './Authentication/Authentication';
-import Home from './Home';
+import BaseAuthentication from './Authentication/BaseAuthentication';
+import AuthenticationBridge from './Authentication/AuthenticationBridge';
+import TranslationSystemInterface from '../SpotifiubySystem/TranslationSystem/TranslationSystemInterface';
+import SystemContext from '../SpotifiubySystem/DefaultSystemContext';
+import AuthSystemInterface from '../SpotifiubySystem/AuthSystem/AuthSystemInterface';
+import AuthorizedAppContent from './AuthorizedAppContent';
 
 const AppContainer = () => {
-  const [token, setToken] = useState('');
+  const system = useContext(SystemContext);
+  const authSystem = system.systemImplementing(AuthSystemInterface);
+  system.systemImplementing(TranslationSystemInterface).initialize();
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [userType, setUserType] = useState('');
+
+  authSystem.useAuthentication(setIsAuthenticated);
+
   return (
     <View style={styles.container}>
       {
-        (!token)
-          ? <Authentication setToken={setToken} />
-          : <Home />
+        !isAuthenticated
+          ? <BaseAuthentication />
+          : (
+            <AuthenticationBridge userType={userType} setUserType={setUserType}>
+              <AuthorizedAppContent userType={userType} />
+            </AuthenticationBridge>
+          )
       }
       <StatusBar style="auto" />
     </View>
@@ -24,8 +39,6 @@ const AppContainer = () => {
 const styles = StyleSheet.create({
   container: {
     ...oneUnitFlex,
-    ...crossCentered,
-    ...textColor,
     ...backgroundColor,
     paddingTop: 10,
   },

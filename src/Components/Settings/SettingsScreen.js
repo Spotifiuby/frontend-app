@@ -1,27 +1,53 @@
+/* eslint-disable react/prop-types */
 import {
-  Text, View, StyleSheet,
+  View, StyleSheet,
 } from 'react-native';
-import { Trans } from 'react-i18next';
-import { headerTitle, oneUnitFlex } from '../../theme';
-import LanguageChooser from './LanguageChooser';
+import { useContext, useEffect, useState } from 'react';
 
-const SettingsScreen = () => {
+import LanguageChooser from './LanguageChooser';
+import SystemContext from '../../SpotifiubySystem/DefaultSystemContext';
+import TranslationSystemInterface from '../../SpotifiubySystem/TranslationSystem/TranslationSystemInterface';
+import SecondaryButton from '../Buttons/SecondaryButton';
+import AuthSystemInterface from '../../SpotifiubySystem/AuthSystem/AuthSystemInterface';
+import Title from '../Text/Title';
+import Divider from '../Text/Divider';
+import { oneUnitFlex } from '../../theme';
+import { MY_PROFILE } from './SettingsNavigationOptions';
+import UserSystemInterface from '../../SpotifiubySystem/UserSystem/UserSystemInterface';
+
+const SettingsScreen = ({ navigation }) => {
+  const system = useContext(SystemContext);
+  const authSystem = system.systemImplementing(AuthSystemInterface);
+  const userSystem = system.systemImplementing(UserSystemInterface);
+  const [authInfo, setAuthInfo] = useState('');
+  const [userInfo, setUserInfo] = useState({});
+  useEffect(() => {
+    authSystem.getAuthInfo().then(setAuthInfo);
+  }, []);
+  useEffect(() => {
+    if (!authInfo.email) return;
+    userSystem.getUserInfoFrom(authInfo.email).then(setUserInfo);
+  }, [authInfo]);
+  const { t } = system.systemImplementing(TranslationSystemInterface).stringTranslator();
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>
-        <Trans>Settings</Trans>
-      </Text>
+      <Title text="Settings" />
+      <SecondaryButton
+        title={t('My Profile')}
+        onPress={() => navigation.navigate(MY_PROFILE, { userInfo })}
+      />
       <LanguageChooser />
+      <Divider />
+      <SecondaryButton title={t('Log out')} onPress={() => authSystem.logOut()} />
     </View>
   );
 };
-
 const styles = StyleSheet.create({
   container: {
     ...oneUnitFlex,
+    alignItems: 'flex-start',
     paddingHorizontal: 15,
   },
-  title: headerTitle,
 });
 
 export default SettingsScreen;
