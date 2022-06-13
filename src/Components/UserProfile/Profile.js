@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import AuthSystemInterface from '../../SpotifiubySystem/AuthSystem/AuthSystemInterface';
 import SystemContext from '../../SpotifiubySystem/DefaultSystemContext';
-import TranslationSystemInterface from '../../SpotifiubySystem/TranslationSystem/TranslationSystemInterface';
+import useTranslation from '../../SpotifiubySystem/TranslationSystem/useTranslation';
 import { oneUnitFlex, textColor } from '../../theme';
 import CTAButton from '../Buttons/CTAButton';
 import FormField from '../Inputs/FormField';
@@ -14,7 +14,7 @@ const Profile = ({ navigation, route }) => {
   const system = useContext(SystemContext);
   const authSystem = system.systemImplementing(AuthSystemInterface);
   const [authInfo, setAuthInfo] = useState('');
-  const { t } = system.systemImplementing(TranslationSystemInterface).stringTranslator();
+  const { t } = useTranslation();
   const { userInfo } = route.params;
   const currentUserEmail = authInfo.email;
 

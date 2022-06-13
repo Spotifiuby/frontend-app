@@ -1,4 +1,4 @@
-import getFromSettings, { BASE_URL, LOCAL_BASE_URL } from '../settings';
+import getFromSettings, { BASE_URL } from '../settings';
 
 export function fetchFrom(url, method, options = {}) {
   return fetch(url, {
@@ -45,9 +45,5 @@ export function getFrom(url, headers = {}, params = undefined) {
 }
 
 export const buildEndpointFor = (...resource) => {
-  let baseUrl = getFromSettings(BASE_URL);
-  if (resource[resource.length - 1] === 'cover') {
-    baseUrl = getFromSettings(LOCAL_BASE_URL);
-  }
-  return `${baseUrl}/${resource.join('/')}`;
+  return `${getFromSettings(BASE_URL)}/${resource.join('/')}`;
 };

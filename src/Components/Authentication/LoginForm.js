@@ -11,10 +11,10 @@ import {
 import FormField, { clearErrorsWith } from '../Inputs/FormField';
 import ErrorCard from '../Inputs/ErrorCard';
 import SystemContext from '../../SpotifiubySystem/DefaultSystemContext';
-import TranslationSystemInterface from '../../SpotifiubySystem/TranslationSystem/TranslationSystemInterface';
 import AuthSystemInterface from '../../SpotifiubySystem/AuthSystem/AuthSystemInterface';
 import FormLogo from './FormLogo';
 import EmailInput from '../Inputs/EmailInput';
+import useTranslation from '../../SpotifiubySystem/TranslationSystem/useTranslation';
 
 function loginUIAction(authSystem, email, password, setErrorMessage) {
   authSystem.login({ email, password })
@@ -24,7 +24,7 @@ function loginUIAction(authSystem, email, password, setErrorMessage) {
 const LoginForm = () => {
   const system = useContext(SystemContext);
   const authSystem = system.systemImplementing(AuthSystemInterface);
-  const { t } = system.systemImplementing(TranslationSystemInterface).stringTranslator();
+  const { t } = useTranslation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');

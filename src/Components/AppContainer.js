@@ -15,11 +15,11 @@ const AppContainer = () => {
   const system = useContext(SystemContext);
   const authSystem = system.systemImplementing(AuthSystemInterface);
   system.systemImplementing(TranslationSystemInterface).initialize();
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState('');
   const [userType, setUserType] = useState('');
 
   authSystem.useAuthentication(setIsAuthenticated);
-
+  if (isAuthenticated === '') return null;
   return (
     <View style={styles.container}>
       {

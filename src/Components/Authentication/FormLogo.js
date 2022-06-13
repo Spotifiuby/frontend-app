@@ -1,12 +1,9 @@
 import { StyleSheet, Image } from 'react-native';
-import { useContext } from 'react';
 import logo from '../../../assets/logo.png';
-import SystemContext from '../../SpotifiubySystem/DefaultSystemContext';
-import TranslationSystemInterface from '../../SpotifiubySystem/TranslationSystem/TranslationSystemInterface';
+import useTranslation from '../../SpotifiubySystem/TranslationSystem/useTranslation';
 
 const FormLogo = () => {
-  const system = useContext(SystemContext);
-  const { t } = system.systemImplementing(TranslationSystemInterface).stringTranslator();
+  const { t } = useTranslation();
 
   return (
     <Image

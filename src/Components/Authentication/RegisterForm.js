@@ -11,10 +11,10 @@ import {
 import FormField, { clearErrorsWith } from '../Inputs/FormField';
 import ErrorCard from '../Inputs/ErrorCard';
 import SystemContext from '../../SpotifiubySystem/DefaultSystemContext';
-import TranslationSystemInterface from '../../SpotifiubySystem/TranslationSystem/TranslationSystemInterface';
 import FormLogo from './FormLogo';
 import AuthSystemInterface from '../../SpotifiubySystem/AuthSystem/AuthSystemInterface';
 import EmailInput from '../Inputs/EmailInput';
+import useTranslation from '../../SpotifiubySystem/TranslationSystem/useTranslation';
 
 function registerFromUIAction(authSystem, credentials, afterRegistrationSuccess, setErrorMessage) {
   authSystem.register(credentials)
@@ -28,7 +28,7 @@ const RegisterForm = ({ route }) => {
   const { afterRegistrationSuccess } = route.params;
   const system = useContext(SystemContext);
   const authSystem = system.systemImplementing(AuthSystemInterface);
-  const { t } = system.systemImplementing(TranslationSystemInterface).stringTranslator();
+  const { t } = useTranslation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [repeatedPassword, setRepeatedPassword] = useState('');

@@ -9,9 +9,9 @@ import {
 } from '../../theme';
 import FormField from '../Inputs/FormField';
 import SystemContext from '../../SpotifiubySystem/DefaultSystemContext';
-import TranslationSystemInterface from '../../SpotifiubySystem/TranslationSystem/TranslationSystemInterface';
 import FormLogo from '../Authentication/FormLogo';
 import UserSystemInterface from '../../SpotifiubySystem/UserSystem/UserSystemInterface';
+import useTranslation from '../../SpotifiubySystem/TranslationSystem/useTranslation';
 
 const completeUserInformation = (userSystem, userInformation) => {
   return userSystem.completeUserRegistrationWith(userInformation)
@@ -21,7 +21,7 @@ const completeUserInformation = (userSystem, userInformation) => {
 const EditProfileForm = ({ actionText, setUserType }) => {
   const system = useContext(SystemContext);
   const userSystem = system.systemImplementing(UserSystemInterface);
-  const { t } = system.systemImplementing(TranslationSystemInterface).stringTranslator();
+  const { t } = useTranslation();
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [isUploader, setIsUploader] = useState(false);
@@ -74,7 +74,7 @@ const EditProfileForm = ({ actionText, setUserType }) => {
 };
 
 EditProfileForm.defaultProps = {
-  setUserType: () => {},
+  setUserType: () => { },
 };
 
 EditProfileForm.propTypes = {

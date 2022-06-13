@@ -6,7 +6,6 @@ import { useContext, useEffect, useState } from 'react';
 
 import LanguageChooser from './LanguageChooser';
 import SystemContext from '../../SpotifiubySystem/DefaultSystemContext';
-import TranslationSystemInterface from '../../SpotifiubySystem/TranslationSystem/TranslationSystemInterface';
 import SecondaryButton from '../Buttons/SecondaryButton';
 import AuthSystemInterface from '../../SpotifiubySystem/AuthSystem/AuthSystemInterface';
 import Title from '../Text/Title';
@@ -14,6 +13,7 @@ import Divider from '../Text/Divider';
 import { oneUnitFlex } from '../../theme';
 import { MY_PROFILE } from './SettingsNavigationOptions';
 import UserSystemInterface from '../../SpotifiubySystem/UserSystem/UserSystemInterface';
+import useTranslation from '../../SpotifiubySystem/TranslationSystem/useTranslation';
 
 const SettingsScreen = ({ navigation }) => {
   const system = useContext(SystemContext);
@@ -28,7 +28,7 @@ const SettingsScreen = ({ navigation }) => {
     if (!authInfo.email) return;
     userSystem.getUserInfoFrom(authInfo.email).then(setUserInfo);
   }, [authInfo]);
-  const { t } = system.systemImplementing(TranslationSystemInterface).stringTranslator();
+  const { t } = useTranslation();
   return (
     <View style={styles.container}>
       <Title text="Settings" />

@@ -1,22 +1,20 @@
-import { useCallback, useContext } from 'react';
+import { useCallback } from 'react';
 import { DarkTheme, NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Entypo, FontAwesome, Ionicons } from '@expo/vector-icons';
 import propTypes from 'prop-types';
-import SystemContext from '../SpotifiubySystem/DefaultSystemContext';
-import TranslationSystemInterface from '../SpotifiubySystem/TranslationSystem/TranslationSystemInterface';
 import theme from '../theme';
 import { UPLOADER_USER } from '../SpotifiubySystem/UserSystem/UserSystem';
-import SongUploader from './Uploader/SongUploader';
+import { UploaderNavigation } from './Uploader/UploaderScreen';
 import SearchScreen from './Search/SearchScreen';
 import Home from './Home/Home';
 import SettingsNavigation from './Settings/SettingsNavigation';
+import useTranslation from '../SpotifiubySystem/TranslationSystem/useTranslation';
 
 const Tab = createBottomTabNavigator();
 
 const MainNavigation = ({ userType }) => {
-  const system = useContext(SystemContext);
-  const { t } = system.systemImplementing(TranslationSystemInterface).stringTranslator();
+  const { t } = useTranslation();
   return (
     <NavigationContainer theme={navigationTheme}>
       <Tab.Navigator
@@ -77,7 +75,7 @@ const UploadTabScreen = (userType, t) => {
       ? (
         <Tab.Screen
           name={t('Upload')}
-          component={SongUploader}
+          component={UploaderNavigation}
           options={{ tabBarIcon: UploadIcon }}
         />
       )

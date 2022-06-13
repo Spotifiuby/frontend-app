@@ -1,11 +1,8 @@
-import { useContext } from 'react';
-import SystemContext from '../../SpotifiubySystem/DefaultSystemContext';
-import TranslationSystemInterface from '../../SpotifiubySystem/TranslationSystem/TranslationSystemInterface';
+import useTranslation from '../../SpotifiubySystem/TranslationSystem/useTranslation';
 import SecondaryButton from '../Buttons/SecondaryButton';
 
 const LanguageChooser = () => {
-  const system = useContext(SystemContext);
-  const { t, i18n } = system.systemImplementing(TranslationSystemInterface).stringTranslator();
+  const { t, i18n } = useTranslation();
 
   const changeLanguage = (language) => {
     i18n.changeLanguage(language);
