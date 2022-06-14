@@ -1,14 +1,12 @@
 export const BASE_URL = 'BASE_URL';
-export const LOCAL_BASE_URL = 'LOCAL_BASE_URL';
 export const AUTHENTICATION_METHOD = 'AUTHENTICATION_METHOD';
 export const GATEWAY_HEADERS = 'GATEWAY_HEADERS';
-export const LOCAL_SONGS_URL = 'LOCAL_SONGS_URL';
+export const SONGS_URL = 'SONGS_URL';
 export const FIREBASE_GOOGLE_WEB_CLIENT_ID = 'FIREBASE_GOOGLE_WEB_CLIENT_ID';
 export const FIREBASE_AUTH_METHOD = 'firebase';
 
 export const settings = {
-  [LOCAL_SONGS_URL]: process.env.LOCAL_SONGS_URL,
-  [LOCAL_BASE_URL]: process.env.LOCAL_BASE_URL,
+  [SONGS_URL]: process.env.SONGS_URL,
   [BASE_URL]: process.env.BASE_URL,
   [AUTHENTICATION_METHOD]: process.env.AUTHENTICATION_METHOD,
   [FIREBASE_GOOGLE_WEB_CLIENT_ID]: process.env.FIREBASE_GOOGLE_WEB_CLIENT_ID,
@@ -19,5 +17,5 @@ export const settings = {
 
 const getFromSettings = (aProperty) => settings[aProperty];
 
-console.log(settings);
 export default getFromSettings;
+console.log(settings);

@@ -17,13 +17,16 @@ const Home = () => {
 
   useFocusEffect(
     useCallback(() => {
-      songsSystem.getSongs().then((songs) => setSongsList(new SongReproductionList(songs)));
+      songsSystem.getSongs()
+        .then((songs) => setSongsList(new SongReproductionList(songs)));
     }, []),
   );
   return (
     <View style={playlistStyle.container}>
       <Title text="My favorite songs" />
-      <SongsList songsList={songsList} />
+      {(songsList.songs.length !== 0)
+        ? <SongsList songsList={songsList} />
+        : null}
     </View>
   );
 };

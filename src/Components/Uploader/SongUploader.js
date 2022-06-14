@@ -1,18 +1,19 @@
+/* eslint-disable react/prop-types */
 import {
   StyleSheet, View, Text, TextInput, ActivityIndicator,
 } from 'react-native';
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import { getDocumentAsync } from 'expo-document-picker';
 import { Octicons } from '@expo/vector-icons';
 import theme, {
   crossCentered, formContentWidth, oneUnitFlex, secondaryText, textField,
 } from '../../theme';
-import SystemContext from '../../SpotifiubySystem/DefaultSystemContext';
-import TranslationSystemInterface from '../../SpotifiubySystem/TranslationSystem/TranslationSystemInterface';
-import SongsSystemInterface from '../../SpotifiubySystem/SongsSystem/SongsSystemInterface';
 import FormField from '../Inputs/FormField';
 import RoundedButton from '../Buttons/RoundedButton';
 import Title from '../Text/Title';
+import useTranslation from '../../SpotifiubySystem/TranslationSystem/useTranslation';
+import useSongsSystem from '../../SpotifiubySystem/SongsSystem/useSongsSystem';
+import useNotificationSystem from '../../SpotifiubySystem/NotificationSystem/useNotificationSystem';
 
 const chooseFileSong = async (setSongFile) => {
   const result = await getDocumentAsync({ type: '*/*', copyToCacheDirectory: true })
@@ -23,24 +24,14 @@ const chooseFileSong = async (setSongFile) => {
   return result;
 };
 
-const uploadSongUIAction = async (songsSytem, songFile, metadata, setLoadingStatus) => {
-  setLoadingStatus(true);
-  try {
-    await songsSytem.uploadSong(songFile, metadata);
-  } catch (e) {
-    console.log((e));
-  } finally {
-    setLoadingStatus(false);
-  }
-};
-
-const SongUploader = () => {
-  const system = useContext(SystemContext);
-  const songsSytem = system.systemImplementing(SongsSystemInterface);
-  const { t } = system.systemImplementing(TranslationSystemInterface).stringTranslator();
+const SongUploader = ({ navigation, route }) => {
+  const songsSytem = useSongsSystem();
+  const notificationSytem = useNotificationSystem();
+  const artistId = route.params.id;
+  const { t } = useTranslation();
   const [songFile, setSongFile] = useState({});
   const [title, setTitle] = useState('');
-  const [artist, setArtist] = useState('');
+  const [genre, setGenre] = useState('');
   const [loadingStatus, setLoadingStatus] = useState(false);
   return (
     <View style={style.container}>
@@ -67,13 +58,13 @@ const SongUploader = () => {
             accessibilityLabel={t('Title input')}
           />
         </FormField>
-        <FormField label={t('Artist')}>
+        <FormField label={t('Genre')}>
           <TextInput
             style={style.textField}
-            value={artist}
-            onChangeText={setArtist}
-            placeholder={t('Artist')}
-            accessibilityLabel={t('Artist input')}
+            value={genre}
+            onChangeText={setGenre}
+            placeholder={t('Genre')}
+            accessibilityLabel={t('Genre input')}
           />
         </FormField>
 
@@ -81,10 +72,19 @@ const SongUploader = () => {
           style={style.confirmActionButton}
           onPress={
             () => {
-              uploadSongUIAction(songsSytem, songFile, { title, artist }, setLoadingStatus);
+              setLoadingStatus(true);
+              songsSytem.uploadSong(songFile, { name: title, genre, artists: [artistId] })
+                .then(() => {
+                  notificationSytem.show(t('Song uploaded successfully'));
+                  navigation.goBack();
+                })
+                .catch(() => {
+                  notificationSytem.show(t('An error has occurred while uploading song'));
+                })
+                .finally(() => setLoadingStatus(false));
             }
           }
-          disabled={(!title || !artist || !songFile.name) && !loadingStatus}
+          disabled={(!title || !genre || !songFile.name) && !loadingStatus}
         >
           {loadingStatus
             ? <ActivityIndicator />

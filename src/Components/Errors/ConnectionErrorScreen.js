@@ -1,15 +1,12 @@
 import { MaterialIcons } from '@expo/vector-icons';
-import { useContext } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import SystemContext from '../../SpotifiubySystem/DefaultSystemContext';
-import TranslationSystemInterface from '../../SpotifiubySystem/TranslationSystem/TranslationSystemInterface';
+import useTranslation from '../../SpotifiubySystem/TranslationSystem/useTranslation';
 import theme, {
   headerTitle, mainCentered, oneUnitFlex, secondaryText,
 } from '../../theme';
 
 const ConnectionErrorScreen = () => {
-  const system = useContext(SystemContext);
-  const { t } = system.systemImplementing(TranslationSystemInterface).stringTranslator();
+  const { t } = useTranslation();
   return (
     <View style={styles.container}>
       <MaterialIcons name="error-outline" size={60} color={theme.color.errorBackground} />

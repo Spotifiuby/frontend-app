@@ -5,8 +5,8 @@ import {
   StyleSheet, TextInput, View,
 } from 'react-native';
 import SystemContext from '../../SpotifiubySystem/DefaultSystemContext';
-import NotificationSystemInterface from '../../SpotifiubySystem/NotificationSystem/NotificationSystemInterface';
-import TranslationSystemInterface from '../../SpotifiubySystem/TranslationSystem/TranslationSystemInterface';
+import useNotificationSystem from '../../SpotifiubySystem/NotificationSystem/useNotificationSystem';
+import useTranslation from '../../SpotifiubySystem/TranslationSystem/useTranslation';
 import UserSystemInterface from '../../SpotifiubySystem/UserSystem/UserSystemInterface';
 import { fullWidth, oneUnitFlex, textField } from '../../theme';
 import CTAButton from '../Buttons/CTAButton';
@@ -20,9 +20,9 @@ const updateUserFrom = (originalUserInfo, newUserInfo, userSystem) => {
 
 const EditProfile = ({ navigation, route }) => {
   const system = useContext(SystemContext);
+  const notificationSystem = useNotificationSystem();
   const userSystem = system.systemImplementing(UserSystemInterface);
-  const notificationSystem = system.systemImplementing(NotificationSystemInterface);
-  const { t } = system.systemImplementing(TranslationSystemInterface).stringTranslator();
+  const { t } = useTranslation();
   const { userInfo } = route.params;
   const [firstName, setFirstName] = useState(userInfo.first_name);
   const [lastName, setLastName] = useState(userInfo.last_name);

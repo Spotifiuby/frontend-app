@@ -7,6 +7,7 @@ const theme = {
     overlay: 'rgba(0,0,0,0.8)',
     overlayTextColor: '#eee',
     secondaryText: '#aaa',
+    secondarybackground: '#222',
     errorBackground: '#CF6679',
   },
   fontWeight: {

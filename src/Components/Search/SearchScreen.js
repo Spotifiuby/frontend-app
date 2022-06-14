@@ -10,16 +10,16 @@ import {
 } from '../../theme';
 import SystemContext from '../../SpotifiubySystem/DefaultSystemContext';
 import SongsSystemInterface from '../../SpotifiubySystem/SongsSystem/SongsSystemInterface';
-import TranslationSystemInterface from '../../SpotifiubySystem/TranslationSystem/TranslationSystemInterface';
 import SongReproductionList from '../../SpotifiubySystem/SongsSystem/SongReproductionList';
 import SongInList from '../Songs/SongInList';
 import SongPlayerContext from '../Songs/SongPlayerContext';
+import useTranslation from '../../SpotifiubySystem/TranslationSystem/useTranslation';
 
 const SearchScreen = () => {
   const system = useContext(SystemContext);
   const { setCurrentlyPlayingID } = useContext(SongPlayerContext);
   const songsSystem = system.systemImplementing(SongsSystemInterface);
-  const { t } = system.systemImplementing(TranslationSystemInterface).stringTranslator();
+  const { t } = useTranslation();
   const [query, setQuery] = useState('');
   const [queriedBySong, setQueriedBySong] = useState(new SongReproductionList([]));
   const [queriedByArtist, setQueriedByArtist] = useState([]);

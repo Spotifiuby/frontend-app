@@ -2,18 +2,15 @@
 import {
   StyleSheet, View,
 } from 'react-native';
-import { useContext } from 'react';
 import CTAButton from '../Buttons/CTAButton';
 import SecondaryButton from '../Buttons/SecondaryButton';
-import TranslationSystemInterface from '../../SpotifiubySystem/TranslationSystem/TranslationSystemInterface';
-import SystemContext from '../../SpotifiubySystem/DefaultSystemContext';
 import { LOGIN_FORM, REGISTER_FORM } from './AuthenticationFormTypes';
 import { oneUnitFlex } from '../../theme';
 import FormLogo from './FormLogo';
+import useTranslation from '../../SpotifiubySystem/TranslationSystem/useTranslation';
 
 const AuthenticationOptions = ({ navigation }) => {
-  const system = useContext(SystemContext);
-  const { t } = system.systemImplementing(TranslationSystemInterface).stringTranslator();
+  const { t } = useTranslation();
 
   return (
     <View style={styles.container}>

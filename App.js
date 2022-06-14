@@ -4,6 +4,7 @@ import { WithSystem } from './src/SpotifiubySystem/DefaultSystemContext';
 import { oneUnitFlex } from './src/theme';
 
 LogBox.ignoreAllLogs(true);
+
 const App = () => {
   return (
     <SafeAreaView style={styles.main}>

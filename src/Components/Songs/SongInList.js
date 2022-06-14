@@ -6,15 +6,13 @@ import propTypes from 'prop-types';
 import theme, {
   crossCentered, textColor, secondaryText, mainCentered,
 } from '../../theme';
-import SystemContext from '../../SpotifiubySystem/DefaultSystemContext';
-import TranslationSystemInterface from '../../SpotifiubySystem/TranslationSystem/TranslationSystemInterface';
 import Song from '../../SpotifiubySystem/SongsSystem/Song';
 import CoverPicture from './CoverPicture';
 import SongPlayerContext from './SongPlayerContext';
+import useTranslation from '../../SpotifiubySystem/TranslationSystem/useTranslation';
 
 const SongInList = ({ song, isPlaying, playCallback }) => {
-  const system = useContext(SystemContext);
-  const { t } = system.systemImplementing(TranslationSystemInterface).stringTranslator();
+  const { t } = useTranslation();
   const { setCurrentlyPlayingID } = useContext(SongPlayerContext);
   return (
     <Pressable

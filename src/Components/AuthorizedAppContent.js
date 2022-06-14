@@ -12,10 +12,13 @@ const AuthorizedAppContent = ({ userType }) => {
   const songsSystem = system.systemImplementing(SongsSystemInterface);
   const [currentlyPlayingID, setCurrentlyPlayingID] = useState('');
   const [songsList, setSongsList] = useState(new SongReproductionList([]));
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     songsSystem.initialize();
+    setIsLoading(false);
   }, []);
+
   useEffect(() => {
     (async () => {
       try {
@@ -24,7 +27,8 @@ const AuthorizedAppContent = ({ userType }) => {
         console.log(JSON.stringify(e));
       }
     })();
-  }, [currentlyPlayingID]);
+  }, [currentlyPlayingID, isLoading]);
+  if (isLoading) return null;
   return (
     <WithSongPlayerContext
       setCurrentlyPlayingID={setCurrentlyPlayingID}
