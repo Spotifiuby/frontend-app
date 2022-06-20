@@ -52,7 +52,7 @@ export default class UserSystem extends GenericSystem {
       })
       .then((json) => {
         const userType = json.user_type;
-        if (!json.is_active) {
+        if (!json.is_active && userType !== UNDEFINED_USER) {
           return INVALID_USER;
         }
         if (REGISTERED_USERS.includes(userType)) {

@@ -41,7 +41,7 @@ const RegisterForm = ({ route }) => {
       <View style={styles.loginForm}>
         <FormField label={t('Email')}>
           <EmailInput
-            emaial={email}
+            email={email}
             setEmail={clearErrorAfter(setEmail)}
           />
         </FormField>
