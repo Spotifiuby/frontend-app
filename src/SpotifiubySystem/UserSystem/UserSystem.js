@@ -34,6 +34,12 @@ export default class UserSystem extends GenericSystem {
     return this.#connectionSystem().getJson([ROOT, RESOURCE, anEmail]);
   }
 
+  getSubscriptionInfoFrom(anEmail) {
+    const json = this.#connectionSystem().getJson([ROOT, RESOURCE, anEmail, 'subscriptions']);
+    json.then(console.log);
+    return json;
+  }
+
   async userType() {
     const { email } = await this.#authSystem().getAuthInfo();
 

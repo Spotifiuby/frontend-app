@@ -21,12 +21,14 @@ const SettingsScreen = ({ navigation }) => {
   const userSystem = system.systemImplementing(UserSystemInterface);
   const [authInfo, setAuthInfo] = useState('');
   const [userInfo, setUserInfo] = useState({});
+  const [subscriptionInfo, setSubscriptionInfo] = useState({});
   useEffect(() => {
     authSystem.getAuthInfo().then(setAuthInfo);
   }, []);
   useEffect(() => {
     if (!authInfo.email) return;
     userSystem.getUserInfoFrom(authInfo.email).then(setUserInfo);
+    userSystem.getSubscriptionInfoFrom(authInfo.email).then(setSubscriptionInfo);
   }, [authInfo]);
   const { t } = useTranslation();
   return (
@@ -34,7 +36,7 @@ const SettingsScreen = ({ navigation }) => {
       <Title text="Settings" />
       <SecondaryButton
         title={t('My Profile')}
-        onPress={() => navigation.navigate(MY_PROFILE, { userInfo })}
+        onPress={() => navigation.navigate(MY_PROFILE, { userInfo, subscriptionInfo })}
       />
       <LanguageChooser />
       <Divider />

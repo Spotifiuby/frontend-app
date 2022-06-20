@@ -15,7 +15,7 @@ const Profile = ({ navigation, route }) => {
   const authSystem = system.systemImplementing(AuthSystemInterface);
   const [authInfo, setAuthInfo] = useState('');
   const { t } = useTranslation();
-  const { userInfo } = route.params;
+  const { userInfo, subscriptionInfo } = route.params;
   const currentUserEmail = authInfo.email;
 
   useEffect(() => {
@@ -37,6 +37,9 @@ const Profile = ({ navigation, route }) => {
       </FormField>
       <FormField label={t('User type')}>
         <Text style={styles.userInfo}>{t(userInfo.user_type)}</Text>
+      </FormField>
+      <FormField label={t('Subscription')}>
+        <Text style={styles.userInfo}>{t(subscriptionInfo.subscription_type_id ? subscriptionInfo.subscription_type_id : 'None')}</Text>
       </FormField>
       {userInfo.email === currentUserEmail
         ? <CTAButton title="Editar" onPress={() => navigation.navigate(EDIT_USER_PROFILE, { userInfo })} />
