@@ -1,23 +1,14 @@
-import {
-  useContext, useEffect, useState,
-} from 'react';
-import {
-  FlatList, View, StyleSheet, TextInput, Text,
-} from 'react-native';
-import {
-  headerTitle,
-  oneUnitFlex, secondaryText, textField,
-} from '../../theme';
+import { useContext, useEffect, useState, } from 'react';
+import { FlatList, StyleSheet, Text, TextInput, View, } from 'react-native';
+import { headerTitle, oneUnitFlex, secondaryText, textField, } from '../../theme';
 import SystemContext from '../../SpotifiubySystem/DefaultSystemContext';
 import SongsSystemInterface from '../../SpotifiubySystem/SongsSystem/SongsSystemInterface';
 import SongReproductionList from '../../SpotifiubySystem/SongsSystem/SongReproductionList';
-import SongInList from '../Songs/SongInList';
-import SongPlayerContext from '../Songs/SongPlayerContext';
 import useTranslation from '../../SpotifiubySystem/TranslationSystem/useTranslation';
+import SongsList from '../Songs/SongsList';
 
 const SearchScreen = () => {
   const system = useContext(SystemContext);
-  const { setCurrentlyPlayingID } = useContext(SongPlayerContext);
   const songsSystem = system.systemImplementing(SongsSystemInterface);
   const { t } = useTranslation();
   const [query, setQuery] = useState('');
@@ -38,8 +29,11 @@ const SearchScreen = () => {
     }
     songsSystem.songsFilteredBy(query)
       .then((songs) => setQueriedBySong(new SongReproductionList(songs)));
-    songsSystem.artistsFilteredBy(query).then(setQueriedByArtist);
-    songsSystem.albumsFilteredBy(query).then(setQueriedByAlbum);
+    songsSystem.artistsFilteredBy(query)
+      .then(setQueriedByArtist);
+    songsSystem.albumsFilteredBy(query)
+      .then(setQueriedByAlbum);
+    console.log('Query - Songs', query, queriedBySong.songs);
     // songsSystem.playlistsFilteredBy(query).then(setQueriedByPlaylist);
   }, [query]);
 
@@ -55,35 +49,46 @@ const SearchScreen = () => {
         />
       </View>
 
-      <View style={playlistStyle.resultsContainer}>
-        {queriedBySong.songs.length > 0
-          ? (
-            <View style={playlistStyle.resultContainer}>
-              <Text style={playlistStyle.sectionTitle}>{t('Songs')}</Text>
-              <FlatList
-                data={queriedBySong.songs}
-                renderItem={({ item }) => {
-                  const song = item;
-                  return (
-                    <SongInList
-                      song={song}
-                      isPlaying={false}
-                      setCurrentlyPlayingID={setCurrentlyPlayingID}
-                    />
-                  );
-                }}
-                keyExtractor={(song) => song.id}
-              />
-            </View>
-          )
-          : null}
 
-        {queriedByArtist.length > 0
-          ? (
-            <View style={playlistStyle.resultContainer}>
+      {(queriedBySong.songs.length > 0)
+        ? (
+          <>
+            <View style={playlistStyle.resultsContainer}>
+              <Text style={playlistStyle.sectionTitle}>{t('Songs')}</Text>
+              <SongsList songsList={queriedBySong}/>
+            </View>
+          </>
+        )
+        : null}
+
+
+      {(queriedByArtist.length > 0)
+        ? (
+          <>
+            <View style={playlistStyle.resultsContainer}>
               <Text style={playlistStyle.sectionTitle}>{t('Artists')}</Text>
               <FlatList
                 data={queriedByArtist}
+                renderItem={({ item }) => {
+                  const { name } = item;
+                  return (
+                    <Text style={playlistStyle.textItem}>{name} </Text>
+                  );
+                }}
+                keyExtractor={(artist) => artist.id}
+              />
+            </View>
+          </>
+        )
+        : null}
+
+      {(queriedByAlbum.length > 0)
+        ? (
+          <>
+            <View style={playlistStyle.resultsContainer}>
+              <Text style={playlistStyle.sectionTitle}>{t('Albums')}</Text>
+              <FlatList
+                data={queriedByAlbum}
                 renderItem={({ item }) => {
                   const { name } = item;
                   return (
@@ -93,29 +98,9 @@ const SearchScreen = () => {
                 keyExtractor={(artist) => artist.id}
               />
             </View>
-          )
-          : null}
-
-        {queriedByAlbum.length > 0
-          ? (
-            <View style={playlistStyle.resultContainer}>
-              <Text style={playlistStyle.sectionTitle}>{t('Albums')}</Text>
-              <FlatList
-                data={queriedByAlbum}
-                renderItem={({ item }) => {
-                  const { name, artists, year } = item;
-                  return (
-                    <Text style={playlistStyle.textItem}>
-                      {`${name} - ${artists[0]} - ${year}`}
-                    </Text>
-                  );
-                }}
-                keyExtractor={(song) => song.id}
-              />
-            </View>
-          )
-          : null}
-      </View>
+          </>
+        )
+        : null}
     </>
   );
 };
