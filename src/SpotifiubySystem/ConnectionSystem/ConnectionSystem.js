@@ -1,6 +1,6 @@
 import AuthSystemInterface from '../AuthSystem/AuthSystemInterface';
 import {
-  buildEndpointFor, getFrom, jsonFrom, post, postJsonObject, putJsonObject,
+  buildEndpointFor, doDelete, getFrom, jsonFrom, post, postJsonObject, putJsonObject,
 } from './fetch-helpers';
 import GenericSystem from '../GenericSystem';
 import ConnectionSystemInterface from './ConnectionSystemInterface';
@@ -39,6 +39,10 @@ export default class ConnectionSystem extends GenericSystem {
 
   async postJson(resource, data) {
     return postJsonObject(buildEndpointFor(...resource), data, await this.#buildHeaders());
+  }
+
+  async doDeleteRequest(resource) {
+    return doDelete(buildEndpointFor(...resource), await this.#buildHeaders());
   }
 
   async post(resource, data, headers = {}) {

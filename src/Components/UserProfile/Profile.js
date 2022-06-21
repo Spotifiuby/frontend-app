@@ -39,10 +39,10 @@ const Profile = ({ navigation, route }) => {
         <Text style={styles.userInfo}>{t(userInfo.user_type)}</Text>
       </FormField>
       <FormField label={t('Subscription')}>
-        <Text style={styles.userInfo}>{t(subscriptionInfo.subscription_type_id ? subscriptionInfo.subscription_type_id : 'None')}</Text>
+        <Text style={styles.userInfo}>{t(subscriptionInfo?.subscription_type_id ? subscriptionInfo.subscription_type_id : '-')}</Text>
       </FormField>
       {userInfo.email === currentUserEmail
-        ? <CTAButton title="Editar" onPress={() => navigation.navigate(EDIT_USER_PROFILE, { userInfo })} />
+        ? <CTAButton title="Editar" onPress={() => navigation.navigate(EDIT_USER_PROFILE, { userInfo, subscriptionInfo })} />
         : null}
     </View>
   );

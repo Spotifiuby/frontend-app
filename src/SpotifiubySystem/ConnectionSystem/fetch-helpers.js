@@ -26,6 +26,11 @@ export function put(url, object, headers = {}) {
   return fetchObject(url, 'PUT', object, headers);
 }
 
+export function doDelete(url, headers = {}) {
+  console.log(headers)
+  return fetchObject(url, 'DELETE', null, headers);
+}
+
 export function putJsonObject(url, object, headers = {}) {
   const newHeader = { ...headers, 'Content-Type': 'application/json' };
   return put(url, JSON.stringify(object), newHeader);

@@ -83,4 +83,22 @@ export default class UserSystem extends GenericSystem {
       last_name: newUserInfo.lastName,
     });
   }
+
+  createSubscription(email, type) {
+    return this.#connectionSystem().postJson([ROOT, RESOURCE, 'subscriptions'], {
+      user_id: email,
+      subscription_type_id: type,
+    });
+  }
+
+  updateSubscription(email, type) {
+    return this.#connectionSystem().putJson([ROOT, RESOURCE, email, 'subscriptions'], {
+      user_id: email,
+      subscription_type_id: type,
+    });
+  }
+
+  removeSubscription(email) {
+    return this.#connectionSystem().doDeleteRequest([ROOT, RESOURCE, email, 'subscriptions']);
+  }
 }
