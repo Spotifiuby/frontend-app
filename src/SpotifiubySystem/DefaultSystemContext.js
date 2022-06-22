@@ -13,6 +13,7 @@ import DefaultTranslationSystem from './TranslationSystem/DefaultTranslationSyst
 import UserSystem from './UserSystem/UserSystem';
 import WebNotificationSystem from './NotificationSystem/WebNotificationSystem';
 import AndroidNotificationSystem from './NotificationSystem/AndroidNotificationSystem';
+import ChatsSystem from '../Components/Chats/ChatsSystem';
 
 const SystemContext = createContext();
 
@@ -23,6 +24,7 @@ function buildDefaultRootSystem() {
   rootSystem.register(new UserSystem());
   rootSystem.register(new ConnectionSystem(getFromSettings(GATEWAY_HEADERS)));
   rootSystem.register(new SongsSystem());
+  rootSystem.register(new ChatsSystem());
 
   if (getFromSettings(AUTHENTICATION_METHOD) === FIREBASE_AUTH_METHOD) {
     rootSystem.register(new FirebaseAuthSystem());

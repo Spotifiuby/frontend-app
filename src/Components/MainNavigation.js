@@ -10,6 +10,7 @@ import SearchScreen from './Search/SearchScreen';
 import Home from './Home/Home';
 import SettingsNavigation from './Settings/SettingsNavigation';
 import useTranslation from '../SpotifiubySystem/TranslationSystem/useTranslation';
+import ChatsScreen from './Chats/ChatsScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -26,6 +27,7 @@ const MainNavigation = ({ userType }) => {
       >
         {HomeTabScreen(t)}
         {SearchTabScreen(t)}
+        {ChatsTabScreen(t)}
         {UploadTabScreen(userType, t)}
         {SettingsTabScreen(t)}
       </Tab.Navigator>
@@ -68,6 +70,18 @@ const SearchTabScreen = (t) => {
     />
   );
 };
+
+const ChatsTabScreen = (t) => {
+  const ChatsIcon = useCallback(({ color, size }) => <Entypo name="message" size={size} color={color} />, []);
+  return (
+    <Tab.Screen
+      name={t('Chats')}
+      component={ChatsScreen}
+      options={{ tabBarIcon: ChatsIcon }}
+    />
+  );
+};
+
 const UploadTabScreen = (userType, t) => {
   const UploadIcon = useCallback(({ color, size }) => <Entypo name="squared-plus" color={color} size={size} />, []);
   return (

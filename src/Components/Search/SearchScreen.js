@@ -21,20 +21,24 @@ const SearchScreen = () => {
   }, []);
 
   useEffect(() => {
-    if (!query) {
-      setQueriedBySong(new SongReproductionList([]));
-      setQueriedByArtist([]);
-      setQueriedByAlbum([]);
-      return;
-    }
-    songsSystem.songsFilteredBy(query)
-      .then((songs) => setQueriedBySong(new SongReproductionList(songs)));
-    songsSystem.artistsFilteredBy(query)
-      .then(setQueriedByArtist);
-    songsSystem.albumsFilteredBy(query)
-      .then(setQueriedByAlbum);
-    console.log('Query - Songs', query, queriedBySong.songs);
-    // songsSystem.playlistsFilteredBy(query).then(setQueriedByPlaylist);
+    const delayDebounceFn = setTimeout(() => {
+      if (!query) {
+        setQueriedBySong(new SongReproductionList([]));
+        setQueriedByArtist([]);
+        setQueriedByAlbum([]);
+        return;
+      }
+      songsSystem.songsFilteredBy(query)
+        .then((songs) => setQueriedBySong(new SongReproductionList(songs)));
+      songsSystem.artistsFilteredBy(query)
+        .then(setQueriedByArtist);
+      songsSystem.albumsFilteredBy(query)
+        .then(setQueriedByAlbum);
+      console.log('Query - Songs', query, queriedBySong.songs);
+      // songsSystem.playlistsFilteredBy(query).then(setQueriedByPlaylist);
+    }, 500);
+
+    return () => clearTimeout(delayDebounceFn);
   }, [query]);
 
   return (
