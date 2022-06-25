@@ -11,6 +11,7 @@ import Home from './Home/Home';
 import SettingsNavigation from './Settings/SettingsNavigation';
 import useTranslation from '../SpotifiubySystem/TranslationSystem/useTranslation';
 import ChatsScreen from './Chats/ChatsScreen';
+import ChatsNavigation from './Chats/ChatsNavigation';
 
 const Tab = createBottomTabNavigator();
 
@@ -76,7 +77,7 @@ const ChatsTabScreen = (t) => {
   return (
     <Tab.Screen
       name={t('Chats')}
-      component={ChatsScreen}
+      component={ChatsNavigation}
       options={{ tabBarIcon: ChatsIcon }}
     />
   );

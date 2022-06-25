@@ -8,8 +8,9 @@ import { Dimensions, Pressable, StyleSheet, View } from 'react-native';
 import theme, { crossCentered, headerTitle, oneUnitFlex, textColor } from '../../theme';
 import SongsList from '../Songs/SongsList';
 import { Entypo, FontAwesome } from '@expo/vector-icons';
+import { OPEN_CHAT } from './ChatsNavigationOptions';
 
-const ChatsScreen = () => {
+const ChatsScreen = ({navigation, route}) => {
   const system = useContext(SystemContext);
   const authSystem = system.systemImplementing(AuthSystemInterface);
   const chatsSystem = system.systemImplementing(ChatsSystemInterface);
@@ -28,16 +29,16 @@ const ChatsScreen = () => {
       <View style={styles.container}>
         <Title text="Chats"/>
         <ScrollView>
-          {
+          {(chats.length > 0) ? (
             chats.map((chat) => {
               return (
-                <Pressable key={chat.id} style={styles.chatInfoContainer} onPress={() => {}}>
+                <Pressable key={chat.id} style={styles.chatInfoContainer} onPress={() => navigation.navigate(OPEN_CHAT, { c:chat })}>
                   <Entypo name="chat" size={30} color={theme.color.secondaryText}/>
-                  <Text style={styles.text} numberOfLines={1} ellipsisMode="clip">{chat.id}</Text>
+                  <Text style={styles.text} numberOfLines={1} ellipsisMode="clip">{chatsSystem.getChatName(chat, authInfo.email)}</Text>
                 </Pressable>
               );
             })
-          }
+          ) : null}
         </ScrollView>
       </View>
     </>
