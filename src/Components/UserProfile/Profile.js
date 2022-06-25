@@ -41,6 +41,9 @@ const Profile = ({ navigation, route }) => {
       <FormField label={t('Subscription')}>
         <Text style={styles.userInfo}>{t(subscriptionInfo?.subscription_type_id ? subscriptionInfo.subscription_type_id : '-')}</Text>
       </FormField>
+      <FormField label={t('Wallet Address')}>
+        <Text style={styles.userInfoWalletAddress}>{t(userInfo.wallet_address)}</Text>
+      </FormField>
       {userInfo.email === currentUserEmail
         ? <CTAButton title="Editar" onPress={() => navigation.navigate(EDIT_USER_PROFILE, { userInfo, subscriptionInfo })} />
         : null}
@@ -57,6 +60,11 @@ const styles = StyleSheet.create({
   userInfo: {
     ...textColor,
     fontSize: 20,
+    paddingBottom: 30,
+  },
+  userInfoWalletAddress: {
+    ...textColor,
+    fontSize: 13,
     paddingBottom: 30,
   },
 });
