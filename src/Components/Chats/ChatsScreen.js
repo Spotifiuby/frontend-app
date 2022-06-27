@@ -20,6 +20,9 @@ const ChatsScreen = ({navigation, route}) => {
   useEffect(() => {
     authSystem.getAuthInfo()
       .then(setAuthInfo);
+  }, []);
+
+  useEffect(() => {
     chatsSystem.getChats(authInfo.email)
       .then(setChats);
   }, []);
