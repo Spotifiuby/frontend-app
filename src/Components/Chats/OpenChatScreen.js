@@ -1,10 +1,8 @@
 import { useContext, useEffect, useState, } from 'react';
 import AuthSystemInterface from '../../SpotifiubySystem/AuthSystem/AuthSystemInterface';
 import SystemContext from '../../SpotifiubySystem/DefaultSystemContext';
-import { StyleSheet, TextInput, View } from 'react-native';
+import { ScrollView, StyleSheet, TextInput, View } from 'react-native';
 import {
-  crossCentered,
-  headerTitle,
   oneUnitFlex,
   paddedContainer,
   textColor,
@@ -14,8 +12,9 @@ import Title from '../Text/Title';
 import ChatsSystemInterface from './ChatsSystemInterface';
 import { Text } from 'react-native-web';
 import CTAButton from '../Buttons/CTAButton';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 
-const OpenChatScreen = ({navigation, route}) => {
+const OpenChatScreen = ({_, route}) => {
   const system = useContext(SystemContext);
   const { c } = route.params;
   const [chat, setChat] = useState(c);
@@ -35,6 +34,11 @@ const OpenChatScreen = ({navigation, route}) => {
       .then(setChat);
   }, []);
 
+  /*useFocusEffect(() => {
+    chatsSystem.getChatById(c.id)
+      .then(setChat);
+  })*/
+
   function sendMessage() {
     chatsSystem.sendChatMessage(chat.id, message)
       .then(() => {
@@ -43,7 +47,7 @@ const OpenChatScreen = ({navigation, route}) => {
       .then(() => {
         chatsSystem.getChatById(c.id)
           .then(setChat);
-      }).catch(console.error('Error sending message'));
+      });
   }
 
   // TODO Add scroll
@@ -53,7 +57,7 @@ const OpenChatScreen = ({navigation, route}) => {
     <>
       <View style={styles.container}>
         <Title text={chatsSystem.getChatName(chat, authInfo.email)}/>
-        <View style={styles.textContainer}>
+        <ScrollView style={styles.textContainer} contentContainerStyle={{ alignItems: 'flex-start' }}>
           {
             chat.messages.map((message, i) => {
               return (
@@ -61,15 +65,15 @@ const OpenChatScreen = ({navigation, route}) => {
               );
             })
           }
-          <TextInput
-            style={styles.chatInput}
-            value={message}
-            onChangeText={setMessage}
-            multiline={true}
-            placeholder="Type your message..."
-          />
-          <CTAButton style={styles.chatSend} title="Send" onPress={sendMessage}/>
-        </View>
+        </ScrollView>
+        <TextInput
+          style={styles.chatInput}
+          value={message}
+          onChangeText={setMessage}
+          multiline={true}
+          placeholder="Type your message..."
+        />
+        <CTAButton style={styles.chatSend} title="Send" onPress={sendMessage}/>
       </View>
     </>
   );
@@ -83,21 +87,24 @@ const styles = StyleSheet.create({
   },
   textContainer: {
     ...oneUnitFlex,
-    alignItems: 'flex-start',
     width: '100%',
+    height: '50%',
+    marginBottom: 35,
     backgroundColor: '#242121',
   },
   textReceived: {
     ...textField,
     marginLeft: '1%',
     alignSelf: 'flex-start',
-    marginBottom: '1%',
+    marginBottom: 2,
+    marginTop: 2,
   },
   textSent: {
     ...textField,
     marginRight: '1%',
     alignSelf: 'flex-end',
-    marginBottom: '1%',
+    marginBottom: 2,
+    marginTop: 2,
   },
   chatInput: {
     ...textColor,
@@ -105,7 +112,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#333',
     position: 'absolute',
     bottom: 0,
-    width: '100%',
+    width: '91%',
   },
   chatSend: {
     ...textColor,
@@ -114,7 +121,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 0,
     left: '80%',
-    width: '20%',
+    width: '16%',
     borderRadius: 0,
   },
 });

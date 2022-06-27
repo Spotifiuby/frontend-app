@@ -15,6 +15,11 @@ export default class ChatsSystem extends GenericSystem {
     return this.parent.systemImplementing(ConnectionSystemInterface);
   }
 
+  createChat(otherUserId) {
+    console.log('Creating chat', otherUserId);
+    return this.#connectionSystem().postJson([ROOT, RESOURCE], { 'user': otherUserId });
+  }
+
   getChats() {
     console.log('Getting chats');
     return this.#connectionSystem().getJson([ROOT, RESOURCE]);

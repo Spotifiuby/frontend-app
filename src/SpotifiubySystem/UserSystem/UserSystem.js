@@ -30,6 +30,16 @@ export default class UserSystem extends GenericSystem {
     return userType && userType !== INVALID_USER && userType !== UNDEFINED_USER;
   }
 
+  getUsers(query) {
+    console.log('getUsers: ', query);
+    let p1 = this.#connectionSystem().getJson([ROOT, RESOURCE], { email: query, is_active: true });
+    let p2 = this.#connectionSystem().getJson([ROOT, RESOURCE], { first_name: query, is_active: true });
+    let p3 = this.#connectionSystem().getJson([ROOT, RESOURCE], { last_name: query, is_active: true });
+    let p4 =this.#connectionSystem().getJson([ROOT, RESOURCE], { email: query, is_active: true });
+
+    return Promise.all([p1, p2, p3, p4]).then((responses) => {return responses.flat()})
+  }
+
   getUserInfoFrom(anEmail) {
     return this.#connectionSystem().getJson([ROOT, RESOURCE, anEmail]);
   }

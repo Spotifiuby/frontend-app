@@ -5,12 +5,19 @@ import Title from '../Text/Title';
 import ChatsSystemInterface from './ChatsSystemInterface';
 import { ScrollView, Text } from 'react-native-web';
 import { Dimensions, Pressable, StyleSheet, View } from 'react-native';
-import theme, { crossCentered, headerTitle, oneUnitFlex, textColor } from '../../theme';
-import SongsList from '../Songs/SongsList';
-import { Entypo, FontAwesome } from '@expo/vector-icons';
-import { OPEN_CHAT } from './ChatsNavigationOptions';
+import theme, {
+  crossCentered,
+  headerTitle,
+  oneUnitFlex,
+  paddedContainer,
+  textColor
+} from '../../theme';
+import { Entypo} from '@expo/vector-icons';
+import { NEW_CHAT, OPEN_CHAT } from './ChatsNavigationOptions';
+import CTAButton from '../Buttons/CTAButton';
+import { useFocusEffect } from '@react-navigation/native';
 
-const ChatsScreen = ({navigation, route}) => {
+const ChatsScreen = ({navigation, _}) => {
   const system = useContext(SystemContext);
   const authSystem = system.systemImplementing(AuthSystemInterface);
   const chatsSystem = system.systemImplementing(ChatsSystemInterface);
@@ -27,22 +34,30 @@ const ChatsScreen = ({navigation, route}) => {
       .then(setChats);
   }, []);
 
+  /*useFocusEffect(() => {
+    chatsSystem.getChats(authInfo.email)
+      .then(setChats);
+  });*/
+
   return (
     <>
-      <View style={styles.container}>
+      <ScrollView style={styles.scrollContainer} contentContainerStyle={{ alignItems: 'flex-start' }}>
         <Title text="Chats"/>
-        <ScrollView>
-          {(chats.length > 0) ? (
-            chats.map((chat) => {
-              return (
-                <Pressable key={chat.id} style={styles.chatInfoContainer} onPress={() => navigation.navigate(OPEN_CHAT, { c:chat })}>
-                  <Entypo name="chat" size={30} color={theme.color.secondaryText}/>
-                  <Text style={styles.text} numberOfLines={1} ellipsisMode="clip">{chatsSystem.getChatName(chat, authInfo.email)}</Text>
-                </Pressable>
-              );
-            })
-          ) : null}
-        </ScrollView>
+        {(chats.length > 0) ? (
+          chats.map((chat) => {
+            return (
+              <Pressable key={chat.id} style={styles.chatInfoContainer}
+                         onPress={() => navigation.navigate(OPEN_CHAT, { c: chat })}>
+                <Entypo name="chat" size={30} color={theme.color.secondaryText}/>
+                <Text style={styles.text} numberOfLines={1}
+                      ellipsisMode="clip">{chatsSystem.getChatName(chat, authInfo.email)}</Text>
+              </Pressable>
+            );
+          })
+        ) : null}
+      </ScrollView>
+      <View style={styles.container}>
+        <CTAButton style={styles.newChatButton} title="New Chat" onPress={() => navigation.navigate(NEW_CHAT, {})}/>
       </View>
     </>
   );
@@ -53,6 +68,11 @@ const styles = StyleSheet.create({
   container: {
     ...oneUnitFlex,
     alignItems: 'flex-start',
+    paddingHorizontal: 15,
+  },
+  scrollContainer: {
+    ...oneUnitFlex,
+    // alignItems: 'flex-start',
     paddingHorizontal: 15,
   },
   text: {
@@ -70,6 +90,14 @@ const styles = StyleSheet.create({
     ...crossCentered,
     flexDirection: 'row',
     marginVertical: 11,
+  },
+  newChatButton: {
+    ...textColor,
+    ...paddedContainer,
+    backgroundColor: '#333',
+    position: 'absolute',
+    bottom: 0,
+    marginBottom: 10,
   },
 });
 
