@@ -34,10 +34,14 @@ const ChatsScreen = ({navigation, _}) => {
       .then(setChats);
   }, []);
 
-  /*useFocusEffect(() => {
+  useFocusEffect(() => {
     chatsSystem.getChats(authInfo.email)
-      .then(setChats);
-  });*/
+      .then((c) => {
+        if (JSON.stringify(c) !== JSON.stringify(chats)) {
+          setChats(c);
+        }
+      });
+  });
 
   return (
     <>

@@ -34,10 +34,14 @@ const OpenChatScreen = ({_, route}) => {
       .then(setChat);
   }, []);
 
-  /*useFocusEffect(() => {
+  useFocusEffect(() => {
     chatsSystem.getChatById(c.id)
-      .then(setChat);
-  })*/
+      .then((r) => {
+        if (JSON.stringify(r) !== JSON.stringify(chat)) {
+          setChat(r);
+        }
+      });
+  });
 
   function sendMessage() {
     chatsSystem.sendChatMessage(chat.id, message)
