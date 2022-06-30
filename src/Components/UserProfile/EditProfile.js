@@ -2,13 +2,14 @@
 
 import { useContext, useState } from 'react';
 import {
-  StyleSheet, TextInput, View,
+  ScrollView,
+  StyleSheet, Text, TextInput, View,
 } from 'react-native';
 import SystemContext from '../../SpotifiubySystem/DefaultSystemContext';
 import useNotificationSystem from '../../SpotifiubySystem/NotificationSystem/useNotificationSystem';
 import useTranslation from '../../SpotifiubySystem/TranslationSystem/useTranslation';
 import UserSystemInterface from '../../SpotifiubySystem/UserSystem/UserSystemInterface';
-import { fullWidth, oneUnitFlex, textField } from '../../theme';
+import theme, { fullWidth, oneUnitFlex, textColor, textField } from '../../theme';
 import CTAButton from '../Buttons/CTAButton';
 import FormField from '../Inputs/FormField';
 import { MY_PROFILE } from '../Settings/SettingsNavigationOptions';
@@ -39,9 +40,10 @@ const EditProfile = ({ navigation, route }) => {
   const [firstName, setFirstName] = useState(userInfo.first_name);
   const [lastName, setLastName] = useState(userInfo.last_name);
   const [isProcessing, setIsProcessing] = useState(false);
+
   return (
     <>
-      <View style={styles.container}>
+      <ScrollView style={styles.container}>
         <Title text="Edit Profile" />
         <FormField label={t('First Name')}>
           <TextInput
@@ -74,10 +76,38 @@ const EditProfile = ({ navigation, route }) => {
               .finally(() => setIsProcessing(false));
           }}
         />
-      </View>
-      <View style={styles.container}>
         <Title text="Edit Subscription" />
-        <FormField label={t('Subscription')}>
+        <Text style={styles.userInfoWalletAddress}>
+          Unlock premium Artists with our monthly subscription plans.
+        </Text>
+        <View style={styles.tableContainer}>
+          <View style={styles.tableHeader}>
+            <View style={styles.tableInnerHeader}><Text style={styles.tableText}>Type</Text></View>
+            <View style={styles.tableInnerHeader}><Text style={styles.tableText}>Description</Text></View>
+            <View style={styles.tableInnerHeader}><Text style={styles.tableText}>Cost (monthly)</Text></View>
+          </View>
+          <View style={styles.tableRow}>
+            <View style={styles.tableInnerRow}><Text style={styles.tableText}>None</Text></View>
+            <View style={styles.tableInnerRow}><Text style={styles.tableText}>Listen to our free artists</Text></View>
+            <View style={styles.tableInnerRow}><Text style={styles.tableTextCost}>Free</Text></View>
+          </View>
+          <View style={styles.tableRow}>
+            <View style={styles.tableInnerRow}><Text style={styles.tableText}>Basic</Text></View>
+            <View style={styles.tableInnerRow}><Text style={styles.tableText}>Access to our free and basic premium artists</Text></View>
+            <View style={styles.tableInnerRow}><Text style={styles.tableTextCost}>0.000001 ETH</Text></View>
+          </View>
+          <View style={styles.tableRow}>
+            <View style={styles.tableInnerRow}><Text style={styles.tableText}>Pro</Text></View>
+            <View style={styles.tableInnerRow}><Text style={styles.tableText}>Access to more than 50% of the catalog</Text></View>
+            <View style={styles.tableInnerRow}><Text style={styles.tableTextCost}>0.000002 ETH</Text></View>
+          </View>
+          <View style={styles.tableRow}>
+            <View style={styles.tableInnerRow}><Text style={styles.tableText}>Premium</Text></View>
+            <View style={styles.tableInnerRow}><Text style={styles.tableText}>Enjoy full access to all artists!</Text></View>
+            <View style={styles.tableInnerRow}><Text style={styles.tableTextCost}>0.000003 ETH</Text></View>
+          </View>
+        </View>
+        <FormField label={t('Choose your subscription')}>
           <Picker
             style={styles.textInput}
             selectedValue={subscriptionType}
@@ -88,6 +118,9 @@ const EditProfile = ({ navigation, route }) => {
             <Picker.Item label="Pro" value="Pro" />
             <Picker.Item label="Premium" value="Premium" />
           </Picker>
+        </FormField>
+        <FormField label={t('Wallet Address')}>
+          <Text style={styles.userInfoWalletAddress}>{t(userInfo.wallet_address)}</Text>
         </FormField>
         <CTAButton
           title={t('Submit')}
@@ -111,7 +144,7 @@ const EditProfile = ({ navigation, route }) => {
               .finally(() => setIsProcessing(false));
           }}
         />
-      </View>
+      </ScrollView>
     </>
   );
 };
@@ -124,6 +157,60 @@ const styles = StyleSheet.create({
   textInput: {
     ...textField,
     ...fullWidth,
+  },
+  text: {
+    ...textField,
+  },
+  userInfoWalletAddress: {
+    ...textColor,
+    fontSize: 13,
+    paddingBottom: 30,
+  },
+  tableHead: {
+    height: 40,
+    backgroundColor: '#eee'
+  },
+  tableData: {
+    margin: 6
+  },
+  tableContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 10
+  },
+  tableRow: {
+    flex: 1,
+    alignSelf: 'stretch',
+    flexDirection: 'row',
+    marginBottom: 15,
+  },
+  tableHeader: {
+    flex: 1,
+    alignSelf: 'stretch',
+    flexDirection: 'row',
+    borderBottomColor: '#adadad',
+    borderBottomWidth: StyleSheet.hairlineWidth,
+  },
+  tableInnerHeader: {
+    flex: 1,
+    alignSelf: 'stretch',
+  },
+  tableInnerRow: {
+    flex: 1,
+    alignSelf: 'stretch',
+    marginBottom: 5,
+  },
+  tableText: {
+    ...textColor,
+    alignSelf: 'center',
+    alignItems: 'center'
+  },
+  tableTextCost: {
+    ...textColor,
+    alignSelf: 'center',
+    alignItems: 'center',
+    marginLeft: 10,
   },
 });
 export default EditProfile;

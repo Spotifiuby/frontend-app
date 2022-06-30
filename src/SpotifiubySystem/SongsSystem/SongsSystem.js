@@ -6,6 +6,7 @@ import GenericSystem from '../GenericSystem';
 import getFromSettings, { SONGS_URL } from '../settings';
 import SongsSystemInterface from './SongsSystemInterface';
 
+const SONGS_BASE_URL = 'https://spotifiuby-backend-songs.herokuapp.com'
 const ROOT = 'songs-api';
 const SONGS_RESOURCE = 'songs';
 const ALBUMS_RESOURCE = 'albums';
@@ -84,11 +85,12 @@ export default class SongsSystem extends GenericSystem {
   }
 
   async play(aSongID) {
+    // TODO: fix
     await soundObject.unloadAsync();
     if (!aSongID) return;
     try {
       const source = await {
-        uri: `${getFromSettings(SONGS_URL)}/${SONGS_RESOURCE}/${aSongID}/${CONTENT}`,
+        uri: `${SONGS_BASE_URL}/${SONGS_RESOURCE}/${aSongID}/${CONTENT}`,
         headers: (await this.#connectionSystem().withHeaders({})).headers,
       };
       // console.log([
@@ -99,7 +101,6 @@ export default class SongsSystem extends GenericSystem {
       //   `${getFromSettings(SONGS_URL)}/${SONGS_RESOURCE}/${aSongID}/${CONTENT}`,
       //   (await this.#connectionSystem().withHeaders({})).headers,
       // );
-      console.log(source);
 
       console.log(source.headers);
       console.log(source.uri);
