@@ -82,9 +82,9 @@ const EditProfile = ({ navigation, route }) => {
         </Text>
         <View style={styles.tableContainer}>
           <View style={styles.tableHeader}>
-            <View style={styles.tableInnerHeader}><Text style={styles.tableText}>Type</Text></View>
-            <View style={styles.tableInnerHeader}><Text style={styles.tableText}>Description</Text></View>
-            <View style={styles.tableInnerHeader}><Text style={styles.tableText}>Cost (monthly)</Text></View>
+            <View style={styles.tableInnerHeader}><Text style={styles.tableTextHeader}>Type</Text></View>
+            <View style={styles.tableInnerHeader}><Text style={styles.tableTextHeader}>Description</Text></View>
+            <View style={styles.tableInnerHeader}><Text style={styles.tableTextHeader}>Cost (monthly)</Text></View>
           </View>
           <View style={styles.tableRow}>
             <View style={styles.tableInnerRow}><Text style={styles.tableText}>None</Text></View>
@@ -189,8 +189,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignSelf: 'stretch',
     flexDirection: 'row',
-    borderBottomColor: '#adadad',
-    borderBottomWidth: StyleSheet.hairlineWidth,
   },
   tableInnerHeader: {
     flex: 1,
@@ -204,7 +202,13 @@ const styles = StyleSheet.create({
   tableText: {
     ...textColor,
     alignSelf: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+  },
+  tableTextHeader: {
+    ...textColor,
+    alignSelf: 'center',
+    alignItems: 'center',
+    textDecorationLine: 'underline',
   },
   tableTextCost: {
     ...textColor,
