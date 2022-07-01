@@ -16,17 +16,20 @@ import useSongsSystem from '../../SpotifiubySystem/SongsSystem/useSongsSystem';
 import useNotificationSystem from '../../SpotifiubySystem/NotificationSystem/useNotificationSystem';
 
 const chooseFileSong = async (setSongFile) => {
-  const result = await getDocumentAsync({ type: '*/*', copyToCacheDirectory: true })
+  return await getDocumentAsync({
+    type: '*/*',
+    copyToCacheDirectory: true
+  })
     .then((response) => {
       if (response.type !== 'success') return;
+      console.log('GET-DOC', response);
       setSongFile(response);
     });
-  return result;
 };
 
 const SongUploader = ({ navigation, route }) => {
-  const songsSytem = useSongsSystem();
-  const notificationSytem = useNotificationSystem();
+  const songsSystem = useSongsSystem();
+  const notificationSystem = useNotificationSystem();
   const artistId = route.params.id;
   const { t } = useTranslation();
   const [songFile, setSongFile] = useState({});
@@ -43,7 +46,7 @@ const SongUploader = ({ navigation, route }) => {
               style={style.uploadButtonContainer}
               onPress={() => chooseFileSong(setSongFile)}
             >
-              <Octicons name="upload" size={20} color={theme.color.foreground} />
+              <Octicons name="cloud-upload" size={20} color={theme.color.foreground} />
               <Text style={style.uploadButtonText}>{t('Choose file')}</Text>
             </RoundedButton>
             <Text style={style.text}>{songFile.name || t('No file selected yet')}</Text>
@@ -73,13 +76,14 @@ const SongUploader = ({ navigation, route }) => {
           onPress={
             () => {
               setLoadingStatus(true);
-              songsSytem.uploadSong(songFile, { name: title, genre, artists: [artistId] })
+              songsSystem.uploadSong(songFile, { name: title, genre, artists: [artistId] })
                 .then(() => {
-                  notificationSytem.show(t('Song uploaded successfully'));
+                  notificationSystem.show(t('Song uploaded successfully'));
                   navigation.goBack();
                 })
-                .catch(() => {
-                  notificationSytem.show(t('An error has occurred while uploading song'));
+                .catch((e) => {
+                  console.log(e)
+                  notificationSystem.show(t('An error has occurred while uploading song'));
                 })
                 .finally(() => setLoadingStatus(false));
             }

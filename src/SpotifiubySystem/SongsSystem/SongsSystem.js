@@ -116,11 +116,17 @@ export default class SongsSystem extends GenericSystem {
   }
 
   async #uploadSongFile(aSongFile, songID) {
-    const { headers } = (await this.#connectionSystem().withHeaders({}));
-    const formData = new FormData();
-    const { name, mimeType, uri } = aSongFile;
-    formData.append('file', { uri, name, type: mimeType });
-    await post(`${getFromSettings(SONGS_URL)}/${SONGS_RESOURCE}/${songID}/${CONTENT}`, formData, headers);
+    let formData = new FormData();
+    formData.append("file", aSongFile.output[0], aSongFile.name);
+
+    let requestOptions = {
+      method: 'POST',
+      headers: (await this.#connectionSystem().withHeaders({})).headers,
+      body: formData,
+      redirect: 'follow'
+    };
+
+    await fetch(`${SONGS_BASE_URL}/${SONGS_RESOURCE}/${songID}/${CONTENT}`, requestOptions)
   }
 
   async uploadSong(songFile, metadata) {

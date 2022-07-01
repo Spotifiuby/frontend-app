@@ -9,6 +9,7 @@ import CTAButton from '../Buttons/CTAButton';
 // import SongsList from '../Songs/SongsList';
 import Title from '../Text/Title';
 import { SONG_UPLOADER } from './UploadNavigationOptions';
+import { oneUnitFlex } from '../../theme';
 
 const ArtistProfile = ({ navigation, route }) => {
   const { id } = route.params;
@@ -30,18 +31,27 @@ const ArtistProfile = ({ navigation, route }) => {
   return (
     <View style={styles.container}>
       {isLoading
-        ? <ActivityIndicator />
+        ? <ActivityIndicator style={{ alignSelf: 'center' }}/>
         : (
           <>
             <Title text={artistInfo.name} />
             {(artistInfo.user_id === currentUser)
               ? (
-                <CTAButton
-                  title={t('Add song')}
-                  onPress={() => {
-                    navigation.navigate(SONG_UPLOADER, { id });
-                  }}
-                />
+                <>
+                  <CTAButton style={styles.button}
+                    title={t('Add song')}
+                    onPress={() => {
+                      navigation.navigate(SONG_UPLOADER, { id });
+                    }}
+                  />
+                  <CTAButton style={styles.button}
+                    title={t('Add album')}
+                    onPress={() => {
+                      //navigation.navigate(SONG_UPLOADER, { id });
+                      console.log("Implement me!");
+                    }}
+                  />
+                </>
               )
               : null}
             {/* <SongsList songsList={artistInfo.songs} /> */}
@@ -53,8 +63,11 @@ const ArtistProfile = ({ navigation, route }) => {
 
 const styles = StyleSheet.create({
   container: {
-    // ...oneUnitFlex,
+    ...oneUnitFlex,
     paddingHorizontal: 15,
+  },
+  button: {
+    marginBottom: 20,
   },
 });
 
