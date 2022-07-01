@@ -6,12 +6,11 @@ import propTypes from 'prop-types';
 import theme from '../theme';
 import { UPLOADER_USER } from '../SpotifiubySystem/UserSystem/UserSystem';
 import { UploaderNavigation } from './Uploader/UploaderScreen';
-import SearchScreen from './Search/SearchScreen';
 import Home from './Home/Home';
 import SettingsNavigation from './Settings/SettingsNavigation';
 import useTranslation from '../SpotifiubySystem/TranslationSystem/useTranslation';
-import ChatsScreen from './Chats/ChatsScreen';
 import ChatsNavigation from './Chats/ChatsNavigation';
+import SearchNavigation from './Search/SearchNavigation';
 
 const Tab = createBottomTabNavigator();
 
@@ -66,7 +65,7 @@ const SearchTabScreen = (t) => {
   return (
     <Tab.Screen
       name={t('Search')}
-      component={SearchScreen}
+      component={SearchNavigation}
       options={{ tabBarIcon: SearchIcon }}
     />
   );

@@ -10,8 +10,10 @@ import UserSystemInterface from '../../SpotifiubySystem/UserSystem/UserSystemInt
 import AuthSystemInterface from '../../SpotifiubySystem/AuthSystem/AuthSystemInterface';
 import Title from '../Text/Title';
 import { Entypo } from '@expo/vector-icons';
+import { EDIT_USER_PROFILE, MY_PROFILE } from '../Settings/SettingsNavigationOptions';
+import { USER_PROFILE } from './SearchNavigationOptions';
 
-const SearchScreen = () => {
+const SearchScreen = ({navigation, route}) => {
   const system = useContext(SystemContext);
   const songsSystem = system.systemImplementing(SongsSystemInterface);
   const userSystem = system.systemImplementing(UserSystemInterface);
@@ -140,6 +142,9 @@ const SearchScreen = () => {
               {queriedUsers.map((user) => {
                 return (
                   <Pressable key={user.id} onPress={() => {
+                    let userInfo = user
+                    let subscriptionInfo = null
+                    navigation.navigate(USER_PROFILE, { userInfo, subscriptionInfo })
                   }}>
                     <Text style={playlistStyle.textItem}>{user.email}</Text>
                   </Pressable>

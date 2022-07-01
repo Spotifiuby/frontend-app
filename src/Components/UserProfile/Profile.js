@@ -3,11 +3,12 @@ import { View, StyleSheet, Text } from 'react-native';
 import AuthSystemInterface from '../../SpotifiubySystem/AuthSystem/AuthSystemInterface';
 import SystemContext from '../../SpotifiubySystem/DefaultSystemContext';
 import useTranslation from '../../SpotifiubySystem/TranslationSystem/useTranslation';
-import { oneUnitFlex, textColor } from '../../theme';
+import { oneUnitFlex, paddedContainer, textColor } from '../../theme';
 import CTAButton from '../Buttons/CTAButton';
 import FormField from '../Inputs/FormField';
 import { EDIT_USER_PROFILE } from '../Settings/SettingsNavigationOptions';
 import Title from '../Text/Title';
+import { NEW_CHAT } from '../Chats/ChatsNavigationOptions';
 
 /* eslint-disable react/prop-types */
 const Profile = ({ navigation, route }) => {
@@ -22,7 +23,7 @@ const Profile = ({ navigation, route }) => {
     authSystem.getAuthInfo().then(setAuthInfo);
   }, []);
 
-  if (!userInfo.email) return null;
+  if (!userInfo?.email) return null;
   return (
     <View style={styles.container}>
       <Title text="Profile" />
@@ -35,18 +36,29 @@ const Profile = ({ navigation, route }) => {
       <FormField label={t('Last Name')}>
         <Text style={styles.userInfo}>{userInfo.last_name}</Text>
       </FormField>
-      <FormField label={t('User type')}>
-        <Text style={styles.userInfo}>{t(userInfo.user_type)}</Text>
-      </FormField>
-      <FormField label={t('Subscription')}>
-        <Text style={styles.userInfo}>{t(subscriptionInfo?.subscription_type_id ? subscriptionInfo.subscription_type_id : '-')}</Text>
-      </FormField>
-      <FormField label={t('Wallet Address')}>
-        <Text style={styles.userInfoWalletAddress}>{t(userInfo.wallet_address)}</Text>
-      </FormField>
-      {userInfo.email === currentUserEmail
-        ? <CTAButton title="Editar" onPress={() => navigation.navigate(EDIT_USER_PROFILE, { userInfo, subscriptionInfo })} />
-        : null}
+      {
+        currentUserEmail === userInfo.email ? (
+          <>
+            <FormField label={t('User type')}>
+              <Text style={styles.userInfo}>{t(userInfo.user_type)}</Text>
+            </FormField>
+            <FormField label={t('Subscription')}>
+              <Text style={styles.userInfo}>{t(subscriptionInfo?.subscription_type_id ? subscriptionInfo.subscription_type_id : '-')}</Text>
+            </FormField>
+            <FormField label={t('Wallet Address')} hide={userInfo.email !== currentUserEmail}>
+              <Text style={styles.userInfoWalletAddress}>{t(userInfo.wallet_address)}</Text>
+            </FormField>
+            <CTAButton title="Editar" onPress={() => navigation.navigate(EDIT_USER_PROFILE, {
+              userInfo,
+              subscriptionInfo
+            })}/>
+          </>
+        ) : (
+          <CTAButton style={styles.newChatButton} title="Open Chat" onPress={() => {
+            console.log('Implement me!');
+          }}/>
+        )
+      }
     </View>
   );
 };
@@ -67,6 +79,14 @@ const styles = StyleSheet.create({
     fontSize: 13,
     paddingBottom: 30,
   },
+  newChatButton: {
+    ...textColor,
+    ...paddedContainer,
+    backgroundColor: '#333',
+    position: 'absolute',
+    bottom: 0,
+    marginBottom: 10,
+  }
 });
 
 export default Profile;
