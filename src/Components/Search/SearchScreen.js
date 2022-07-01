@@ -1,23 +1,38 @@
 import { useContext, useEffect, useState, } from 'react';
-import { FlatList, StyleSheet, Text, TextInput, View, } from 'react-native';
-import { headerTitle, oneUnitFlex, secondaryText, textField, } from '../../theme';
+import { FlatList, Pressable, ScrollView, StyleSheet, Text, TextInput, View, } from 'react-native';
+import theme, { headerTitle, oneUnitFlex, secondaryText, textField, } from '../../theme';
 import SystemContext from '../../SpotifiubySystem/DefaultSystemContext';
 import SongsSystemInterface from '../../SpotifiubySystem/SongsSystem/SongsSystemInterface';
 import SongReproductionList from '../../SpotifiubySystem/SongsSystem/SongReproductionList';
 import useTranslation from '../../SpotifiubySystem/TranslationSystem/useTranslation';
 import SongsList from '../Songs/SongsList';
+import UserSystemInterface from '../../SpotifiubySystem/UserSystem/UserSystemInterface';
+import AuthSystemInterface from '../../SpotifiubySystem/AuthSystem/AuthSystemInterface';
+import Title from '../Text/Title';
+import { Entypo } from '@expo/vector-icons';
 
 const SearchScreen = () => {
   const system = useContext(SystemContext);
   const songsSystem = system.systemImplementing(SongsSystemInterface);
+  const userSystem = system.systemImplementing(UserSystemInterface);
+  const authSystem = system.systemImplementing(AuthSystemInterface);
+
   const { t } = useTranslation();
   const [query, setQuery] = useState('');
+  const [authInfo, setAuthInfo] = useState({});
   const [queriedBySong, setQueriedBySong] = useState(new SongReproductionList([]));
   const [queriedByArtist, setQueriedByArtist] = useState([]);
   const [queriedByAlbum, setQueriedByAlbum] = useState([]);
+  const [queriedUsers, setQueriedUsers] = useState([]);
   // const [queriedByPlaylist, setQueriedByPlaylist] = useState([]);
+
   useEffect(() => {
     songsSystem.initialize();
+  }, []);
+
+  useEffect(() => {
+    authSystem.getAuthInfo()
+      .then(setAuthInfo);
   }, []);
 
   useEffect(() => {
@@ -26,20 +41,31 @@ const SearchScreen = () => {
         setQueriedBySong(new SongReproductionList([]));
         setQueriedByArtist([]);
         setQueriedByAlbum([]);
+        setQueriedUsers([])
         return;
       }
+
+      userSystem.getUsers(query).then(filterUsers)
       songsSystem.songsFilteredBy(query)
         .then((songs) => setQueriedBySong(new SongReproductionList(songs)));
       songsSystem.artistsFilteredBy(query)
         .then(setQueriedByArtist);
       songsSystem.albumsFilteredBy(query)
         .then(setQueriedByAlbum);
-      console.log('Query - Songs', query, queriedBySong.songs);
       // songsSystem.playlistsFilteredBy(query).then(setQueriedByPlaylist);
     }, 500);
 
     return () => clearTimeout(delayDebounceFn);
   }, [query]);
+
+  function filterUsers(users) {
+    let unique = [...new Map(users
+      .filter((user) => (user.email !== authInfo.email))
+      .map(item => [item['email'], item]))
+      .values()];
+
+    setQueriedUsers(unique);
+  }
 
   return (
     <>
@@ -105,6 +131,23 @@ const SearchScreen = () => {
           </>
         )
         : null}
+
+      {
+        (queriedUsers.length > 0) ? (
+          <>
+            <View style={playlistStyle.resultsContainer}>
+              <Text style={playlistStyle.sectionTitle}>{t('Users')}</Text>
+              {queriedUsers.map((user) => {
+                return (
+                  <Pressable key={user.id} onPress={() => {
+                  }}>
+                    <Text style={playlistStyle.textItem}>{user.email}</Text>
+                  </Pressable>
+                );
+              })}
+            </View>
+          </>
+        ) : null}
     </>
   );
 };
@@ -135,6 +178,7 @@ const playlistStyle = StyleSheet.create({
   textItem: {
     ...secondaryText,
     fontSize: 16,
+    marginBottom: 5,
   },
 });
 
