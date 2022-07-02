@@ -1,12 +1,12 @@
 /* eslint-disable react/prop-types */
-import { FontAwesome, Ionicons } from '@expo/vector-icons';
+import { AntDesign, FontAwesome, Ionicons } from '@expo/vector-icons';
 import { useFocusEffect } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import {
   useCallback, useContext, useEffect, useState,
 } from 'react';
 import {
-  ScrollView, View, Text, StyleSheet, Pressable, ActivityIndicator,
+  ScrollView, View, Text, StyleSheet, Pressable, ActivityIndicator, Image,
 } from 'react-native';
 import AuthSystemInterface from '../../SpotifiubySystem/AuthSystem/AuthSystemInterface';
 import SystemContext from '../../SpotifiubySystem/DefaultSystemContext';
@@ -21,6 +21,7 @@ import SongUploader from './SongUploader';
 import {
   ADD_NEW_ARTIST, ARTIST_PROFILE, SONG_UPLOADER, UPLOAD_DASHBOARD,
 } from './UploadNavigationOptions';
+import RandomImage from '../images/RandomImage';
 
 const UploaderScreen = ({ navigation }) => {
   const system = useContext(SystemContext);
@@ -59,7 +60,7 @@ const UploaderScreen = ({ navigation }) => {
                     }}
                   >
                     <View style={styles.cardItem}>
-                      <FontAwesome name="microphone" size={50} color={theme.color.overlayTextColor} />
+                      <RandomImage id={id}/>
                     </View>
                     <Text style={styles.cardTitle}>{name}</Text>
                   </Pressable>
@@ -70,7 +71,7 @@ const UploaderScreen = ({ navigation }) => {
                 onPress={() => navigation.navigate(ADD_NEW_ARTIST, {})}
               >
                 <View style={styles.cardItem}>
-                  <Ionicons name="add-circle-outline" size={60} color={theme.color.overlayTextColor} />
+                  <AntDesign name="pluscircleo" size={50} color={theme.color.overlayTextColor} />
                 </View>
               </Pressable>
             </View>
@@ -96,7 +97,7 @@ export const UploaderNavigation = () => {
 const styles = StyleSheet.create({
   cardContainer: {
     flexDirection: 'column',
-    margin: 7,
+    margin: 5,
     width: '30%',
   },
   cardItem: {
@@ -108,11 +109,13 @@ const styles = StyleSheet.create({
     backgroundColor: theme.color.secondarybackground,
     borderRadius: 5,
     flexDirection: 'row',
-    height: 150,
+    height: 80,
+    width: 80,
     marginBottom: 5,
   },
   cardTitle: {
     ...textColor,
+    alignSelf: 'center',
   },
   container: {
     ...oneUnitFlex,
@@ -123,7 +126,8 @@ const styles = StyleSheet.create({
     ...fullWidth,
     flexDirection: 'row',
     flexWrap: 'wrap',
-    paddingHorizontal: 15,
+    'justify-content': 'space-around',
+    paddingHorizontal: 5,
   },
 });
 
