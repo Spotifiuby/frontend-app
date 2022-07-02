@@ -109,7 +109,7 @@ export default class SongsSystem extends GenericSystem {
       console.log(source.headers);
       console.log(source.uri);
       await soundObject.loadAsync(source);
-      await soundObject.playAsync();
+      await soundObject.setStatusAsync({ shouldPlay: true });
     } catch (e) {
       console.log(JSON.stringify(e));
     }
