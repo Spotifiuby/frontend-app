@@ -68,6 +68,10 @@ export default class SongsSystem extends GenericSystem {
     return this.#connectionSystem().getJson([ROOT, SONGS_RESOURCE]);
   }
 
+  getSongsByArtist(artistId) {
+    return this.#connectionSystem().getJson([ROOT, SONGS_RESOURCE], {artist_id: artistId});
+  }
+
   songsFilteredBy(aQuery) {
     return this.#connectionSystem().getJson([ROOT, SONGS_RESOURCE], { q: aQuery });
   }

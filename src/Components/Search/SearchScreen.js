@@ -8,10 +8,7 @@ import useTranslation from '../../SpotifiubySystem/TranslationSystem/useTranslat
 import SongsList from '../Songs/SongsList';
 import UserSystemInterface from '../../SpotifiubySystem/UserSystem/UserSystemInterface';
 import AuthSystemInterface from '../../SpotifiubySystem/AuthSystem/AuthSystemInterface';
-import Title from '../Text/Title';
-import { Entypo } from '@expo/vector-icons';
-import { EDIT_USER_PROFILE, MY_PROFILE } from '../Settings/SettingsNavigationOptions';
-import { USER_PROFILE } from './SearchNavigationOptions';
+import { ARTIST_PROFILE, USER_PROFILE } from './SearchNavigationOptions';
 
 const SearchScreen = ({navigation, route}) => {
   const system = useContext(SystemContext);
@@ -26,7 +23,6 @@ const SearchScreen = ({navigation, route}) => {
   const [queriedByArtist, setQueriedByArtist] = useState([]);
   const [queriedByAlbum, setQueriedByAlbum] = useState([]);
   const [queriedUsers, setQueriedUsers] = useState([]);
-  // const [queriedByPlaylist, setQueriedByPlaylist] = useState([]);
 
   useEffect(() => {
     songsSystem.initialize();
@@ -54,7 +50,6 @@ const SearchScreen = ({navigation, route}) => {
         .then(setQueriedByArtist);
       songsSystem.albumsFilteredBy(query)
         .then(setQueriedByAlbum);
-      // songsSystem.playlistsFilteredBy(query).then(setQueriedByPlaylist);
     }, 500);
 
     return () => clearTimeout(delayDebounceFn);
@@ -103,8 +98,13 @@ const SearchScreen = ({navigation, route}) => {
                 data={queriedByArtist}
                 renderItem={({ item }) => {
                   const { name } = item;
+                  const { id } = item;
                   return (
-                    <Text style={playlistStyle.textItem}>{name} </Text>
+                    <Pressable key={id} onPress={() => {
+                      navigation.navigate(ARTIST_PROFILE, { id });
+                    }}>
+                      <Text style={playlistStyle.textItem}>{name} </Text>
+                    </Pressable>
                   );
                 }}
                 keyExtractor={(artist) => artist.id}

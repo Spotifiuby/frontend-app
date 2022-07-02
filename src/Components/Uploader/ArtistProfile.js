@@ -1,8 +1,8 @@
 /* eslint-disable react/prop-types */
 
 import { t } from 'i18next';
-import { useEffect, useState } from 'react';
-import { ActivityIndicator, StyleSheet, View } from 'react-native';
+import { useCallback, useEffect, useState } from 'react';
+import { ActivityIndicator, ScrollView, StyleSheet, View } from 'react-native';
 import useAuthSystem from '../../SpotifiubySystem/AuthSystem/useAuthSystem';
 import useSongsSystem from '../../SpotifiubySystem/SongsSystem/useSongsSystem';
 import CTAButton from '../Buttons/CTAButton';
@@ -10,6 +10,9 @@ import CTAButton from '../Buttons/CTAButton';
 import Title from '../Text/Title';
 import { SONG_UPLOADER } from './UploadNavigationOptions';
 import { oneUnitFlex } from '../../theme';
+import { useFocusEffect } from '@react-navigation/native';
+import SongReproductionList from '../../SpotifiubySystem/SongsSystem/SongReproductionList';
+import SongsList from '../Songs/SongsList';
 
 const ArtistProfile = ({ navigation, route }) => {
   const { id } = route.params;
@@ -18,16 +21,27 @@ const ArtistProfile = ({ navigation, route }) => {
   const [artistInfo, setArtistInfo] = useState({});
   const [currentUser, setCurrentUser] = useState('');
   const [isLoading, setIsLoading] = useState(true);
+  const [songsList, setSongsList] = useState(new SongReproductionList([]));
+
   useEffect(() => {
     songsSystem.infoFromArtistIdentifiedBy(id).then((info) => {
       setArtistInfo(info);
       setIsLoading(false);
     });
   }, []);
+
   useEffect(() => {
     authSystem.getAuthInfo()
       .then(({ email }) => setCurrentUser(email));
   }, []);
+
+  useFocusEffect(
+    useCallback(() => {
+      songsSystem.getSongsByArtist(id)
+        .then((songs) => setSongsList(new SongReproductionList(songs)));
+    }, []),
+  );
+
   return (
     <View style={styles.container}>
       {isLoading
@@ -35,6 +49,11 @@ const ArtistProfile = ({ navigation, route }) => {
         : (
           <>
             <Title text={artistInfo.name} />
+            <ScrollView>
+              {(songsList.songs.length !== 0)
+                ? <SongsList songsList={songsList}/>
+                : null}
+            </ScrollView>
             {(artistInfo.user_id === currentUser)
               ? (
                 <>
