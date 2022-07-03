@@ -89,7 +89,6 @@ export default class SongsSystem extends GenericSystem {
   }
 
   async play(aSongID) {
-    // TODO: fix
     await soundObject.unloadAsync();
     if (!aSongID) return;
     try {
@@ -158,5 +157,11 @@ export default class SongsSystem extends GenericSystem {
     const songs = (await this.songsFilteredBy(artistInfo.name))
       .filter((song) => song.artists.includes(artistInfo.name));
     return { ...artistInfo, songs };
+  }
+
+  async createAlbum(metadata) {
+    const metadataResponse = await this.#connectionSystem().postJson([ROOT, ALBUMS_RESOURCE], metadata);
+    const songResponse = await metadataResponse.json();
+    console.log(songResponse);
   }
 }

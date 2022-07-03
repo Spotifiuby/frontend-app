@@ -18,8 +18,9 @@ import Title from '../Text/Title';
 import AddNewArtist from './AddNewArtist';
 import ArtistProfile from './ArtistProfile';
 import SongUploader from './SongUploader';
+import AlbumCreator from './AlbumCreator';
 import {
-  ADD_NEW_ARTIST, ARTIST_PROFILE, SONG_UPLOADER, UPLOAD_DASHBOARD,
+  ADD_NEW_ARTIST, ARTIST_PROFILE, SONG_UPLOADER, UPLOAD_DASHBOARD, ALBUM_CREATOR,
 } from './UploadNavigationOptions';
 import RandomImage from '../images/RandomImage';
 
@@ -90,6 +91,7 @@ export const UploaderNavigation = () => {
       <Stack.Screen name={ADD_NEW_ARTIST} component={AddNewArtist} />
       <Stack.Screen name={ARTIST_PROFILE} component={ArtistProfile} />
       <Stack.Screen name={SONG_UPLOADER} component={SongUploader} />
+      <Stack.Screen name={ALBUM_CREATOR} component={AlbumCreator} />
     </Stack.Navigator>
   );
 };

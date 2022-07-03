@@ -8,7 +8,7 @@ import useSongsSystem from '../../SpotifiubySystem/SongsSystem/useSongsSystem';
 import CTAButton from '../Buttons/CTAButton';
 // import SongsList from '../Songs/SongsList';
 import Title from '../Text/Title';
-import { SONG_UPLOADER } from './UploadNavigationOptions';
+import { SONG_UPLOADER, ALBUM_CREATOR } from './UploadNavigationOptions';
 import { oneUnitFlex } from '../../theme';
 import { useFocusEffect } from '@react-navigation/native';
 import SongReproductionList from '../../SpotifiubySystem/SongsSystem/SongReproductionList';
@@ -66,8 +66,7 @@ const ArtistProfile = ({ navigation, route }) => {
                   <CTAButton style={styles.button}
                     title={t('Add album')}
                     onPress={() => {
-                      //navigation.navigate(SONG_UPLOADER, { id });
-                      console.log("Implement me!");
+                      navigation.navigate(ALBUM_CREATOR, { id });
                     }}
                   />
                 </>
