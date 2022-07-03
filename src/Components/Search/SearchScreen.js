@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState, } from 'react';
 import { FlatList, Pressable, ScrollView, StyleSheet, Text, TextInput, View, } from 'react-native';
-import theme, { headerTitle, oneUnitFlex, secondaryText, textField, } from '../../theme';
+import { headerTitle, secondaryText, textField, } from '../../theme';
 import SystemContext from '../../SpotifiubySystem/DefaultSystemContext';
 import SongsSystemInterface from '../../SpotifiubySystem/SongsSystem/SongsSystemInterface';
 import SongReproductionList from '../../SpotifiubySystem/SongsSystem/SongReproductionList';
@@ -10,7 +10,7 @@ import UserSystemInterface from '../../SpotifiubySystem/UserSystem/UserSystemInt
 import AuthSystemInterface from '../../SpotifiubySystem/AuthSystem/AuthSystemInterface';
 import { ARTIST_PROFILE, USER_PROFILE } from './SearchNavigationOptions';
 
-const SearchScreen = ({navigation, route}) => {
+const SearchScreen = ({navigation, _}) => {
   const system = useContext(SystemContext);
   const songsSystem = system.systemImplementing(SongsSystemInterface);
   const userSystem = system.systemImplementing(UserSystemInterface);
@@ -76,83 +76,92 @@ const SearchScreen = ({navigation, route}) => {
         />
       </View>
 
+      <ScrollView>
+        {(queriedBySong.songs.length > 0)
+          ? (
+            <>
+              <View style={playlistStyle.resultsContainer}>
+                <Text style={playlistStyle.sectionTitle}>{t('Songs')}</Text>
+                <SongsList songsList={queriedBySong}/>
+              </View>
+            </>
+          )
+          : null}
 
-      {(queriedBySong.songs.length > 0)
-        ? (
-          <>
-            <View style={playlistStyle.resultsContainer}>
-              <Text style={playlistStyle.sectionTitle}>{t('Songs')}</Text>
-              <SongsList songsList={queriedBySong}/>
-            </View>
-          </>
-        )
-        : null}
+        {(queriedByArtist.length > 0)
+          ? (
+            <>
+              <View style={playlistStyle.resultsContainer}>
+                <Text style={playlistStyle.sectionTitle}>{t('Artists')}</Text>
+                <FlatList
+                  data={queriedByArtist}
+                  renderItem={({ item }) => {
+                    const { name } = item;
+                    const { id } = item;
+                    return (
+                      <Pressable key={id} onPress={() => {
+                        navigation.navigate(ARTIST_PROFILE, { id });
+                      }}>
+                        <Text style={playlistStyle.textItem}>{name} </Text>
+                      </Pressable>
+                    );
+                  }}
+                  keyExtractor={(artist) => artist.id}
+                />
+              </View>
+            </>
+          )
+          : null}
+
+        {(queriedByAlbum.length > 0)
+          ? (
+            <>
+              <View style={playlistStyle.resultsContainer}>
+                <Text style={playlistStyle.sectionTitle}>{t('Albums')}</Text>
+                <FlatList
+                  data={queriedByAlbum}
+                  renderItem={({ item }) => {
+                    const { name, id } = item;
+                    return (
+                      <Pressable key={id} onPress={() => {
+                        //navigation.navigate(ARTIST_PROFILE, { id });
+                        console.log('Implement me!')
+                      }}>
+                        <Text style={playlistStyle.textItem}>{name}</Text>
+                      </Pressable>
+                    );
+                  }}
+                  keyExtractor={(artist) => artist.id}
+                />
+              </View>
+            </>
+          )
+          : null}
 
 
-      {(queriedByArtist.length > 0)
-        ? (
-          <>
-            <View style={playlistStyle.resultsContainer}>
-              <Text style={playlistStyle.sectionTitle}>{t('Artists')}</Text>
-              <FlatList
-                data={queriedByArtist}
-                renderItem={({ item }) => {
-                  const { name } = item;
-                  const { id } = item;
+        {
+          (queriedUsers.length > 0) ? (
+            <>
+              <View style={playlistStyle.resultsContainer}>
+                <Text style={playlistStyle.sectionTitle}>{t('Users')}</Text>
+                {queriedUsers.map((user) => {
                   return (
-                    <Pressable key={id} onPress={() => {
-                      navigation.navigate(ARTIST_PROFILE, { id });
+                    <Pressable key={user.id} onPress={() => {
+                      let userInfo = user;
+                      let subscriptionInfo = null;
+                      navigation.navigate(USER_PROFILE, {
+                        userInfo,
+                        subscriptionInfo
+                      });
                     }}>
-                      <Text style={playlistStyle.textItem}>{name} </Text>
+                      <Text style={playlistStyle.textItem}>{user.email}</Text>
                     </Pressable>
                   );
-                }}
-                keyExtractor={(artist) => artist.id}
-              />
-            </View>
-          </>
-        )
-        : null}
-
-      {(queriedByAlbum.length > 0)
-        ? (
-          <>
-            <View style={playlistStyle.resultsContainer}>
-              <Text style={playlistStyle.sectionTitle}>{t('Albums')}</Text>
-              <FlatList
-                data={queriedByAlbum}
-                renderItem={({ item }) => {
-                  const { name } = item;
-                  return (
-                    <Text style={playlistStyle.textItem}>{name}</Text>
-                  );
-                }}
-                keyExtractor={(artist) => artist.id}
-              />
-            </View>
-          </>
-        )
-        : null}
-
-      {
-        (queriedUsers.length > 0) ? (
-          <>
-            <View style={playlistStyle.resultsContainer}>
-              <Text style={playlistStyle.sectionTitle}>{t('Users')}</Text>
-              {queriedUsers.map((user) => {
-                return (
-                  <Pressable key={user.id} onPress={() => {
-                    let userInfo = user
-                    let subscriptionInfo = null
-                    navigation.navigate(USER_PROFILE, { userInfo, subscriptionInfo })
-                  }}>
-                    <Text style={playlistStyle.textItem}>{user.email}</Text>
-                  </Pressable>
-                );
-              })}
-            </View>
-          </>
-        ) : null}
+                })}
+              </View>
+            </>
+          ) : null}
+      </ScrollView>
     </>
   );
 };
@@ -167,8 +176,8 @@ const playlistStyle = StyleSheet.create({
     flex: 0,
   },
   resultsContainer: {
-    ...oneUnitFlex,
-    justifyContent: 'flex-start',
+    //...oneUnitFlex,
+    justifyContent: 'flex',
     paddingHorizontal: 20,
   },
   searchInput: {
@@ -178,7 +187,7 @@ const playlistStyle = StyleSheet.create({
   sectionTitle: {
     ...headerTitle,
     marginBottom: 5,
-    marginTop: 5,
+    marginTop: 10,
   },
   textItem: {
     ...secondaryText,
