@@ -132,7 +132,7 @@ export default class SongsSystem extends GenericSystem {
     await fetch(`${SONGS_BASE_URL}/${SONGS_RESOURCE}/${songID}/${CONTENT}`, requestOptions)
   }
 
-  async uploadSong(songFile, metadata) {
+  async uploadSong(songFile, metadata, album) {
     const metadataResponse = await this.#connectionSystem()
       .postJson(
         [ROOT, SONGS_RESOURCE],
@@ -141,6 +141,9 @@ export default class SongsSystem extends GenericSystem {
     const songResponse = await metadataResponse.json();
     console.log(songResponse);
     await this.#uploadSongFile(songFile, songResponse.id);
+    if (album !== "-") {
+      await this.addSongToAlbum(album, songResponse.id);
+    }
   }
 
   async getArtistsOwnedBy(anEmail) {
@@ -163,5 +166,16 @@ export default class SongsSystem extends GenericSystem {
     const metadataResponse = await this.#connectionSystem().postJson([ROOT, ALBUMS_RESOURCE], metadata);
     const songResponse = await metadataResponse.json();
     console.log(songResponse);
+  }
+
+  async addSongToAlbum(albumId, songId) {
+    const metadataResponse = await this.#connectionSystem().putJson([ROOT, ALBUMS_RESOURCE, albumId, SONGS_RESOURCE, '?song_id='+songId]);
+    const songResponse = await metadataResponse.json();
+    console.log(songResponse);
+  }
+
+  async getAlbumsByArtist(artistId) {
+    const artist = await this.#connectionSystem().getJson([ROOT, ARTISTS_RESOURCE, artistId]);
+    return (await this.albumsFilteredBy('')).filter((album) => album.artists.some(artist_name => artist_name === artist.name ));
   }
 }

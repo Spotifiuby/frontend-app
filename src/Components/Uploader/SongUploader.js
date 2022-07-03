@@ -1,8 +1,10 @@
 /* eslint-disable react/prop-types */
 import {
-  StyleSheet, View, Text, TextInput, ActivityIndicator,
+  StyleSheet, View, Text, TextInput, ActivityIndicator, 
 } from 'react-native';
-import { useState } from 'react';
+import { Picker } from 'react-native-web';
+import { useState, useEffect, useCallback } from 'react';
+import { useFocusEffect } from '@react-navigation/native';
 import { getDocumentAsync } from 'expo-document-picker';
 import { Octicons } from '@expo/vector-icons';
 import theme, {
@@ -35,7 +37,25 @@ const SongUploader = ({ navigation, route }) => {
   const [songFile, setSongFile] = useState({});
   const [title, setTitle] = useState('');
   const [genre, setGenre] = useState('');
+  const [album, setAlbum] = useState('');
   const [loadingStatus, setLoadingStatus] = useState(false);
+  const [albumList, setAlbumList] = useState([]);
+  useFocusEffect(
+    useCallback(() => {
+      songsSystem.getAlbumsByArtist(artistId).then((fetchedAlbums) => {
+        console.log(fetchedAlbums);
+        setAlbumList(fetchedAlbums);
+      });
+    }, [artistId]),
+  );
+
+  const renderAlbumList = () => {
+    return albumList.map((album) => {
+      return <Picker.Item label={album.name} value={album.id} key={album.id}/>;
+    }
+    );
+  }
+
   return (
     <View style={style.container}>
       <Title text="Upload a song" />
@@ -70,13 +90,22 @@ const SongUploader = ({ navigation, route }) => {
             accessibilityLabel={t('Genre input')}
           />
         </FormField>
-
+        <FormField label={t('Album')}>
+          <Picker
+            style={style.textField}
+            selectedValue={album}
+            onValueChange={setAlbum}
+          >
+            <Picker.Item label="-" value="-" />
+            {renderAlbumList(artistId)}
+          </Picker>
+        </FormField>
         <RoundedButton
           style={style.confirmActionButton}
           onPress={
             () => {
               setLoadingStatus(true);
-              songsSystem.uploadSong(songFile, { name: title, genre, artists: [artistId] })
+              songsSystem.uploadSong(songFile, { name: title, genre, artists: [artistId] }, album)
                 .then(() => {
                   notificationSystem.show(t('Song uploaded successfully'));
                   navigation.goBack();
