@@ -1,6 +1,6 @@
 import React from 'react';
 
-const RandomPic = ({ id }) => {
+const RandomImage = ({ id }) => {
   return (
     <img style={{
       width: '100%',
@@ -10,4 +10,4 @@ const RandomPic = ({ id }) => {
   );
 };
 
-export default RandomPic;
+export default RandomImage;

@@ -1,10 +1,19 @@
-import { FontAwesome } from '@expo/vector-icons';
-import theme from '../../theme';
+import RandomImage from '../images/RandomImage';
+import { View } from 'react-native';
+import { crossCentered, mainCentered, oneUnitFlex, textColor } from '../../theme';
 
 // eslint-disable-next-line react/prop-types
-const CoverPicture = () => {
+const CoverPicture = ({ song }) => {
   return (
-    <FontAwesome name="music" size={30} color={theme.color.secondaryText} />
+    <View style={{
+      ...oneUnitFlex,
+      ...textColor,
+      ...crossCentered,
+      ...mainCentered,
+      aspectRatio: 1,
+    }}>
+      <RandomImage id={song.id}/>
+    </View>
   );
 };
 

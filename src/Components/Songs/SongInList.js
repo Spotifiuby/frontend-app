@@ -22,7 +22,9 @@ const SongInList = ({ song, isPlaying, playCallback }) => {
         playCallback();
       }}
     >
-      <CoverPicture song={song} style={styles.songImage} />
+      <View style={styles.songImage}>
+        <CoverPicture song={song}/>
+      </View>
       {isPlaying ? <Text style={styles.songPlayingOverlay}>{t('Playing')}</Text> : null}
       <View style={styles.songInfoTextContainer}>
         <Text
