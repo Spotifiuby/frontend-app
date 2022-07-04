@@ -15,9 +15,19 @@ import FormLogo from './FormLogo';
 import AuthSystemInterface from '../../SpotifiubySystem/AuthSystem/AuthSystemInterface';
 import EmailInput from '../Inputs/EmailInput';
 import useTranslation from '../../SpotifiubySystem/TranslationSystem/useTranslation';
+import SecondaryButton from '../Buttons/SecondaryButton';
+
 
 function registerFromUIAction(authSystem, credentials, afterRegistrationSuccess, setErrorMessage) {
   authSystem.register(credentials)
+    .then(() => {
+      afterRegistrationSuccess();
+    })
+    .catch(({ message }) => setErrorMessage(message));
+}
+
+function registerFromFacebook(authSystem, credentials, afterRegistrationSuccess, setErrorMessage) {
+  authSystem.useFacebookAuth()
     .then(() => {
       afterRegistrationSuccess();
     })
@@ -71,6 +81,16 @@ const RegisterForm = ({ route }) => {
             title={t('Register')}
             accessibilityLabel={t('Register button')}
             disabled={!email || !password || password !== repeatedPassword}
+          />
+          <SecondaryButton
+            title={t('Sign up using Facebook')}
+            onPress={() => {
+              registerFromFacebook(
+                authSystem,
+                afterRegistrationSuccess,
+                setErrorMessage,
+              );
+            }}
           />
         </View>
         <ErrorCard errorMessage={t(errorMessage)} />

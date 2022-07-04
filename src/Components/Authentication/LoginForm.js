@@ -15,9 +15,16 @@ import AuthSystemInterface from '../../SpotifiubySystem/AuthSystem/AuthSystemInt
 import FormLogo from './FormLogo';
 import EmailInput from '../Inputs/EmailInput';
 import useTranslation from '../../SpotifiubySystem/TranslationSystem/useTranslation';
+import SecondaryButton from '../Buttons/SecondaryButton';
+
 
 function loginUIAction(authSystem, email, password, setErrorMessage) {
   authSystem.login({ email, password })
+    .catch(({ message }) => setErrorMessage(message));
+}
+
+function loginWithFacebook(authSystem, setErrorMessage) {
+  authSystem.useFacebookAuth()
     .catch(({ message }) => setErrorMessage(message));
 }
 
@@ -51,6 +58,15 @@ const LoginForm = () => {
             title={t('Login')}
             accessibilityLabel={t('Login button')}
             disabled={!email || !password}
+          />
+          <SecondaryButton
+            title={t('Sign in using Facebook')}
+            onPress={() => {
+              loginWithFacebook(
+                authSystem,
+                setErrorMessage,
+              );
+            }}
           />
         </View>
         <ErrorCard errorMessage={t(errorMessage)} />
