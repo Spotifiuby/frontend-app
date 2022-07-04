@@ -7,7 +7,7 @@ import SongInList from './SongInList';
 import SongReproductionList from '../../SpotifiubySystem/SongsSystem/SongReproductionList';
 import SongPlayerContext from './SongPlayerContext';
 
-const SongsList = ({ songsList }) => {
+const SongsList = ({ songsList, showArtist=true }) => {
   const { setSongsList } = useContext(SongPlayerContext);
 
   return (
@@ -19,6 +19,7 @@ const SongsList = ({ songsList }) => {
             song={song}
             isPlaying={false}
             playCallback={() => setSongsList(songsList)}
+            showArtist={showArtist}
           />
         );
       })}

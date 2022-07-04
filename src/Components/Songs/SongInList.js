@@ -11,7 +11,7 @@ import CoverPicture from './CoverPicture';
 import SongPlayerContext from './SongPlayerContext';
 import useTranslation from '../../SpotifiubySystem/TranslationSystem/useTranslation';
 
-const SongInList = ({ song, isPlaying, playCallback }) => {
+const SongInList = ({ song, isPlaying, playCallback, showArtist=true }) => {
   const { t } = useTranslation();
   const { setCurrentlyPlayingID } = useContext(SongPlayerContext);
   return (
@@ -34,7 +34,9 @@ const SongInList = ({ song, isPlaying, playCallback }) => {
         >
           {song.title}
         </Text>
-        <Text style={styles.songArtist}>{song.artistsDisplayableForm()}</Text>
+        {showArtist ? (
+          <Text style={styles.songArtist}>{song.artistsDisplayableForm()}</Text>
+        ) : null}
       </View>
     </Pressable>
   );

@@ -3,7 +3,7 @@ import { View } from 'react-native';
 import { crossCentered, mainCentered, oneUnitFlex, textColor } from '../../theme';
 
 // eslint-disable-next-line react/prop-types
-const CoverPicture = ({ song }) => {
+const CoverPicture = ({ song, album }) => {
   return (
     <View style={{
       ...oneUnitFlex,
@@ -12,7 +12,7 @@ const CoverPicture = ({ song }) => {
       ...mainCentered,
       aspectRatio: 1,
     }}>
-      <RandomImage id={song.id}/>
+      <RandomImage id={(song?.id)??(album?.id)??1}/>
     </View>
   );
 };

@@ -1,6 +1,22 @@
 import { useContext, useEffect, useState, } from 'react';
-import { FlatList, Pressable, ScrollView, StyleSheet, Text, TextInput, View, } from 'react-native';
-import { headerTitle, secondaryText, textField, } from '../../theme';
+import {
+  Dimensions,
+  FlatList,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from 'react-native';
+import {
+  crossCentered,
+  headerTitle,
+  mainCentered,
+  secondaryText,
+  textColor,
+  textField,
+} from '../../theme';
 import SystemContext from '../../SpotifiubySystem/DefaultSystemContext';
 import SongsSystemInterface from '../../SpotifiubySystem/SongsSystem/SongsSystemInterface';
 import SongReproductionList from '../../SpotifiubySystem/SongsSystem/SongReproductionList';
@@ -9,6 +25,8 @@ import SongsList from '../Songs/SongsList';
 import UserSystemInterface from '../../SpotifiubySystem/UserSystem/UserSystemInterface';
 import AuthSystemInterface from '../../SpotifiubySystem/AuthSystem/AuthSystemInterface';
 import { ARTIST_PROFILE, USER_PROFILE } from './SearchNavigationOptions';
+import RandomImage from '../images/RandomImage';
+import CoverPicture from '../Songs/CoverPicture';
 
 const SearchScreen = ({navigation, _}) => {
   const system = useContext(SystemContext);
@@ -66,9 +84,9 @@ const SearchScreen = ({navigation, _}) => {
 
   return (
     <>
-      <View style={playlistStyle.container}>
+      <View style={styles.container}>
         <TextInput
-          style={playlistStyle.searchInput}
+          style={styles.searchInput}
           value={query}
           onChangeText={setQuery}
           placeholder={t('Search')}
@@ -80,8 +98,8 @@ const SearchScreen = ({navigation, _}) => {
         {(queriedBySong.songs.length > 0)
           ? (
             <>
-              <View style={playlistStyle.resultsContainer}>
-                <Text style={playlistStyle.sectionTitle}>{t('Songs')}</Text>
+              <View style={styles.resultsContainer}>
+                <Text style={styles.sectionTitle}>{t('Songs')}</Text>
                 <SongsList songsList={queriedBySong}/>
               </View>
             </>
@@ -91,8 +109,8 @@ const SearchScreen = ({navigation, _}) => {
         {(queriedByArtist.length > 0)
           ? (
             <>
-              <View style={playlistStyle.resultsContainer}>
-                <Text style={playlistStyle.sectionTitle}>{t('Artists')}</Text>
+              <View style={styles.resultsContainer}>
+                <Text style={styles.sectionTitle}>{t('Artists')}</Text>
                 <FlatList
                   data={queriedByArtist}
                   renderItem={({ item }) => {
@@ -102,7 +120,7 @@ const SearchScreen = ({navigation, _}) => {
                       <Pressable key={id} onPress={() => {
                         navigation.navigate(ARTIST_PROFILE, { id });
                       }}>
-                        <Text style={playlistStyle.textItem}>{name} </Text>
+                        <Text style={styles.textItem}>{name} </Text>
                       </Pressable>
                     );
                   }}
@@ -116,18 +134,25 @@ const SearchScreen = ({navigation, _}) => {
         {(queriedByAlbum.length > 0)
           ? (
             <>
-              <View style={playlistStyle.resultsContainer}>
-                <Text style={playlistStyle.sectionTitle}>{t('Albums')}</Text>
+              <View style={styles.resultsContainer}>
+                <Text style={styles.sectionTitle}>{t('Albums')}</Text>
                 <FlatList
                   data={queriedByAlbum}
                   renderItem={({ item }) => {
                     const { name, id } = item;
+                    const artists = item.artists.join(', ');
                     return (
-                      <Pressable key={id} onPress={() => {
+                      <Pressable key={id} style={styles.albumPressable} onPress={() => {
                         //navigation.navigate(ARTIST_PROFILE, { id });
                         console.log('Implement me!')
                       }}>
-                        <Text style={playlistStyle.textItem}>{name}</Text>
+                        <View style={styles.albumImage}>
+                          <CoverPicture album={item}/>
+                        </View>
+                        <View style={styles.albumInfo}>
+                          <Text style={styles.albumName}>{name}</Text>
+                          <Text style={styles.albumArtistName}>{artists}</Text>
+                        </View>
                       </Pressable>
                     );
                   }}
@@ -142,8 +167,8 @@ const SearchScreen = ({navigation, _}) => {
         {
           (queriedUsers.length > 0) ? (
             <>
-              <View style={playlistStyle.resultsContainer}>
-                <Text style={playlistStyle.sectionTitle}>{t('Users')}</Text>
+              <View style={styles.resultsContainer}>
+                <Text style={styles.sectionTitle}>{t('Users')}</Text>
                 {queriedUsers.map((user) => {
                   return (
                     <Pressable key={user.id} onPress={() => {
@@ -154,7 +179,7 @@ const SearchScreen = ({navigation, _}) => {
                         subscriptionInfo
                       });
                     }}>
-                      <Text style={playlistStyle.textItem}>{user.email}</Text>
+                      <Text style={styles.textItem}>{user.email}</Text>
                     </Pressable>
                   );
                 })}
@@ -166,7 +191,7 @@ const SearchScreen = ({navigation, _}) => {
   );
 };
 
-const playlistStyle = StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
     // ...oneUnitFlex,
     paddingHorizontal: 15,
@@ -193,6 +218,28 @@ const playlistStyle = StyleSheet.create({
     ...secondaryText,
     fontSize: 16,
     marginBottom: 5,
+  },
+  albumImage: {
+    height: 60,
+    width: 60,
+  },
+  albumPressable: {
+    ...crossCentered,
+    flexDirection: 'row',
+    marginVertical: 11,
+  },
+  albumInfo: {
+    flexDirection: 'column',
+  },
+  albumName: {
+    ...textColor,
+    ...mainCentered,
+    fontWeight: 'bold',
+    marginLeft: 15,
+  },
+  albumArtistName: {
+    ...secondaryText,
+    marginLeft: 15
   },
 });
 

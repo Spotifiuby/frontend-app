@@ -17,10 +17,18 @@ import CTAButton from '../Buttons/CTAButton';
 // import SongsList from '../Songs/SongsList';
 import Title from '../Text/Title';
 import { SONG_UPLOADER, ALBUM_CREATOR } from './UploadNavigationOptions';
-import { headerTitle, oneUnitFlex, secondaryText } from '../../theme';
+import {
+  crossCentered,
+  headerTitle,
+  mainCentered,
+  oneUnitFlex,
+  secondaryText,
+  textColor
+} from '../../theme';
 import { useFocusEffect } from '@react-navigation/native';
 import SongReproductionList from '../../SpotifiubySystem/SongsSystem/SongReproductionList';
 import SongsList from '../Songs/SongsList';
+import CoverPicture from '../Songs/CoverPicture';
 
 const ArtistProfile = ({ navigation, route }) => {
   const { id } = route.params;
@@ -71,11 +79,16 @@ const ArtistProfile = ({ navigation, route }) => {
                           id
                         } = item;
                         return (
-                          <Pressable key={id} onPress={() => {
+                          <Pressable key={id} style={styles.albumPressable} onPress={() => {
                             //navigation.navigate(ARTIST_PROFILE, { id });
-                            console.log('Implement me!');
+                            console.log('Implement me!')
                           }}>
-                            <Text style={styles.textItem}>{name}</Text>
+                            <View style={styles.albumImage}>
+                              <CoverPicture album={item}/>
+                            </View>
+                            <View style={styles.albumInfo}>
+                              <Text style={styles.albumName}>{name}</Text>
+                            </View>
                           </Pressable>
                         );
                       }}
@@ -89,7 +102,7 @@ const ArtistProfile = ({ navigation, route }) => {
                 ? (
                   <>
                     <Text style={styles.sectionTitle}>{t('Songs')}</Text>
-                    <SongsList songsList={songsList}/>
+                    <SongsList songsList={songsList} showArtist={false}/>
                   </>
                 )
                 : null}
@@ -136,6 +149,28 @@ const styles = StyleSheet.create({
     ...secondaryText,
     fontSize: 16,
     marginBottom: 5,
+  },
+  albumImage: {
+    height: 60,
+    width: 60,
+  },
+  albumPressable: {
+    ...crossCentered,
+    flexDirection: 'row',
+    marginVertical: 11,
+  },
+  albumInfo: {
+    flexDirection: 'column',
+  },
+  albumName: {
+    ...textColor,
+    ...mainCentered,
+    fontWeight: 'bold',
+    marginLeft: 15,
+  },
+  albumArtistName: {
+    ...secondaryText,
+    marginLeft: 15
   },
 });
 
