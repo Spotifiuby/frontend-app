@@ -25,6 +25,7 @@ function loginUIAction(authSystem, email, password, setErrorMessage) {
 
 function loginWithFacebook(authSystem, setErrorMessage) {
   authSystem.useFacebookAuth()
+  .then(({ message }) => console.log(message))
     .catch(({ message }) => setErrorMessage(message));
 }
 
