@@ -1,9 +1,7 @@
 import { Audio } from 'expo-av';
-// import TrackPlayer from 'react-native-track-player';
 import ConnectionSystemInterface from '../ConnectionSystem/ConnectionSystemInterface';
-import { buildEndpointFor, post, getFrom } from '../ConnectionSystem/fetch-helpers';
+import { buildEndpointFor} from '../ConnectionSystem/fetch-helpers';
 import GenericSystem from '../GenericSystem';
-import getFromSettings, { SONGS_URL } from '../settings';
 import SongsSystemInterface from './SongsSystemInterface';
 
 const SONGS_BASE_URL = 'https://spotifiuby-backend-songs.herokuapp.com'
@@ -23,42 +21,12 @@ export default class SongsSystem extends GenericSystem {
       playsInSilentModeIOS: true,
       shouldDuckAndroid: true,
       playThroughEarpieceAndroid: false,
-    });
+    }).then();
   }
 
   implementing() {
     return SongsSystemInterface;
   }
-
-  // async initialize() {
-  //   await TrackPlayer.setupPlayer();
-  //   TrackPlayer.registerPlaybackService(async () => {
-  //     TrackPlayer.addEventListener('remote-play', () => TrackPlayer.play());
-  //     TrackPlayer.addEventListener('remote-pause', () => TrackPlayer.pause());
-  //     TrackPlayer.addEventListener('remote-stop', () => TrackPlayer.destroy());
-  //   });
-  //   TrackPlayer.updateOptions({
-  //     stopWithApp: true,
-  //   });
-  //   const track = {
-  //     url: 'https://spotifiuby-backend-songs.herokuapp.com/songs/62a69fdcfe78b4e55112e79d/content', // Load media from the network
-  //     title: 'Avaritia',
-  //     artist: 'deadmau5',
-  //     album: 'while(1<2)',
-  //     headers: {
-  //       authorization: 'Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IjFhZWY1NjlmNTI0MTRlOWY0YTcxMDRiNmQwNzFmMDY2ZGZlZWQ2NzciLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vc3BvdGlmaXVieS0yYzBiMiIsImF1ZCI6InNwb3RpZml1YnktMmMwYjIiLCJhdXRoX3RpbWUiOjE2NTUwNjYwNTgsInVzZXJfaWQiOiJYT0xnQzlzMHByZXJUUXNRSFRQTkZoVFFMU0UzIiwic3ViIjoiWE9MZ0M5czBwcmVyVFFzUUhUUE5GaFRRTFNFMyIsImlhdCI6MTY1NTE0MjQ5NiwiZXhwIjoxNjU1MTQ2MDk2LCJlbWFpbCI6ImFndXN0aW40Mjdtb3JlQGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJlbWFpbCI6WyJhZ3VzdGluNDI3bW9yZUBnbWFpbC5jb20iXX0sInNpZ25faW5fcHJvdmlkZXIiOiJwYXNzd29yZCJ9fQ.mz---8byTK_Vv47cZ7QOp-d4uUGwMuN-Li-e9bfI61ggbVZXHtVe29cvcvr0qCFg8shW_RB1oPTwW_cs6danGKxTyU1AZLToun-UF626Rck4mLBYlTQY5W3hvjJ6e8jEGdwQ6GKJJ6R3SbLTLpJ5dnd5kFzI4gLmxwC7ooDr2-luzWq4EjV7e79c7mnQdNyFwU2FNuFvraTnXYyrVUr6JmF6PSWRSfFT0UmGsboA2vrFaDPSrGGKhw4YpB7MijmTnZ8xVqgpDBWFT06jn8ffS2wbbAK46iIvpeLBpfk6XriziC9NKGdjeR_FNfRfbsrgtRgfHetmuTCKUAOFxrcIaQ',
-  //       'x-api-key': '2dd8cb76-c568-4338-a002-1955d414eb53',
-  //       'x-user-id': 'agustin427more@gmail.com',
-
-  //     },
-  //     // genre: 'Progressive House, Electro House',
-  //     // date: '2014-05-20T07:00:00+00:00', // RFC 3339
-  //     // artwork: 'http://example.com/cover.png', // Load artwork from the network
-  //     // duration: 402, // Duration in seconds
-  //   };
-  //   // // You can then [add](https://react-native-track-player.js.org/docs/api/functions/queue#addtracks-insertbeforeindex) the items to the queue
-  //   await TrackPlayer.add([track]);
-  // }
 
   #connectionSystem() {
     return this.parent.systemImplementing(ConnectionSystemInterface);
@@ -92,18 +60,10 @@ export default class SongsSystem extends GenericSystem {
     await soundObject.unloadAsync();
     if (!aSongID) return;
     try {
-      const source = await {
+      const source = {
         uri: `${SONGS_BASE_URL}/${SONGS_RESOURCE}/${aSongID}/${CONTENT}`,
         headers: (await this.#connectionSystem().withHeaders({})).headers,
       };
-      // console.log([
-      //   `${getFromSettings(SONGS_URL)}/${SONGS_RESOURCE}/${aSongID}/${CONTENT}`,
-      //   (await this.#connectionSystem().withHeaders({})).headers,
-      // ]);
-      // const source = await getFrom(
-      //   `${getFromSettings(SONGS_URL)}/${SONGS_RESOURCE}/${aSongID}/${CONTENT}`,
-      //   (await this.#connectionSystem().withHeaders({})).headers,
-      // );
 
       console.log(source.headers);
       console.log(source.uri);
@@ -176,5 +136,9 @@ export default class SongsSystem extends GenericSystem {
 
   async getAlbumsByArtist(artistId) {
     return this.#connectionSystem().getJson([ROOT, ALBUMS_RESOURCE, `?artist_id=${artistId}`])
+  }
+
+  async getSongsByAlbum(albumId) {
+    return this.#connectionSystem().getJson([ROOT, ALBUMS_RESOURCE, albumId, SONGS_RESOURCE])
   }
 }

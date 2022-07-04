@@ -14,9 +14,8 @@ import {
 import useAuthSystem from '../../SpotifiubySystem/AuthSystem/useAuthSystem';
 import useSongsSystem from '../../SpotifiubySystem/SongsSystem/useSongsSystem';
 import CTAButton from '../Buttons/CTAButton';
-// import SongsList from '../Songs/SongsList';
 import Title from '../Text/Title';
-import { SONG_UPLOADER, ALBUM_CREATOR } from './UploadNavigationOptions';
+import { SONG_UPLOADER, ALBUM_CREATOR, ALBUM_PROFILE } from './UploadNavigationOptions';
 import {
   crossCentered,
   headerTitle,
@@ -65,7 +64,9 @@ const ArtistProfile = ({ navigation, route }) => {
         ? <ActivityIndicator style={{ alignSelf: 'center' }}/>
         : (
           <>
-            <Title text={artistInfo.name} />
+            <View style={styles.textTitle}>
+              <Title text={artistInfo.name} />
+            </View>
             <ScrollView>
               {(albums.length !== 0)
                 ? (
@@ -80,8 +81,7 @@ const ArtistProfile = ({ navigation, route }) => {
                         } = item;
                         return (
                           <Pressable key={id} style={styles.albumPressable} onPress={() => {
-                            //navigation.navigate(ARTIST_PROFILE, { id });
-                            console.log('Implement me!')
+                            navigation.navigate(ALBUM_PROFILE, { album:item });
                           }}>
                             <View style={styles.albumImage}>
                               <CoverPicture album={item}/>
@@ -144,6 +144,10 @@ const styles = StyleSheet.create({
     ...headerTitle,
     marginBottom: 5,
     marginTop: 10,
+  },
+  textTitle: {
+    textAlign: 'center',
+    alignSelf: 'center',
   },
   textItem: {
     ...secondaryText,

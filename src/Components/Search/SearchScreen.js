@@ -1,6 +1,5 @@
 import { useContext, useEffect, useState, } from 'react';
 import {
-  Dimensions,
   FlatList,
   Pressable,
   ScrollView,
@@ -25,8 +24,8 @@ import SongsList from '../Songs/SongsList';
 import UserSystemInterface from '../../SpotifiubySystem/UserSystem/UserSystemInterface';
 import AuthSystemInterface from '../../SpotifiubySystem/AuthSystem/AuthSystemInterface';
 import { ARTIST_PROFILE, USER_PROFILE } from './SearchNavigationOptions';
-import RandomImage from '../images/RandomImage';
 import CoverPicture from '../Songs/CoverPicture';
+import { ALBUM_PROFILE } from '../Uploader/UploadNavigationOptions';
 
 const SearchScreen = ({navigation, _}) => {
   const system = useContext(SystemContext);
@@ -143,8 +142,7 @@ const SearchScreen = ({navigation, _}) => {
                     const artists = item.artists.join(', ');
                     return (
                       <Pressable key={id} style={styles.albumPressable} onPress={() => {
-                        //navigation.navigate(ARTIST_PROFILE, { id });
-                        console.log('Implement me!')
+                        navigation.navigate(ALBUM_PROFILE, { album:item });
                       }}>
                         <View style={styles.albumImage}>
                           <CoverPicture album={item}/>

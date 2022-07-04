@@ -1,12 +1,12 @@
 /* eslint-disable react/prop-types */
-import { AntDesign, FontAwesome, Ionicons } from '@expo/vector-icons';
+import { AntDesign} from '@expo/vector-icons';
 import { useFocusEffect } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import {
   useCallback, useContext, useEffect, useState,
 } from 'react';
 import {
-  ScrollView, View, Text, StyleSheet, Pressable, ActivityIndicator, Image,
+  ScrollView, View, Text, StyleSheet, Pressable, ActivityIndicator,
 } from 'react-native';
 import AuthSystemInterface from '../../SpotifiubySystem/AuthSystem/AuthSystemInterface';
 import SystemContext from '../../SpotifiubySystem/DefaultSystemContext';
@@ -20,9 +20,10 @@ import ArtistProfile from './ArtistProfile';
 import SongUploader from './SongUploader';
 import AlbumCreator from './AlbumCreator';
 import {
-  ADD_NEW_ARTIST, ARTIST_PROFILE, SONG_UPLOADER, UPLOAD_DASHBOARD, ALBUM_CREATOR,
+  ADD_NEW_ARTIST, ARTIST_PROFILE, SONG_UPLOADER, UPLOAD_DASHBOARD, ALBUM_CREATOR, ALBUM_PROFILE,
 } from './UploadNavigationOptions';
 import RandomImage from '../images/RandomImage';
+import AlbumProfile from '../Albums/AlbumProfile';
 
 const UploaderScreen = ({ navigation }) => {
   const system = useContext(SystemContext);
@@ -45,7 +46,7 @@ const UploaderScreen = ({ navigation }) => {
   );
   return (
     <View style={styles.container}>
-      <Title text="Artists" />
+      <Title text="My Artists" />
       {isLoading
         ? <ActivityIndicator />
         : (
@@ -92,6 +93,7 @@ export const UploaderNavigation = () => {
       <Stack.Screen name={ARTIST_PROFILE} component={ArtistProfile} />
       <Stack.Screen name={SONG_UPLOADER} component={SongUploader} />
       <Stack.Screen name={ALBUM_CREATOR} component={AlbumCreator} />
+      <Stack.Screen name={ALBUM_PROFILE} component={AlbumProfile} />
     </Stack.Navigator>
   );
 };
