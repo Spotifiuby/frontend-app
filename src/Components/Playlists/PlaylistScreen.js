@@ -3,6 +3,7 @@ import {
   useContext, useCallback, useState,
 } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
+import propTypes from 'prop-types';
 import { oneUnitFlex } from '../../theme';
 import SystemContext from '../../SpotifiubySystem/DefaultSystemContext';
 import SongsSystemInterface from '../../SpotifiubySystem/SongsSystem/SongsSystemInterface';
@@ -10,24 +11,24 @@ import SongReproductionList from '../../SpotifiubySystem/SongsSystem/SongReprodu
 import SongsList from '../Songs/SongsList';
 import Title from '../Text/Title';
 
-const Home = () => {
+const PlaylistScreen = ({ playlistId }) => {
   const system = useContext(SystemContext);
   const songsSystem = system.systemImplementing(SongsSystemInterface);
   const [songsList, setSongsList] = useState(new SongReproductionList([]));
 
   useFocusEffect(
     useCallback(() => {
-      songsSystem.getSongs()
-        .then((songs) => setSongsList(new SongReproductionList(songs.slice(5, songs.length))));
+      console.log(playlistId);
+      songsSystem.getPlaylistSongsFilteredBy(playlistId)
+        .then((songs) => {
+          console.log(songs);
+          setSongsList(new SongReproductionList(songs));
+        });
     }, []),
   );
   return (
     <ScrollView style={playlistStyle.container}>
       <Title text="My favorite songs" />
-      {(songsList.songs.length !== 0)
-        ? <SongsList songsList={songsList} />
-        : null}
-      <Title text="Los albums que te gustaron" />
       {(songsList.songs.length !== 0)
         ? <SongsList songsList={songsList} />
         : null}
@@ -42,4 +43,8 @@ const playlistStyle = StyleSheet.create({
   },
 });
 
-export default Home;
+PlaylistScreen.propTypes = {
+  playlistId: propTypes.string.isRequired,
+};
+
+export default PlaylistScreen;

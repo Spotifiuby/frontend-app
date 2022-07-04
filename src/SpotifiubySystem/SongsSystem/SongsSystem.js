@@ -37,7 +37,7 @@ export default class SongsSystem extends GenericSystem {
   }
 
   getSongsByArtist(artistId) {
-    return this.#connectionSystem().getJson([ROOT, SONGS_RESOURCE], {artist_id: artistId});
+    return this.#connectionSystem().getJson([ROOT, SONGS_RESOURCE], { artist_id: artistId });
   }
 
   songsFilteredBy(aQuery) {
@@ -53,7 +53,11 @@ export default class SongsSystem extends GenericSystem {
   }
 
   playlistsFilteredBy(aQuery) {
-    return this.#connectionSystem().getJson([ROOT, PLAYLISTS_RESOURCE], { q: aQuery });
+    return this.#connectionSystem().getJson([ROOT, PLAYLISTS_RESOURCE], aQuery && { q: aQuery });
+  }
+
+  getPlaylistSongsFilteredBy(id, aQuery) {
+    return this.#connectionSystem().getJson([ROOT, PLAYLISTS_RESOURCE, id, 'songs'], aQuery && { q: aQuery });
   }
 
   async play(aSongID) {
@@ -79,17 +83,17 @@ export default class SongsSystem extends GenericSystem {
   }
 
   async #uploadSongFile(aSongFile, songID) {
-    let formData = new FormData();
-    formData.append("file", aSongFile.output[0], aSongFile.name);
+    const formData = new FormData();
+    formData.append('file', aSongFile.output[0], aSongFile.name);
 
-    let requestOptions = {
+    const requestOptions = {
       method: 'POST',
       headers: (await this.#connectionSystem().withHeaders({})).headers,
       body: formData,
-      redirect: 'follow'
+      redirect: 'follow',
     };
 
-    await fetch(`${SONGS_BASE_URL}/${SONGS_RESOURCE}/${songID}/${CONTENT}`, requestOptions)
+    await fetch(`${SONGS_BASE_URL}/${SONGS_RESOURCE}/${songID}/${CONTENT}`, requestOptions);
   }
 
   async uploadSong(songFile, metadata, album) {
@@ -123,7 +127,8 @@ export default class SongsSystem extends GenericSystem {
   }
 
   async createAlbum(metadata) {
-    const metadataResponse = await this.#connectionSystem().postJson([ROOT, ALBUMS_RESOURCE], metadata);
+    const metadataResponse = await this.#connectionSystem()
+      .postJson([ROOT, ALBUMS_RESOURCE], metadata);
     const songResponse = await metadataResponse.json();
     console.log(songResponse);
   }
@@ -140,5 +145,9 @@ export default class SongsSystem extends GenericSystem {
 
   async getSongsByAlbum(albumId) {
     return this.#connectionSystem().getJson([ROOT, ALBUMS_RESOURCE, albumId, SONGS_RESOURCE])
+  }
+
+  async createPlaylist(metadata) {
+    return this.#connectionSystem().postJson([ROOT, PLAYLISTS_RESOURCE], metadata);
   }
 }

@@ -11,6 +11,8 @@ import SettingsNavigation from './Settings/SettingsNavigation';
 import useTranslation from '../SpotifiubySystem/TranslationSystem/useTranslation';
 import ChatsNavigation from './Chats/ChatsNavigation';
 import SearchNavigation from './Search/SearchNavigation';
+import MyLibraryNavigation from './Library/MyLibraryNavigation';
+import MyLibraryStack from "./Library/MyLibraryStack";
 
 const Tab = createBottomTabNavigator();
 
@@ -28,6 +30,7 @@ const MainNavigation = ({ userType }) => {
         {HomeTabScreen(t)}
         {SearchTabScreen(t)}
         {ChatsTabScreen(t)}
+        {MyLibraryTabScreen(t)}
         {UploadTabScreen(userType, t)}
         {SettingsTabScreen(t)}
       </Tab.Navigator>
@@ -67,6 +70,17 @@ const SearchTabScreen = (t) => {
       name={t('Search')}
       component={SearchNavigation}
       options={{ tabBarIcon: SearchIcon }}
+    />
+  );
+};
+
+const MyLibraryTabScreen = (t) => {
+  const LibraryIcon = useCallback(({ color, size }) => <Ionicons name="library" size={size} color={color} />, []);
+  return (
+    <Tab.Screen
+      name={t('Library')}
+      component={MyLibraryStack}
+      options={{ tabBarIcon: LibraryIcon }}
     />
   );
 };

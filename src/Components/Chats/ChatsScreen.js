@@ -3,8 +3,7 @@ import SystemContext from '../../SpotifiubySystem/DefaultSystemContext';
 import AuthSystemInterface from '../../SpotifiubySystem/AuthSystem/AuthSystemInterface';
 import Title from '../Text/Title';
 import ChatsSystemInterface from './ChatsSystemInterface';
-import { ScrollView, Text } from 'react-native-web';
-import { Dimensions, Pressable, StyleSheet, View } from 'react-native';
+import { Dimensions, Pressable, StyleSheet, Text, ScrollView, View } from 'react-native';
 import theme, {
   crossCentered,
   headerTitle,

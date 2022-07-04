@@ -1,9 +1,12 @@
 import {
   getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signInWithPopup, FacebookAuthProvider, signInWithCredential,
 } from 'firebase/auth';
+import * as WebBrowser from 'expo-web-browser';
+import * as Facebook from 'expo-facebook';
 import AuthSystemBehavior from './AuthSystemBehavior';
 import firebaseApp from './Firebase/config';
-import * as Facebook from 'expo-facebook'
+
+WebBrowser.maybeCompleteAuthSession();
 
 export default class FirebaseAuthSystem extends AuthSystemBehavior {
   constructor() {
@@ -21,35 +24,27 @@ export default class FirebaseAuthSystem extends AuthSystemBehavior {
   async getAuthInfo() {
     return this.authInfo;
   }
-  
-  // useFacebookAuth() {
-  //   const provider = new FacebookAuthProvider();
-  //   return signInWithPopup(this.auth, provider)
-  //     .catch((error) => { 
-  //       throw new Error(error.code);
-  //     });
-  // }
 
   async useFacebookAuth() {
-    await Facebook.initializeAsync({ 
+    await Facebook.initializeAsync({
       appId: '590592872502441',
-    })
+    });
     try {
       const {
         type,
-        token, 
+        token,
         expirationDate,
         permissions,
-        declinedPermissions
+        declinedPermissions,
       } = await Facebook.logInWithReadPermissionsAsync({
         permissions: ['public_profile', 'email'],
-      })
+      });
       if (type === 'success') {
-        const credential = FacebookAuthProvider.credential( accessToken=token );
-        return signInWithCredential(credential)
+        const credential = FacebookAuthProvider.credential(token);
+        return await signInWithCredential(this.auth, credential)
           .catch((error) => { throw new Error(error.code); });
       }
-    } catch ({message}) {
+    } catch ({ message }) {
       alert(`Facebook Login Error: ${message}`);
     }
   }
