@@ -8,7 +8,7 @@ import CTAButton from '../Buttons/CTAButton';
 import FormField from '../Inputs/FormField';
 import { EDIT_USER_PROFILE } from '../Settings/SettingsNavigationOptions';
 import Title from '../Text/Title';
-import { NEW_CHAT } from '../Chats/ChatsNavigationOptions';
+import CoverPicture from '../Songs/CoverPicture';
 
 /* eslint-disable react/prop-types */
 const Profile = ({ navigation, route }) => {
@@ -26,7 +26,12 @@ const Profile = ({ navigation, route }) => {
   if (!userInfo?.email) return null;
   return (
     <View style={styles.container}>
-      <Title text="Profile" />
+      <View style={styles.profileImage}>
+        <CoverPicture user={userInfo} style={{borderRadius: 300,}}/>
+      </View>
+      <View style={styles.textTitle}>
+        <Title text={userInfo.first_name + ' ' + userInfo.last_name} />
+      </View>
       <FormField label={t('Email')}>
         <Text style={styles.userInfo}>{userInfo.email}</Text>
       </FormField>
@@ -68,6 +73,16 @@ const styles = StyleSheet.create({
     ...oneUnitFlex,
     alignItems: 'flex-start',
     paddingHorizontal: 15,
+  },
+  profileImage: {
+    height: 110,
+    width: 110,
+    alignSelf: 'center',
+    marginTop: 10,
+  },
+  textTitle: {
+    textAlign: 'center',
+    alignSelf: 'center',
   },
   userInfo: {
     ...textColor,
