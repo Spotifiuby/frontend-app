@@ -3,7 +3,7 @@
 import { useContext, useState } from 'react';
 import {
   ScrollView,
-  StyleSheet, Text, TextInput, View,
+  StyleSheet, Text, TextInput, View, Picker,
 } from 'react-native';
 import SystemContext from '../../SpotifiubySystem/DefaultSystemContext';
 import useNotificationSystem from '../../SpotifiubySystem/NotificationSystem/useNotificationSystem';
@@ -14,7 +14,6 @@ import CTAButton from '../Buttons/CTAButton';
 import FormField from '../Inputs/FormField';
 import { MY_PROFILE } from '../Settings/SettingsNavigationOptions';
 import Title from '../Text/Title';
-import { Picker } from 'react-native-web';
 
 const updateUserFrom = (originalUserInfo, newUserInfo, userSystem) => {
   return userSystem.update(originalUserInfo, newUserInfo);

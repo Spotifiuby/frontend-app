@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState, } from 'react';
 import AuthSystemInterface from '../../SpotifiubySystem/AuthSystem/AuthSystemInterface';
 import SystemContext from '../../SpotifiubySystem/DefaultSystemContext';
-import { ScrollView, StyleSheet, TextInput, View } from 'react-native';
+import { ScrollView, StyleSheet, TextInput, View, Text } from 'react-native';
 import {
   oneUnitFlex,
   paddedContainer,
@@ -10,7 +10,6 @@ import {
 } from '../../theme';
 import Title from '../Text/Title';
 import ChatsSystemInterface from './ChatsSystemInterface';
-import { Text } from 'react-native-web';
 import CTAButton from '../Buttons/CTAButton';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 

@@ -1,8 +1,7 @@
 /* eslint-disable react/prop-types */
 import {
-  StyleSheet, View, Text, TextInput, ActivityIndicator, 
+  StyleSheet, View, Text, TextInput, ActivityIndicator, Picker,
 } from 'react-native';
-import { Picker } from 'react-native-web';
 import { useState, useEffect, useCallback } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
 import { getDocumentAsync } from 'expo-document-picker';
