@@ -175,7 +175,6 @@ export default class SongsSystem extends GenericSystem {
   }
 
   async getAlbumsByArtist(artistId) {
-    const artist = await this.#connectionSystem().getJson([ROOT, ARTISTS_RESOURCE, artistId]);
-    return (await this.albumsFilteredBy('')).filter((album) => album.artists.some(artist_name => artist_name === artist.name ));
+    return this.#connectionSystem().getJson([ROOT, ALBUMS_RESOURCE, `?artist_id=${artistId}`])
   }
 }
