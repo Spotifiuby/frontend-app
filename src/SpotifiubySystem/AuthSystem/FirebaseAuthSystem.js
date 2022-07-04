@@ -1,5 +1,5 @@
 import {
-  getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword,
+  getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signInWithPopup, FacebookAuthProvider,
 } from 'firebase/auth';
 import AuthSystemBehavior from './AuthSystemBehavior';
 import firebaseApp from './Firebase/config';
@@ -19,6 +19,14 @@ export default class FirebaseAuthSystem extends AuthSystemBehavior {
 
   async getAuthInfo() {
     return this.authInfo;
+  }
+  
+  useFacebookAuth() {
+    const provider = new FacebookAuthProvider();
+    return signInWithPopup(this.auth, provider)
+      .catch((error) => { 
+        throw new Error(error.code);
+      });
   }
 
   useAuthentication(setIsAuthenticated) {
