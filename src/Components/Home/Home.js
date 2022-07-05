@@ -46,11 +46,15 @@ const Home = ({navigation, _}) => {
     }
   );
 
-  useFocusEffect(() => {
-      songsSystem.getAlbums().then((albums) => {
-        setAlbums(albums.slice(0, 5));
-      });
-    }
+  useFocusEffect(
+    useCallback(() => {
+      songsSystem.getAlbums()
+        .then((albumsResult) => {
+          const slice = albumsResult.slice(0, 5);
+          console.log(slice);
+          setAlbums(slice);
+        });
+    }, []),
   );
 
   return (
@@ -63,7 +67,6 @@ const Home = ({navigation, _}) => {
       {(albums.length > 0)
         ? (
           <>
-            <View style={styles.resultsContainer}>
               <FlatList
                 data={albums}
                 renderItem={({ item, index }) => {
@@ -85,7 +88,6 @@ const Home = ({navigation, _}) => {
                 }}
                 keyExtractor={(artist) => artist.id}
               />
-            </View>
           </>
         )
         : null}
