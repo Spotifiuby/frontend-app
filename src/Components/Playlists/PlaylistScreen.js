@@ -1,14 +1,15 @@
-import { View, StyleSheet, ScrollView } from 'react-native';
+import {View, StyleSheet, ScrollView, Text} from 'react-native';
 import {
   useContext, useCallback, useState,
 } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
-import { oneUnitFlex } from '../../theme';
+import {oneUnitFlex, textColor} from '../../theme';
 import SystemContext from '../../SpotifiubySystem/DefaultSystemContext';
 import SongsSystemInterface from '../../SpotifiubySystem/SongsSystem/SongsSystemInterface';
 import SongReproductionList from '../../SpotifiubySystem/SongsSystem/SongReproductionList';
 import SongsList from '../Songs/SongsList';
 import Title from '../Text/Title';
+import CoverPicture from "../Songs/CoverPicture";
 
 const PlaylistScreen = (props) => {
   const system = useContext(SystemContext);
@@ -34,7 +35,10 @@ const PlaylistScreen = (props) => {
   );
   return (
     <ScrollView style={playlistStyle.container}>
-      <Title text={playlist.name} />
+      <View style={playlistStyle.albumImage}>
+        <CoverPicture />
+      </View>
+      <Text style={playlistStyle.albumName}>{playlist.name}</Text>
       {(songsList.songs.length !== 0)
         ? <SongsList songsList={songsList} />
         : null}
@@ -46,6 +50,21 @@ const playlistStyle = StyleSheet.create({
   container: {
     ...oneUnitFlex,
     paddingHorizontal: 15,
+  },
+  albumImage: {
+    alignSelf: 'center',
+    height: 110,
+    marginTop: 10,
+    width: 110,
+  },
+  albumName: {
+    ...textColor,
+    alignSelf: 'center',
+    fontSize: 25,
+    fontWeight: 'bold',
+    marginBottom: 5,
+    marginTop: 10,
+    textAlign: 'center',
   },
 });
 

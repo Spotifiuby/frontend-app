@@ -156,7 +156,9 @@ export default class SongsSystem extends GenericSystem {
     return this.connectionSystem().getJson([ROOT, ALBUMS_RESOURCE, albumId, SONGS_RESOURCE])
   }
 
-  async createPlaylist(metadata) {
-    return this.connectionSystem().postJson([ROOT, PLAYLISTS_RESOURCE], metadata);
+  async createFullPlaylist(metadata) {
+    const responsePromise = await this.connectionSystem()
+      .postJson([ROOT, PLAYLISTS_RESOURCE], metadata);
+    await responsePromise.json();
   }
 }

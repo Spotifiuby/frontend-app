@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import {
-  View, StyleSheet,
+  View, StyleSheet, Platform,
 } from 'react-native';
 import React, { useState, useContext } from 'react';
 import * as Google from 'expo-auth-session/providers/google';
@@ -19,12 +19,14 @@ import EmailInput from '../Inputs/EmailInput';
 import useTranslation from '../../SpotifiubySystem/TranslationSystem/useTranslation';
 import SecondaryButton from '../Buttons/SecondaryButton';
 
+export const isAndroid = () => Platform.OS === 'android';
+
 function loginUIAction(authSystem, email, password, setErrorMessage) {
   authSystem.login({ email, password })
     .catch(({ message }) => setErrorMessage(message));
 }
 
-const redirectUrl = makeRedirectUri({ useProxy: true });
+const redirectUrl = makeRedirectUri({ useProxy: !!__DEV__ });
 
 const LoginForm = () => {
   const system = useContext(SystemContext);
@@ -34,9 +36,10 @@ const LoginForm = () => {
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [, response, promptAsync] = Google.useIdTokenAuthRequest({
-    clientId: '1055958726450-p82kb29fgkrii996d2vqsem77em0c405.apps.googleusercontent.com',
-    redirectUri: redirectUrl,
-    // clientId: '1055958726450-57ju97uiorb6vnl0eh45cg326dh93kvh.apps.googleusercontent.com',
+    clientId: __DEV__
+      ? '1055958726450-p82kb29fgkrii996d2vqsem77em0c405.apps.googleusercontent.com'
+      : '1055958726450-57ju97uiorb6vnl0eh45cg326dh93kvh.apps.googleusercontent.com',
+    redirectUri: __DEV__ && redirectUrl,
   });
   const clearErrorAfter = (setField) => clearErrorsWith(errorMessage, setErrorMessage, setField);
 
@@ -45,6 +48,8 @@ const LoginForm = () => {
       const { id_token } = response.params;
       authSystem.useFacebookAuth(id_token)
         .catch(({ message }) => setErrorMessage(message));
+    } else {
+      alert(redirectUrl);
     }
   }, [response]);
 

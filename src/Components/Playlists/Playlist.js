@@ -26,9 +26,8 @@ const Playlist = ({ playlist }) => {
           numberOfLines={1}
           ellipsisMode="clip"
         >
-          {playlist.title}
+          {playlist.name}
         </Text>
-        <Text style={styles.songArtist}>{playlist.name}</Text>
       </View>
     </Pressable>
   );
@@ -58,6 +57,7 @@ const styles = StyleSheet.create({
   },
   songTitle: {
     ...textColor,
+    fontSize: 20,
     fontWeight: 'bold',
     width: Dimensions.get('window').width - 130,
   },

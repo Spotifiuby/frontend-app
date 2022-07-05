@@ -8,23 +8,17 @@ import useTranslation
 import ErrorCard from '../Inputs/ErrorCard';
 import CTAButton from '../Buttons/CTAButton';
 import { textField } from '../../theme';
-import SongsSystemInterface from '../../SpotifiubySystem/SongsSystem/SongsSystemInterface';
-import SystemContext from '../../SpotifiubySystem/DefaultSystemContext';
 
 const CreatePlaylistScreen = () => {
-  const system = useContext(SystemContext);
   const { t } = useTranslation();
   const [playlistName, setPlaylistName] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const clearErrorAfter = (setField) => clearErrorsWith(errorMessage, setErrorMessage, setField);
-  const songsSystem = system.systemImplementing(SongsSystemInterface);
   const navigation = useNavigation();
-  const createPlaylistAction = (newPlaylistName) => {
-    songsSystem.createPlaylist({ name: newPlaylistName })
-      .then((result) => {
-        console.log(result);
-        navigation.navigate(t('Library'));
-      });
+  const confirmPlayListName = () => {
+    if (playlistName.length > 0) {
+      navigation.navigate(t('Playlist Songs Selection'), { playlistName });
+    }
   };
   return (
     <View>
@@ -40,7 +34,7 @@ const CreatePlaylistScreen = () => {
       </FormField>
       <CTAButton
         onPress={() => {
-          createPlaylistAction(playlistName);
+          confirmPlayListName(playlistName);
         }}
         title={t('Create')}
         accessibilityLabel={t('Create button')}
