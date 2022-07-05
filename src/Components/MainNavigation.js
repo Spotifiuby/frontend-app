@@ -6,13 +6,12 @@ import propTypes from 'prop-types';
 import theme from '../theme';
 import { UPLOADER_USER } from '../SpotifiubySystem/UserSystem/UserSystem';
 import { UploaderNavigation } from './Uploader/UploaderScreen';
-import Home from './Home/Home';
 import SettingsNavigation from './Settings/SettingsNavigation';
 import useTranslation from '../SpotifiubySystem/TranslationSystem/useTranslation';
 import ChatsNavigation from './Chats/ChatsNavigation';
 import SearchNavigation from './Search/SearchNavigation';
-import MyLibraryNavigation from './Library/MyLibraryNavigation';
 import MyLibraryStack from "./Library/MyLibraryStack";
+import HomeNavigation from './Home/HomeNavigation';
 
 const Tab = createBottomTabNavigator();
 
@@ -57,7 +56,7 @@ const HomeTabScreen = (t) => {
   return (
     <Tab.Screen
       name={t('Home')}
-      component={Home}
+      component={HomeNavigation}
       options={{ tabBarIcon: HomeIcon }}
     />
   );

@@ -52,6 +52,10 @@ export default class SongsSystem extends GenericSystem {
     return this.#connectionSystem().getJson([ROOT, ALBUMS_RESOURCE], { q: aQuery });
   }
 
+  getAlbums() {
+    return this.#connectionSystem().getJson([ROOT, ALBUMS_RESOURCE]);
+  }
+
   playlistsFilteredBy(aQuery) {
     return this.#connectionSystem().getJson([ROOT, PLAYLISTS_RESOURCE], aQuery && { q: aQuery });
   }
