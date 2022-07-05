@@ -1,8 +1,9 @@
 import {
-  getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signInWithPopup, FacebookAuthProvider, signInWithCredential,
+  getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, GoogleAuthProvider, FacebookAuthProvider, signInWithCredential,
 } from 'firebase/auth';
 import * as WebBrowser from 'expo-web-browser';
 import * as Facebook from 'expo-facebook';
+import * as Google from 'expo-auth-session/providers/google';
 import AuthSystemBehavior from './AuthSystemBehavior';
 import firebaseApp from './Firebase/config';
 
@@ -25,7 +26,16 @@ export default class FirebaseAuthSystem extends AuthSystemBehavior {
     return this.authInfo;
   }
 
-  async useFacebookAuth() {
+  async useFacebookAuth(idToken) {
+    try {
+      const credential = GoogleAuthProvider.credential(idToken);
+      return await signInWithCredential(this.auth, credential);
+    } catch ({ message }) {
+      alert(`Facebook Login Error: ${message}`);
+    }
+  }
+
+  /*async useFacebookAuth() {
     await Facebook.initializeAsync({
       appId: '590592872502441',
     });
@@ -47,7 +57,7 @@ export default class FirebaseAuthSystem extends AuthSystemBehavior {
     } catch ({ message }) {
       alert(`Facebook Login Error: ${message}`);
     }
-  }
+  }*/
 
   useAuthentication(setIsAuthenticated) {
     this.auth.onAuthStateChanged(async (user) => {

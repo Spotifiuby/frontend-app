@@ -1,9 +1,8 @@
-import {View, StyleSheet, ScrollView} from 'react-native';
+import { View, StyleSheet, ScrollView } from 'react-native';
 import {
   useContext, useCallback, useState,
 } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
-import propTypes from 'prop-types';
 import { oneUnitFlex } from '../../theme';
 import SystemContext from '../../SpotifiubySystem/DefaultSystemContext';
 import SongsSystemInterface from '../../SpotifiubySystem/SongsSystem/SongsSystemInterface';
@@ -11,14 +10,21 @@ import SongReproductionList from '../../SpotifiubySystem/SongsSystem/SongReprodu
 import SongsList from '../Songs/SongsList';
 import Title from '../Text/Title';
 
-const PlaylistScreen = ({ playlistId }) => {
+const PlaylistScreen = (props) => {
   const system = useContext(SystemContext);
   const songsSystem = system.systemImplementing(SongsSystemInterface);
+  const [playlist, setPlaylist] = useState({ });
   const [songsList, setSongsList] = useState(new SongReproductionList([]));
 
   useFocusEffect(
     useCallback(() => {
+      const { playlistId } = props.route.params;
       console.log(playlistId);
+      songsSystem.getPlaylistById(playlistId)
+        .then((result) => {
+          console.log(result);
+          setPlaylist(result);
+        });
       songsSystem.getPlaylistSongsFilteredBy(playlistId)
         .then((songs) => {
           console.log(songs);
@@ -28,7 +34,7 @@ const PlaylistScreen = ({ playlistId }) => {
   );
   return (
     <ScrollView style={playlistStyle.container}>
-      <Title text="My favorite songs" />
+      <Title text={playlist.name} />
       {(songsList.songs.length !== 0)
         ? <SongsList songsList={songsList} />
         : null}
@@ -42,9 +48,5 @@ const playlistStyle = StyleSheet.create({
     paddingHorizontal: 15,
   },
 });
-
-PlaylistScreen.propTypes = {
-  playlistId: propTypes.string.isRequired,
-};
 
 export default PlaylistScreen;

@@ -4,7 +4,9 @@
     "slug": "spotifiuby-app",
     "version": "1.0.0",
     "orientation": "portrait",
+    "sdkVersion": "44.0.0",
     "icon": "./assets/icon.png",
+    "scheme": "exp",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
@@ -25,7 +27,8 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
-      "package": "com.spotifiuby"
+      "package": "com.spotifiuby",
+      "googleServicesFile": "./google-services.json"
     },
     "web": {
       "favicon": "./assets/favicon.png"

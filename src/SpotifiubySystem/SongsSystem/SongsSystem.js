@@ -64,6 +64,11 @@ export default class SongsSystem extends GenericSystem {
     return this.#connectionSystem().getJson([ROOT, PLAYLISTS_RESOURCE, id, 'songs'], aQuery && { q: aQuery });
   }
 
+  getPlaylistById(id, aQuery) {
+    return this.#connectionSystem()
+      .getJson([ROOT, PLAYLISTS_RESOURCE, id], aQuery && { q: aQuery });
+  }
+
   async play(aSongID) {
     await soundObject.unloadAsync();
     if (!aSongID) return;
