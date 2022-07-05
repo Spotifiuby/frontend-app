@@ -18,11 +18,11 @@ export default class UserSystem extends GenericSystem {
     return UserSystemInterface;
   }
 
-  #connectionSystem() {
+  connectionSystem() {
     return this.parent.systemImplementing(ConnectionSystemInterface);
   }
 
-  #authSystem() {
+  authSystem() {
     return this.parent.systemImplementing(AuthSystemInterface);
   }
 
@@ -32,28 +32,28 @@ export default class UserSystem extends GenericSystem {
 
   getUsers(query) {
     console.log('getUsers: ', query);
-    let p1 = this.#connectionSystem().getJson([ROOT, RESOURCE], { email: query, is_active: true });
-    let p2 = this.#connectionSystem().getJson([ROOT, RESOURCE], { first_name: query, is_active: true });
-    let p3 = this.#connectionSystem().getJson([ROOT, RESOURCE], { last_name: query, is_active: true });
-    let p4 =this.#connectionSystem().getJson([ROOT, RESOURCE], { email: query, is_active: true });
+    let p1 = this.connectionSystem().getJson([ROOT, RESOURCE], { email: query, is_active: true });
+    let p2 = this.connectionSystem().getJson([ROOT, RESOURCE], { first_name: query, is_active: true });
+    let p3 = this.connectionSystem().getJson([ROOT, RESOURCE], { last_name: query, is_active: true });
+    let p4 =this.connectionSystem().getJson([ROOT, RESOURCE], { email: query, is_active: true });
 
     return Promise.all([p1, p2, p3, p4]).then((responses) => {return responses.flat()})
   }
 
   getUserInfoFrom(anEmail) {
-    return this.#connectionSystem().getJson([ROOT, RESOURCE, anEmail]);
+    return this.connectionSystem().getJson([ROOT, RESOURCE, anEmail]);
   }
 
   getSubscriptionInfoFrom(anEmail) {
-    const json = this.#connectionSystem().getJson([ROOT, RESOURCE, anEmail, 'subscriptions']);
+    const json = this.connectionSystem().getJson([ROOT, RESOURCE, anEmail, 'subscriptions']);
     json.then(console.log);
     return json;
   }
 
   async userType() {
-    const { email } = await this.#authSystem().getAuthInfo();
+    const { email } = await this.authSystem().getAuthInfo();
 
-    return this.#connectionSystem().get([ROOT, RESOURCE, email])
+    return this.connectionSystem().get([ROOT, RESOURCE, email])
       .then((response) => {
         if (response.status === 404) {
           return { user_type: UNDEFINED_USER };
@@ -78,8 +78,8 @@ export default class UserSystem extends GenericSystem {
   }
 
   async completeUserRegistrationWith({ firstName, lastName, isUploader }) {
-    const { email } = await this.#authSystem().getAuthInfo();
-    await this.#connectionSystem().postJson([ROOT, RESOURCE], {
+    const { email } = await this.authSystem().getAuthInfo();
+    await this.connectionSystem().postJson([ROOT, RESOURCE], {
       email,
       first_name: firstName,
       last_name: lastName,
@@ -88,27 +88,27 @@ export default class UserSystem extends GenericSystem {
   }
 
   update(originalUserInfo, newUserInfo) {
-    return this.#connectionSystem().putJson([ROOT, RESOURCE, originalUserInfo.email], {
+    return this.connectionSystem().putJson([ROOT, RESOURCE, originalUserInfo.email], {
       first_name: newUserInfo.firstName,
       last_name: newUserInfo.lastName,
     });
   }
 
   createSubscription(email, type) {
-    return this.#connectionSystem().postJson([ROOT, RESOURCE, 'subscriptions'], {
+    return this.connectionSystem().postJson([ROOT, RESOURCE, 'subscriptions'], {
       user_id: email,
       subscription_type_id: type,
     });
   }
 
   updateSubscription(email, type) {
-    return this.#connectionSystem().putJson([ROOT, RESOURCE, email, 'subscriptions'], {
+    return this.connectionSystem().putJson([ROOT, RESOURCE, email, 'subscriptions'], {
       user_id: email,
       subscription_type_id: type,
     });
   }
 
   removeSubscription(email) {
-    return this.#connectionSystem().doDeleteRequest([ROOT, RESOURCE, email, 'subscriptions']);
+    return this.connectionSystem().doDeleteRequest([ROOT, RESOURCE, email, 'subscriptions']);
   }
 }

@@ -15,22 +15,22 @@ export default class ConnectionSystem extends GenericSystem {
     return ConnectionSystemInterface;
   }
 
-  #authSystem() {
+  authSystem() {
     return this.parent.systemImplementing(AuthSystemInterface);
   }
 
-  async #authorizationHeader() {
-    const { token, email } = await this.#authSystem().getAuthInfo();
+  async authorizationHeader() {
+    const { token, email } = await this.authSystem().getAuthInfo();
     if (!token) return {};
     return { authorization: `Bearer ${token}`, 'x-user-id': email };
   }
 
-  async #buildHeaders() {
-    return { ...this.headers, ...await this.#authorizationHeader() };
+  async buildHeaders() {
+    return { ...this.headers, ...await this.authorizationHeader() };
   }
 
   async get(resource, params = undefined) {
-    return getFrom(buildEndpointFor(...resource), await this.#buildHeaders(), params);
+    return getFrom(buildEndpointFor(...resource), await this.buildHeaders(), params);
   }
 
   getJson(resource, params = undefined) {
@@ -38,26 +38,26 @@ export default class ConnectionSystem extends GenericSystem {
   }
 
   async postJson(resource, data) {
-    return postJsonObject(buildEndpointFor(...resource), data, await this.#buildHeaders());
+    return postJsonObject(buildEndpointFor(...resource), data, await this.buildHeaders());
   }
 
   async doDeleteRequest(resource) {
-    return doDelete(buildEndpointFor(...resource), await this.#buildHeaders());
+    return doDelete(buildEndpointFor(...resource), await this.buildHeaders());
   }
 
   async post(resource, data, headers = {}) {
-    return post(buildEndpointFor(...resource), data, { ...headers, ...await this.#buildHeaders() });
+    return post(buildEndpointFor(...resource), data, { ...headers, ...await this.buildHeaders() });
   }
 
   async putJson(resource, data, headers = {}) {
     return putJsonObject(
       buildEndpointFor(...resource),
       data,
-      { ...headers, ...await this.#buildHeaders() },
+      { ...headers, ...await this.buildHeaders() },
     );
   }
 
   async withHeaders(request) {
-    return { ...request, headers: await this.#buildHeaders() };
+    return { ...request, headers: await this.buildHeaders() };
   }
 }

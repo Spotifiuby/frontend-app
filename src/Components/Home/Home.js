@@ -1,6 +1,14 @@
-import { View, StyleSheet, ScrollView, Text, FlatList, Pressable } from 'react-native';
 import {
-  useContext, useCallback, useState,
+  View,
+  StyleSheet,
+  ScrollView,
+  Text,
+  FlatList,
+  Pressable,
+  SafeAreaView
+} from 'react-native';
+import {
+  useContext, useCallback, useState, useEffect,
 } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
 import {
@@ -25,22 +33,28 @@ const Home = ({navigation, _}) => {
   const [songsList, setSongsList] = useState(new SongReproductionList([]));
   const [albums, setAlbums] = useState([]);
 
-  useFocusEffect(
-    useCallback(() => {
-      songsSystem.getSongs()
-        .then((songs) => setSongsList(new SongReproductionList(songs.slice(5, songs.length))));
-    }, []),
+  useEffect(() => {
+    songsSystem.initialize();
+    setSongsList(new SongReproductionList([]));
+    setAlbums([]);
+  }, []);
+
+  useFocusEffect( () => {
+    songsSystem.getSongs().then((songs) => {
+      setSongsList(new SongReproductionList(songs.slice(5, songs.length)));
+    });
+    }
   );
 
-  useFocusEffect(
-    useCallback(() => {
-      songsSystem.getAlbums()
-        .then((albums) => setAlbums(albums.slice(0, 5)));
-    }, []),
+  useFocusEffect(() => {
+      songsSystem.getAlbums().then((albums) => {
+        setAlbums(albums.slice(0, 5));
+      });
+    }
   );
 
   return (
-    <ScrollView style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <Title text="My favorite songs" />
       {(songsList.songs.length !== 0)
         ? <SongsList songsList={songsList} />
@@ -52,7 +66,7 @@ const Home = ({navigation, _}) => {
             <View style={styles.resultsContainer}>
               <FlatList
                 data={albums}
-                renderItem={({ item }) => {
+                renderItem={({ item, index }) => {
                   const { name, id } = item;
                   const artists = item.artists.join(', ');
                   return (
@@ -75,7 +89,7 @@ const Home = ({navigation, _}) => {
           </>
         )
         : null}
-    </ScrollView>
+    </SafeAreaView>
   );
 };
 
@@ -108,7 +122,7 @@ const styles = StyleSheet.create({
   },
   resultsContainer: {
     //...oneUnitFlex,
-    justifyContent: 'flex',
+    // justifyContent: 'flex',
   },
   sectionTitle: {
     ...headerTitle,

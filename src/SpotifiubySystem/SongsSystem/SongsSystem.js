@@ -28,44 +28,44 @@ export default class SongsSystem extends GenericSystem {
     return SongsSystemInterface;
   }
 
-  #connectionSystem() {
+  connectionSystem() {
     return this.parent.systemImplementing(ConnectionSystemInterface);
   }
 
   getSongs() {
-    return this.#connectionSystem().getJson([ROOT, SONGS_RESOURCE]);
+    return this.connectionSystem().getJson([ROOT, SONGS_RESOURCE]);
   }
 
   getSongsByArtist(artistId) {
-    return this.#connectionSystem().getJson([ROOT, SONGS_RESOURCE], { artist_id: artistId });
+    return this.connectionSystem().getJson([ROOT, SONGS_RESOURCE], { artist_id: artistId });
   }
 
   songsFilteredBy(aQuery) {
-    return this.#connectionSystem().getJson([ROOT, SONGS_RESOURCE], { q: aQuery });
+    return this.connectionSystem().getJson([ROOT, SONGS_RESOURCE], { q: aQuery });
   }
 
   artistsFilteredBy(aQuery) {
-    return this.#connectionSystem().getJson([ROOT, ARTISTS_RESOURCE], { q: aQuery });
+    return this.connectionSystem().getJson([ROOT, ARTISTS_RESOURCE], { q: aQuery });
   }
 
   albumsFilteredBy(aQuery) {
-    return this.#connectionSystem().getJson([ROOT, ALBUMS_RESOURCE], { q: aQuery });
+    return this.connectionSystem().getJson([ROOT, ALBUMS_RESOURCE], { q: aQuery });
   }
 
   getAlbums() {
-    return this.#connectionSystem().getJson([ROOT, ALBUMS_RESOURCE]);
+    return this.connectionSystem().getJson([ROOT, ALBUMS_RESOURCE]);
   }
 
   playlistsFilteredBy(aQuery) {
-    return this.#connectionSystem().getJson([ROOT, PLAYLISTS_RESOURCE], aQuery && { q: aQuery });
+    return this.connectionSystem().getJson([ROOT, PLAYLISTS_RESOURCE], aQuery && { q: aQuery });
   }
 
   getPlaylistSongsFilteredBy(id, aQuery) {
-    return this.#connectionSystem().getJson([ROOT, PLAYLISTS_RESOURCE, id, 'songs'], aQuery && { q: aQuery });
+    return this.connectionSystem().getJson([ROOT, PLAYLISTS_RESOURCE, id, 'songs'], aQuery && { q: aQuery });
   }
 
   getPlaylistById(id, aQuery) {
-    return this.#connectionSystem()
+    return this.connectionSystem()
       .getJson([ROOT, PLAYLISTS_RESOURCE, id], aQuery && { q: aQuery });
   }
 
@@ -75,7 +75,7 @@ export default class SongsSystem extends GenericSystem {
     try {
       const source = {
         uri: `${SONGS_BASE_URL}/${SONGS_RESOURCE}/${aSongID}/${CONTENT}`,
-        headers: (await this.#connectionSystem().withHeaders({})).headers,
+        headers: (await this.connectionSystem().withHeaders({})).headers,
       };
 
       console.log(source.headers);
@@ -91,13 +91,13 @@ export default class SongsSystem extends GenericSystem {
     return buildEndpointFor(ROOT, SONGS_RESOURCE, aSong.id, 'cover');
   }
 
-  async #uploadSongFile(aSongFile, songID) {
+  async uploadSongFile(aSongFile, songID) {
     const formData = new FormData();
     formData.append('file', aSongFile.output[0], aSongFile.name);
 
     const requestOptions = {
       method: 'POST',
-      headers: (await this.#connectionSystem().withHeaders({})).headers,
+      headers: (await this.connectionSystem().withHeaders({})).headers,
       body: formData,
       redirect: 'follow',
     };
@@ -106,14 +106,14 @@ export default class SongsSystem extends GenericSystem {
   }
 
   async uploadSong(songFile, metadata, album) {
-    const metadataResponse = await this.#connectionSystem()
+    const metadataResponse = await this.connectionSystem()
       .postJson(
         [ROOT, SONGS_RESOURCE],
         metadata,
       );
     const songResponse = await metadataResponse.json();
     console.log(songResponse);
-    await this.#uploadSongFile(songFile, songResponse.id);
+    await this.uploadSongFile(songFile, songResponse.id);
     if (album !== "-") {
       await this.addSongToAlbum(album, songResponse.id);
     }
@@ -125,38 +125,38 @@ export default class SongsSystem extends GenericSystem {
 
   createNewArtist(anArtistName) {
     const date = { name: anArtistName };
-    return this.#connectionSystem().postJson([ROOT, ARTISTS_RESOURCE], date);
+    return this.connectionSystem().postJson([ROOT, ARTISTS_RESOURCE], date);
   }
 
   async infoFromArtistIdentifiedBy(anId) {
-    const artistInfo = await this.#connectionSystem().getJson([ROOT, ARTISTS_RESOURCE, anId]);
+    const artistInfo = await this.connectionSystem().getJson([ROOT, ARTISTS_RESOURCE, anId]);
     const songs = (await this.songsFilteredBy(artistInfo.name))
       .filter((song) => song.artists.includes(artistInfo.name));
     return { ...artistInfo, songs };
   }
 
   async createAlbum(metadata) {
-    const metadataResponse = await this.#connectionSystem()
+    const metadataResponse = await this.connectionSystem()
       .postJson([ROOT, ALBUMS_RESOURCE], metadata);
     const songResponse = await metadataResponse.json();
     console.log(songResponse);
   }
 
   async addSongToAlbum(albumId, songId) {
-    const metadataResponse = await this.#connectionSystem().putJson([ROOT, ALBUMS_RESOURCE, albumId, SONGS_RESOURCE, '?song_id='+songId]);
+    const metadataResponse = await this.connectionSystem().putJson([ROOT, ALBUMS_RESOURCE, albumId, SONGS_RESOURCE, '?song_id='+songId]);
     const songResponse = await metadataResponse.json();
     console.log(songResponse);
   }
 
   async getAlbumsByArtist(artistId) {
-    return this.#connectionSystem().getJson([ROOT, ALBUMS_RESOURCE, `?artist_id=${artistId}`])
+    return this.connectionSystem().getJson([ROOT, ALBUMS_RESOURCE, `?artist_id=${artistId}`])
   }
 
   async getSongsByAlbum(albumId) {
-    return this.#connectionSystem().getJson([ROOT, ALBUMS_RESOURCE, albumId, SONGS_RESOURCE])
+    return this.connectionSystem().getJson([ROOT, ALBUMS_RESOURCE, albumId, SONGS_RESOURCE])
   }
 
   async createPlaylist(metadata) {
-    return this.#connectionSystem().postJson([ROOT, PLAYLISTS_RESOURCE], metadata);
+    return this.connectionSystem().postJson([ROOT, PLAYLISTS_RESOURCE], metadata);
   }
 }

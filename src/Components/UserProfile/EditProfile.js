@@ -3,8 +3,9 @@
 import { useContext, useState } from 'react';
 import {
   ScrollView,
-  StyleSheet, Text, TextInput, View, Picker,
+  StyleSheet, Text, TextInput, View,
 } from 'react-native';
+import {Picker} from '@react-native-picker/picker';
 import SystemContext from '../../SpotifiubySystem/DefaultSystemContext';
 import useNotificationSystem from '../../SpotifiubySystem/NotificationSystem/useNotificationSystem';
 import useTranslation from '../../SpotifiubySystem/TranslationSystem/useTranslation';
