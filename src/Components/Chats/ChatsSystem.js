@@ -47,7 +47,7 @@ export default class ChatsSystem extends GenericSystem {
 
   async sendPushNotification(response, authInfo) {
     let other = response.users.filter(email => email !== authInfo.email)[0];
-    const r = await this.connectionSystem().getJson(["users-api", "users", "juantest@gmail.com", 'token']);
+    const r = await this.connectionSystem().getJson(["users-api", "users", other, 'token']);
     console.log("SENDING NOTIFICATION TO", other, r.token)
 
     const message = {
