@@ -30,9 +30,11 @@ export default class ChatsSystem extends GenericSystem {
     return this.connectionSystem().getJson([ROOT, RESOURCE, chatId]);
   }
 
-  sendChatMessage(chatId, message) {
+  async sendChatMessage(chatId, message, authInfo) {
     console.log('Sending chat message: ', message);
-    return this.connectionSystem().putJson([ROOT, RESOURCE, chatId, 'message'], { 'message': message });
+    const metadataResponse = await this.connectionSystem().putJson([ROOT, RESOURCE, chatId, 'message'], { 'message': message });
+    const bodyResponse = await metadataResponse.json();
+    return this.sendPushNotification(bodyResponse, authInfo);
   }
 
   getChatName(chat, userId) {
@@ -41,5 +43,29 @@ export default class ChatsSystem extends GenericSystem {
 
   isOwnMessage(message, userId) {
     return message.sender === userId;
+  }
+
+  async sendPushNotification(response, authInfo) {
+    let other = response.users.filter(email => email !== authInfo.email)[0];
+    const r = await this.connectionSystem().getJson(["users-api", "users", "juantest@gmail.com", 'token']);
+    console.log("SENDING NOTIFICATION TO", other, r.token)
+
+    const message = {
+      to: r.token,
+      sound: 'default',
+      title: 'New Message',
+      body: 'You have received a new message',
+      data: { someData: 'goes here' },
+    };
+
+    await fetch('https://exp.host/--/api/v2/push/send', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Accept-encoding': 'gzip, deflate',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(message),
+    });
   }
 }

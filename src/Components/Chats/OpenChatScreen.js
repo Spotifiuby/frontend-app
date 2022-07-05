@@ -43,7 +43,7 @@ const OpenChatScreen = ({_, route}) => {
   });
 
   function sendMessage() {
-    chatsSystem.sendChatMessage(chat.id, message)
+    chatsSystem.sendChatMessage(chat.id, message, authInfo)
       .then(() => {
         setMessage('');
       })
