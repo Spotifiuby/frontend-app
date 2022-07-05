@@ -53,9 +53,6 @@ const OpenChatScreen = ({_, route}) => {
       });
   }
 
-  // TODO Add scroll
-  // TODO Test multi line text
-  // TODO: Hide and show SEND button
   return (
     <>
       <View style={styles.container}>
@@ -69,6 +66,7 @@ const OpenChatScreen = ({_, route}) => {
             })
           }
         </ScrollView>
+        <View style={{paddingTop: 15}}>
         <TextInput
           style={styles.chatInput}
           value={message}
@@ -77,6 +75,7 @@ const OpenChatScreen = ({_, route}) => {
           placeholder="Type your message..."
         />
         <CTAButton style={styles.chatSend} title="Send" onPress={sendMessage}/>
+        </View>
       </View>
     </>
   );
@@ -115,16 +114,16 @@ const styles = StyleSheet.create({
     backgroundColor: '#333',
     position: 'absolute',
     bottom: 0,
-    width: '91%',
+    width: '80%',
   },
   chatSend: {
     ...textColor,
-    ...paddedContainer,
+    //...paddedContainer,
     backgroundColor: '#333',
     position: 'absolute',
     bottom: 0,
     left: '80%',
-    width: '16%',
+    //width: '16%',
     borderRadius: 0,
   },
 });
