@@ -97,6 +97,7 @@ const SearchScreen = ({navigation, _}) => {
         {(queriedBySong.songs.length > 0)
           ? (
             <>
+              {console.log("queriedBySong", queriedBySong)}
               <View style={styles.resultsContainer}>
                 <Text style={styles.sectionTitle}>{t('Songs')}</Text>
                 <SongsList songsList={queriedBySong}/>
@@ -108,6 +109,7 @@ const SearchScreen = ({navigation, _}) => {
         {(queriedByArtist.length > 0)
           ? (
             <>
+              {console.log("queriedByArtist", queriedByArtist)}
               <View style={styles.resultsContainer}>
                 <Text style={styles.sectionTitle}>{t('Artists')}</Text>
                 <FlatList
@@ -133,6 +135,7 @@ const SearchScreen = ({navigation, _}) => {
         {(queriedByAlbum.length > 0)
           ? (
             <>
+              {console.log("queriedByAlbum", queriedByAlbum)}
               <View style={styles.resultsContainer}>
                 <Text style={styles.sectionTitle}>{t('Albums')}</Text>
                 <FlatList
@@ -165,6 +168,7 @@ const SearchScreen = ({navigation, _}) => {
         {
           (queriedUsers.length > 0) ? (
             <>
+              {console.log("queriedUsers", queriedUsers)}
               <View style={styles.resultsContainer}>
                 <Text style={styles.sectionTitle}>{t('Users')}</Text>
                 {queriedUsers.map((user) => {
@@ -200,7 +204,7 @@ const styles = StyleSheet.create({
   },
   resultsContainer: {
     //...oneUnitFlex,
-    justifyContent: 'flex',
+    //justifyContent: 'flex',
     paddingHorizontal: 20,
   },
   searchInput: {
