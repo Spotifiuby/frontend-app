@@ -1,10 +1,11 @@
 /* eslint-disable react/prop-types */
 import {
-  StyleSheet, View, Text, TextInput, ActivityIndicator, Picker,
+  StyleSheet, View, Text, TextInput, ActivityIndicator,
 } from 'react-native';
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
 import { getDocumentAsync } from 'expo-document-picker';
+import {Picker} from '@react-native-picker/picker';
 import { Octicons } from '@expo/vector-icons';
 import theme, {
   crossCentered, formContentWidth, oneUnitFlex, secondaryText, textField,

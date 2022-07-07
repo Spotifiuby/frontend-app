@@ -93,7 +93,8 @@ export default class SongsSystem extends GenericSystem {
 
   async uploadSongFile(aSongFile, songID) {
     const formData = new FormData();
-    formData.append('file', aSongFile.output[0], aSongFile.name);
+    const { name, mimeType, uri } = aSongFile;
+    formData.append('file', { uri, name, type: mimeType });
 
     const requestOptions = {
       method: 'POST',
